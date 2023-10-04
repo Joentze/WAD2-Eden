@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@emotion/css": "^11.11.2",
+    "@tabler/icons-vue": "^2.38.0",
     "@vue-hero-icons/outline": "^1.7.2",
     "firebase": "^10.4.0",
     "pinia": "^2.1.6",
