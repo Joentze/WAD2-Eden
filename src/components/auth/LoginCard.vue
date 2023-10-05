@@ -12,6 +12,7 @@
           placeholder="email"
           class="input input-bordered"
           required
+          v-model="email"
         />
       </div>
       <div class="form-control">
@@ -23,6 +24,7 @@
           placeholder="password"
           class="input input-bordered"
           required
+          v-model="password"
         />
         <label class="label">
           <a href="#" class="label-text-alt link link-hover text-primary"
@@ -31,8 +33,31 @@
         </label>
       </div>
       <div class="form-control mt-6">
-        <button class="btn btn-primary">Login</button>
+        <button class="btn btn-primary" @click.prevent="login()">Login</button>
       </div>
     </form>
   </div>
 </template>
+<script lang="ts">
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useFirebaseAuth } from "vuefire";
+const auth = useFirebaseAuth();
+export default {
+  methods: {
+    login: function () {
+      //   console.log(`email: ${this.email}`, this.password);
+      signInWithEmailAndPassword(auth!, this.email, this.password)
+        .then((userCredential) => {
+          console.log(userCredential.user);
+        })
+        .catch((error) => console.error(error.message));
+    },
+  },
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+};
+</script>
