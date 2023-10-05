@@ -48,7 +48,7 @@ export default {
       //   console.log(`email: ${this.email}`, this.password);
       signInWithEmailAndPassword(auth!, this.email, this.password)
         .then((userCredential) => {
-          console.log(userCredential.user);
+          this.$router.push("/projects");
         })
         .catch((error) => console.error(error.message));
     },

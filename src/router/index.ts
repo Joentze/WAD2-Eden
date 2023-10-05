@@ -11,6 +11,7 @@ import ProjectCatalog from "../views/project/ProjectCatalog.vue";
 import ProjectPage from "../views/project/ProjectPage.vue";
 import LoginPage from "../views/auth/LoginPage.vue";
 import SignupPage from "../views/auth/SignupPage.vue";
+import LandingPage from "../views/landing/LandingPage.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -27,7 +28,7 @@ const router = createRouter({
     {
       path: "/",
       name: "landing",
-      component: CompanyCatalog,
+      component: LandingPage,
     },
     {
       path: "/companies",

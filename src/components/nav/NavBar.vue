@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import NavItem from "./NavItem.vue";
+import { useCurrentUser } from "vuefire";
+const user = useCurrentUser();
 </script>
 <template>
   <div class="drawer" id="navBar" v-if="isDisplay()">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="grow"></div>
+
     <div class="drawer-content">
       <!-- Page content here -->
+
       <label
         for="my-drawer"
         class="btn btn-ghost btn-square btn-sm drawer-button"
@@ -29,6 +34,7 @@ import NavItem from "./NavItem.vue";
         </svg>
       </label>
     </div>
+
     <!-- <p>{{ route }}</p> -->
     <div class="drawer-side">
       <label
@@ -47,28 +53,51 @@ import NavItem from "./NavItem.vue";
         />
       </ul>
     </div>
+    <div class="grow w-full text-center">
+      <p class="text-primary font-black">EDEN</p>
+    </div>
+    <ProfileDropdown v-if="user" />
+    <button
+      v-else
+      class="btn btn-primary btn-sm btn-outline"
+      @click="redirectToLogin()"
+    >
+      Sign In
+    </button>
+    <!-- <div class="w-24">
+      <p v-if="user">Logged In</p>
+      <p v-else>Not Logged In</p>
+    </div> -->
   </div>
 </template>
 
 <style>
 #navBar {
   position: fixed;
+  display: flex;
+  flex-direction: row;
   left: 0;
   top: 0;
   background: white;
   border-bottom: 1px solid whitesmoke;
   width: 100%;
   padding: 0.75rem;
+  height: fit-content;
 }
 </style>
 <script lang="ts">
 import IconBuilding from "../icons/IconBuilding.vue";
 import IconTV from "../icons/IconTV.vue";
 import IconPlant from "../icons/IconPlant.vue";
-
+import ProfileDropdown from "../auth/ProfileDropdown.vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 export default {
-  components: { IconBuilding, IconTV, IconPlant },
+  components: { IconBuilding, IconTV, IconPlant, ProfileDropdown },
   methods: {
+    redirectToLogin: function () {
+      this.$router.push("/login");
+    },
     isDisplay: function () {
       return !["/login", "/signup", "/"].includes(this.$route.fullPath);
     },
@@ -76,6 +105,7 @@ export default {
   data() {
     return {
       // isDisplay: !["/login", "/signup", "/"].includes(this.$route.fullPath),
+
       navContent: [
         { icon: IconPlant, label: "Social Enterprises", link: "/enterprises" },
         { icon: IconBuilding, label: "Companies", link: "/companies" },
