@@ -9,3 +9,9 @@ body {
 p {
   color: black;
 }
+input {
+  color: black;
+}
+.btn-primary {
+  @apply text-white;
+}

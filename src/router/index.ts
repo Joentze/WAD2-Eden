@@ -9,10 +9,21 @@ import CompanyMediaCatalog from "../views/media/CompanyMediaCatalog.vue";
 import EnterpriseMediaCatalog from "../views/media/EnterpriseMediaCatalog.vue";
 import ProjectCatalog from "../views/project/ProjectCatalog.vue";
 import ProjectPage from "../views/project/ProjectPage.vue";
-
+import LoginPage from "../views/auth/LoginPage.vue";
+import SignupPage from "../views/auth/SignupPage.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: "/login",
+      name: "login",
+      component: LoginPage,
+    },
+    {
+      path: "/signup",
+      name: "signup",
+      component: SignupPage,
+    },
     {
       path: "/",
       name: "landing",
