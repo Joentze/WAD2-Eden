@@ -2,7 +2,7 @@
 import NavItem from "./NavItem.vue";
 </script>
 <template>
-  <div class="drawer" id="navBar">
+  <div class="drawer" id="navBar" v-if="isDisplay()">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
       <!-- Page content here -->
@@ -29,6 +29,7 @@ import NavItem from "./NavItem.vue";
         </svg>
       </label>
     </div>
+    <!-- <p>{{ route }}</p> -->
     <div class="drawer-side">
       <label
         for="my-drawer"
@@ -37,6 +38,7 @@ import NavItem from "./NavItem.vue";
       ></label>
       <ul class="menu p-4 w-80 min-h-full bg-base-200 text-primary">
         <!-- Sidebar content here -->
+        <!-- <p>{{ isDisplay }} {{ $route.path }}</p> -->
         <NavItem
           v-for="content in navContent"
           :icon="content.icon"
@@ -63,10 +65,17 @@ import NavItem from "./NavItem.vue";
 import IconBuilding from "../icons/IconBuilding.vue";
 import IconTV from "../icons/IconTV.vue";
 import IconPlant from "../icons/IconPlant.vue";
+
 export default {
   components: { IconBuilding, IconTV, IconPlant },
+  methods: {
+    isDisplay: function () {
+      return !["/login", "/signup", "/"].includes(this.$route.fullPath);
+    },
+  },
   data() {
     return {
+      // isDisplay: !["/login", "/signup", "/"].includes(this.$route.fullPath),
       navContent: [
         { icon: IconPlant, label: "Social Enterprises", link: "/enterprises" },
         { icon: IconBuilding, label: "Companies", link: "/companies" },
@@ -75,9 +84,4 @@ export default {
     };
   },
 };
-interface navItem {
-  icon: HTMLElement;
-  label: string;
-  link: string;
-}
 </script>

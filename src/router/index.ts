@@ -14,6 +14,11 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: "/",
+      name: "landing",
+      component: CompanyCatalog,
+    },
+    {
       path: "/companies",
       name: "company catalog",
       component: CompanyCatalog,
