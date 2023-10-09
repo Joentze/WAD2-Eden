@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // See https://vueuse.org/core/useFileDialog
+defineEmits(["upload-image"]);
 import { useFileDialog } from "@vueuse/core";
 import { ref as storageRef } from "firebase/storage";
 import { ref } from "vue";
@@ -42,6 +43,7 @@ const { files, open, reset } = useFileDialog();
         @click="open({ accept: 'image/*', multiple: false })"
       >
         <img v-if="url" :src="url" />
+
         <template v-if="files?.length === 1" class="truncate">
           {{ files.item(0)!.name }}
         </template>
@@ -50,7 +52,21 @@ const { files, open, reset } = useFileDialog();
 
       <br />
 
-      <button class="btn btn-sm btn-primary border-none">Upload</button>
+      <button
+        class="btn btn-sm btn-primary border-none"
+        @click="$emit('upload-image', url)"
+      >
+        Upload
+      </button>
     </fieldset>
   </form>
 </template>
+<script lang="ts">
+export default {
+  data() {
+    return {
+      url: this.url,
+    };
+  },
+};
+</script>

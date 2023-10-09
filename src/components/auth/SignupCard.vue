@@ -31,6 +31,7 @@
         </label>
         <input
           type="email"
+          v-model="email"
           placeholder="example@mail.com"
           class="input input-sm input-bordered"
           required
@@ -42,6 +43,7 @@
         </label>
         <input
           type="password"
+          v-model="password"
           placeholder="password"
           class="input input-sm input-bordered"
           required
@@ -108,9 +110,11 @@
           required
         />
       </div>
-      <FileUploaderComponent />
+      <FileUploaderComponent v-on:upload-image="setPhotoUrl" />
       <div class="form-control mt-6">
-        <button class="btn btn-primary">Save the Earth</button>
+        <button class="btn btn-primary" @click="printData()">
+          Save the Earth
+        </button>
       </div>
     </form>
   </div>
@@ -122,12 +126,20 @@ import IconCommunity from "../icons/IconCommunity.vue";
 import FileUploaderComponent from "../file/FileUploaderComponent.vue";
 export default {
   components: { IconPlant, IconBuilding, IconCommunity, FileUploaderComponent },
+  methods: {
+    printData: function () {
+      console.log(this.email, this.password, this.photoUrl);
+    },
+    setPhotoUrl: function (url: string) {
+      this.photoUrl = url;
+    },
+  },
   data() {
     return {
       email: "",
       password: "",
-      confirmPassword: "",
       state: 0,
+      photoUrl: "",
     };
   },
 };
