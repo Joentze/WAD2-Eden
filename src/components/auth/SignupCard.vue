@@ -108,15 +108,7 @@
           required
         />
       </div>
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text text-primary">Thumbnail:</span>
-        </label>
-        <input
-          type="file"
-          class="file-input file-input-bordered w-full max-w-xs text-primary"
-        />
-      </div>
+      <FileUploaderComponent />
       <div class="form-control mt-6">
         <button class="btn btn-primary">Save the Earth</button>
       </div>
@@ -127,8 +119,9 @@
 import IconPlant from "../icons/IconPlant.vue";
 import IconBuilding from "../icons/IconBuilding.vue";
 import IconCommunity from "../icons/IconCommunity.vue";
+import FileUploaderComponent from "../file/FileUploaderComponent.vue";
 export default {
-  components: { IconPlant, IconBuilding, IconCommunity },
+  components: { IconPlant, IconBuilding, IconCommunity, FileUploaderComponent },
   data() {
     return {
       email: "",
