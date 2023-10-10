@@ -2,6 +2,9 @@
 import { useNotification } from "../../stores/notificationStore";
 import { TransitionRoot } from "@headlessui/vue";
 const notificationStore = useNotification();
+function clearAll() {
+  notificationStore.$patch({ content: [] });
+}
 </script>
 <template>
   <TransitionRoot
@@ -14,10 +17,27 @@ const notificationStore = useNotification();
     leave-to="opacity-0"
   >
     <div class="toast" v-if="notificationStore.display">
-      <div v-for="notification in notificationStore.content" class="text-black">
-        {{ notification.title }}
-      </div>
+      <NotificationCard
+        v-for="(notification, index) in notificationStore.content"
+        :title="notification.title"
+        :description="notification.description"
+        :type="notification.type"
+        :index="index"
+      />
+
+      <button
+        class="btn btn-sm"
+        @click="clearAll()"
+        v-if="notificationStore.content.length > 0"
+      >
+        Clear All
+      </button>
     </div>
   </TransitionRoot>
 </template>
-<script lang="ts"></script>
+<script lang="ts">
+import NotificationCard from "./NotificationCard.vue";
+export default {
+  components: { NotificationCard },
+};
+</script>
