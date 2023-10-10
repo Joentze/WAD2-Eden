@@ -33,7 +33,7 @@ const { files, open, reset } = useFileDialog();
 <template>
   <form
     @submit.prevent="uploadPicture"
-    class="border border-1 rounded-lg overflow-hidden"
+    class="border border-1 rounded-lg overflow-hidden p-2"
   >
     <!-- disable the form while uploading -->
     <fieldset :disabled="!!uploadTask" class="flex flex-col">

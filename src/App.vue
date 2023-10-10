@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import NavBar from "./components/nav/NavBar.vue";
+import NotificationStack from "./components/notifications/NotificationStack.vue";
 </script>
 
 <template>
@@ -20,4 +21,5 @@ import NavBar from "./components/nav/NavBar.vue";
   </header> -->
 
   <RouterView />
+  <NotificationStack />
 </template>
