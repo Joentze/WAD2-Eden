@@ -3,6 +3,7 @@ import {
   NotificationType,
   useNotification,
 } from "../../stores/notificationStore";
+import { useRouter } from "vue-router";
 import { useSignupStep } from "../../stores/signupStepStore";
 import {
   validateEmail,
@@ -15,7 +16,7 @@ import {
 import { createNewAccount } from "../../firebaseHelpers/accountHandler.ts";
 const notificationStore = useNotification();
 const signupStepStore = useSignupStep();
-
+const router = useRouter();
 const register = async (data) => {
   const {
     email,
@@ -40,8 +41,9 @@ const register = async (data) => {
     validatePhoneNo(phoneNo);
     validateUrl(siteUrl);
     tempState = 3;
-    validatePhotoUrl(photoUrl);
+    // validatePhotoUrl(photoUrl);
     await createNewAccount(data);
+    router.push({ path: "/projects" });
   } catch (e) {
     notificationStore.add({
       title: "Error ❗️",
@@ -240,7 +242,8 @@ export default {
     // printData: function () {
     //   console.log(this.email, this.password, this.photoUrl);
     // },
-    setPhotoUrl: function (url: string) {
+    setPhotoUrl: async function (url: string) {
+      console.log(url);
       this.photoUrl = url;
     },
     incrementState() {

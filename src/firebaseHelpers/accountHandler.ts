@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { setDoc, collection, doc } from "firebase/firestore";
+import { setDoc, collection, doc, Timestamp, getDoc } from "firebase/firestore";
 import { useFirebaseAuth } from "vuefire";
 import { db } from "../firebase";
 export interface Account {
@@ -10,6 +10,7 @@ export interface Account {
   phoneNo: string;
   accountType: "corporation" | "enterprise";
   photoUrl: string;
+  createdOn?: Timestamp | Date;
 }
 
 export interface AccountSignUp extends Account {
@@ -57,8 +58,17 @@ export const postNewAccount = async (
   account: Account
 ): Promise<void> => {
   try {
-    await setDoc(doc(db, "account", id), account);
+    await setDoc(doc(db, "account", id), { ...account, createdOn: new Date() });
   } catch (e) {
     throw new Error(e as string);
+  }
+};
+
+export const getAccountData = async (uid: string): Promise<Account> => {
+  try {
+    const response = await getDoc(doc(db, "account", uid));
+    return response.data() as unknown as Account;
+  } catch (e) {
+    throw new Error("There was an error getting account data!");
   }
 };
