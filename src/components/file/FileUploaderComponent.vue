@@ -43,7 +43,7 @@ const { files, open, reset } = useFileDialog();
         type="button"
         @click="open({ accept: 'image/*', multiple: false })"
       >
-        <img v-if="url" :src="url" />
+        <img v-if="url" :src="url" class="w-52 h-52 m-auto image-contain" />
         <div v-else class="flex">
           <IconCameraPlus class="m-auto" />
         </div>

@@ -10,11 +10,13 @@ import {
   validateUrl,
   validateTexts,
   validatePhotoUrl,
+  validatePassword,
 } from "../../validators/authValidators.ts";
+import { createNewAccount } from "../../firebaseHelpers/accountHandler.ts";
 const notificationStore = useNotification();
 const signupStepStore = useSignupStep();
 
-function register(data) {
+const register = async (data) => {
   const {
     email,
     password,
@@ -32,12 +34,14 @@ function register(data) {
     validateTexts([companyName, companyDescription]);
     tempState = 1;
     validateEmail(email);
+    validatePassword(password, confirmPassword);
     tempState = 2;
     console.log(phoneNo);
     validatePhoneNo(phoneNo);
     validateUrl(siteUrl);
     tempState = 3;
     validatePhotoUrl(photoUrl);
+    await createNewAccount(data);
   } catch (e) {
     notificationStore.add({
       title: "Error ❗️",
@@ -46,7 +50,7 @@ function register(data) {
     });
     signupStepStore.goto(tempState);
   }
-}
+};
 </script>
 <template>
   <div
@@ -160,7 +164,7 @@ function register(data) {
             <input
               type="radio"
               name="radio-10"
-              value="corporation"
+              value="enterprise"
               className="radio checked:bg-primary"
               v-model="accountType"
               checked
@@ -253,7 +257,7 @@ export default {
       companyName: "",
       companyDescription: "",
       phoneNo: "",
-      accountType: undefined,
+      accountType: "enterprise",
       siteUrl: "",
       state: 0,
       photoUrl: "",

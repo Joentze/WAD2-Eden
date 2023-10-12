@@ -50,3 +50,19 @@ export const validateTexts = (texts: string[]) => {
   )
     throw new Error("All text fields must be filled!");
 };
+
+export const validatePassword = (
+  password: string,
+  confirmPassword: string
+): void => {
+  if (
+    !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(
+      password
+    )
+  )
+    throw new Error(
+      "The password must have one capital alphabet, one number & one symbol"
+    );
+
+  if (password !== confirmPassword) throw new Error("Passwords do not match!");
+};
