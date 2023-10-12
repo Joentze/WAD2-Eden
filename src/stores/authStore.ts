@@ -18,7 +18,6 @@ export const useAuthStore = defineStore("useAuthStore", {
     },
     async update(uid: string) {
       const data = await getAccountData(uid);
-      console.log(data);
       this.userData = { ...data, uid };
     },
   },

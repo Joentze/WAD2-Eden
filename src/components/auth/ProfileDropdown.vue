@@ -6,9 +6,16 @@ const userData = useAuthStore().getData;
 <template>
   <div class="dropdown dropdown-end text-primary">
     <label tabindex="0" class="btn btn-sm btn-circle btn-ghost -mb-2">
-      <div class="avatar">
+      <div class="avatar" v-if="userData.photoUrl.length">
         <div class="w-10 rounded-full border">
           <img :src="userData.photoUrl" />
+        </div>
+      </div>
+      <div class="avatar placeholder" v-else>
+        <div
+          class="bg-neutral-focus text-neutral-content rounded-full w-10 border"
+        >
+          <span>{{ userData.companyName[0].toUpperCase() }}</span>
         </div>
       </div>
     </label>
