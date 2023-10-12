@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 import { getAccountData } from "../firebaseHelpers/accountHandler";
-export const useAuthStore = defineStore("signupStep", {
+export const useAuthStore = defineStore("useAuthStore", {
   state: () => {
     return {
       userData: useStorage("userData", {}),
@@ -18,6 +18,7 @@ export const useAuthStore = defineStore("signupStep", {
     },
     async update(uid: string) {
       const data = await getAccountData(uid);
+      console.log(data);
       this.userData = { ...data, uid };
     },
   },

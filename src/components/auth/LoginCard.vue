@@ -1,3 +1,22 @@
+<script setup lang="ts">
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useFirebaseAuth } from "vuefire";
+import { useAuthStore } from "../../stores/authStore";
+import { useRouter } from "vue-router";
+
+const auth = useFirebaseAuth();
+const authStore = useAuthStore();
+const router = useRouter();
+
+function login(email: string, password: string) {
+  signInWithEmailAndPassword(auth!, email, password)
+    .then((userCredential) => {
+      authStore.update(userCredential.user.uid);
+      router.push({ path: "/projects" });
+    })
+    .catch((error) => console.error(error.message));
+}
+</script>
 <template>
   <div
     class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 h-fit m-auto border border-1"
@@ -33,26 +52,18 @@
         </label>
       </div>
       <div class="form-control mt-6">
-        <button class="btn btn-primary" @click.prevent="login()">Login</button>
+        <button
+          class="btn btn-primary"
+          @click.prevent="login(this.email, this.password)"
+        >
+          Login
+        </button>
       </div>
     </form>
   </div>
 </template>
 <script lang="ts">
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useFirebaseAuth } from "vuefire";
-const auth = useFirebaseAuth();
 export default {
-  methods: {
-    login: function () {
-      //   console.log(`email: ${this.email}`, this.password);
-      signInWithEmailAndPassword(auth!, this.email, this.password)
-        .then((userCredential) => {
-          this.$router.push("/projects");
-        })
-        .catch((error) => console.error(error.message));
-    },
-  },
   data() {
     return {
       email: "",

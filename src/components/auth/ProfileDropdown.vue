@@ -1,6 +1,17 @@
+<script setup lang="ts">
+import { useAuthStore } from "../../stores/authStore.ts";
+
+const userData = useAuthStore().getData;
+</script>
 <template>
   <div class="dropdown dropdown-end text-primary">
-    <label tabindex="0" class="btn btn-sm btn-circle btn-ghost -mb-2"></label>
+    <label tabindex="0" class="btn btn-sm btn-circle btn-ghost -mb-2">
+      <div class="avatar">
+        <div class="w-10 rounded-full border">
+          <img :src="userData.photoUrl" />
+        </div>
+      </div>
+    </label>
     <ul
       tabindex="0"
       class="dropdown-content menu shadow bg-base-100 mt-2 rounded-box w-52"
@@ -17,7 +28,7 @@
     </ul>
   </div>
 </template>
-<script>
+<script lang="ts">
 import IconLogout from "../icons/IconLogout.vue";
 import IconPerson from "../icons/IconPerson.vue";
 import { signOut } from "firebase/auth";

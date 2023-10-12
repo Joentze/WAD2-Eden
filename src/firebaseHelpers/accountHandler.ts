@@ -66,7 +66,9 @@ export const postNewAccount = async (
 
 export const getAccountData = async (uid: string): Promise<Account> => {
   try {
+    console.log(uid);
     const response = await getDoc(doc(db, "account", uid));
+    console.log(response);
     return response.data() as unknown as Account;
   } catch (e) {
     throw new Error("There was an error getting account data!");

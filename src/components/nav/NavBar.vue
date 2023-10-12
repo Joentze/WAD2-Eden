@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import NavItem from "./NavItem.vue";
 import { useCurrentUser } from "vuefire";
-const user = useCurrentUser();
+import { useAuthStore } from "../../stores/authStore.ts";
+
+const userData = useAuthStore().getData;
 </script>
 <template>
-  <div class="drawer" id="navBar" v-if="isDisplay()">
+  <div class="drawer h-16" id="navBar" v-if="isDisplay()">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="grow"></div>
 
     <div class="drawer-content">
-      <!-- Page content here -->
-
       <label
         for="my-drawer"
-        class="btn btn-ghost btn-square btn-sm drawer-button"
+        class="btn btn-ghost btn-square -m-1 drawer-button"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ const user = useCurrentUser();
         aria-label="close sidebar"
         class="drawer-overlay"
       ></label>
-      <ul class="menu p-4 w-80 min-h-full bg-base-200 text-primary">
+      <ul class="menu w-80 min-h-full bg-base-200 text-primary">
         <!-- Sidebar content here -->
         <!-- <p>{{ isDisplay }} {{ $route.path }}</p> -->
         <NavItem
@@ -56,7 +56,7 @@ const user = useCurrentUser();
     <div class="grow w-full text-center">
       <p class="text-primary font-black">EDEN</p>
     </div>
-    <ProfileDropdown v-if="user" />
+    <ProfileDropdown v-if="userData.uid" />
     <button
       v-else
       class="btn btn-primary btn-sm btn-outline"
@@ -82,7 +82,6 @@ const user = useCurrentUser();
   border-bottom: 1px solid whitesmoke;
   width: 100%;
   padding: 0.75rem;
-  height: fit-content;
 }
 </style>
 <script lang="ts">
@@ -91,7 +90,7 @@ import IconTV from "../icons/IconTV.vue";
 import IconPlant from "../icons/IconPlant.vue";
 import ProfileDropdown from "../auth/ProfileDropdown.vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
+
 export default {
   components: { IconBuilding, IconTV, IconPlant, ProfileDropdown },
   methods: {
