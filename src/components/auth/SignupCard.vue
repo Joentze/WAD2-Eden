@@ -3,13 +3,49 @@ import {
   NotificationType,
   useNotification,
 } from "../../stores/notificationStore";
+import { useSignupStep } from "../../stores/signupStepStore";
+import {
+  validateEmail,
+  validatePhoneNo,
+  validateUrl,
+  validateTexts,
+  validatePhotoUrl,
+} from "../../validators/authValidators.ts";
 const notificationStore = useNotification();
-function addNotificationTest() {
-  notificationStore.add({
-    title: "goodbye",
-    description: "bye",
-    type: NotificationType.ERROR,
-  });
+const signupStepStore = useSignupStep();
+
+function register(data) {
+  const {
+    email,
+    password,
+    confirmPassword,
+    companyDescription,
+    companyName,
+    siteUrl,
+    phoneNo,
+    accountType,
+    photoUrl,
+  } = data;
+  let tempState = 0;
+  console.log(data);
+  try {
+    validateTexts([companyName, companyDescription]);
+    tempState = 1;
+    validateEmail(email);
+    tempState = 2;
+    console.log(phoneNo);
+    validatePhoneNo(phoneNo);
+    validateUrl(siteUrl);
+    tempState = 3;
+    validatePhotoUrl(photoUrl);
+  } catch (e) {
+    notificationStore.add({
+      title: "Error ❗️",
+      description: e,
+      type: NotificationType.ERROR,
+    });
+    signupStepStore.goto(tempState);
+  }
 }
 </script>
 <template>
@@ -17,35 +53,42 @@ function addNotificationTest() {
     class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 h-fit m-auto border border-1"
   >
     <form class="card-body">
-      <SignupSteps :step-no="state" />
-      <div v-if="state === 0">
+      <!-- <IconEdenTitle  /> -->
+      <SignupSteps
+        :step-no="signupStepStore.step"
+        :setState="signupStepStore.goto"
+      />
+      <!-- <div class="divider" /> -->
+      <div v-if="signupStepStore.step === 0">
         <div class="form-control">
           <label class="label">
-            <span class="label-text text-primary">Name of Organisation</span>
+            <span class="label-text text-primary">Name of Organisation ﹡</span>
           </label>
           <input
             type="email"
             placeholder="example: The Tree Huggers"
             class="input input-sm input-bordered"
+            v-model="companyName"
             required
           />
         </div>
         <div class="form-control">
           <label class="label">
-            <span class="label-text text-primary">Description</span>
+            <span class="label-text text-primary">Description ﹡</span>
           </label>
           <textarea
             type="text"
             placeholder="We love trees!"
             class="textarea textarea-bordered text-black"
+            v-model="companyDescription"
             required
           />
         </div>
       </div>
-      <div v-if="state === 1">
+      <div v-if="signupStepStore.step === 1">
         <div class="form-control">
           <label class="label">
-            <span class="label-text text-primary">Email</span>
+            <span class="label-text text-primary">Email ﹡</span>
           </label>
           <input
             type="email"
@@ -57,7 +100,7 @@ function addNotificationTest() {
         </div>
         <div class="form-control">
           <label class="label">
-            <span class="label-text text-primary">Password</span>
+            <span class="label-text text-primary">Password ﹡</span>
           </label>
           <input
             type="password"
@@ -69,18 +112,31 @@ function addNotificationTest() {
         </div>
         <div class="form-control">
           <label class="label">
-            <span class="label-text text-primary">Confirm Password</span>
+            <span class="label-text text-primary">Confirm Password ﹡</span>
           </label>
           <input
             type="password"
+            v-model="confirmPassword"
             placeholder="Confirm Password"
             class="input input-sm input-bordered"
             required
           />
         </div>
       </div>
-      <div v-if="state === 2">
+      <div v-if="signupStepStore.step === 2">
         <p class="text-primary font-bold">Account Details:</p>
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text text-primary">Contact No ﹡</span>
+          </label>
+          <input
+            type="text"
+            v-model="phoneNo"
+            placeholder="example: 67674455"
+            class="input input-sm input-bordered"
+            required
+          />
+        </div>
         <div className="form-control">
           <label className="label cursor-pointer">
             <span className="label-text text-gray-400 flex flex-row gap-2"
@@ -89,7 +145,9 @@ function addNotificationTest() {
             <input
               type="radio"
               name="radio-10"
+              value="corporation"
               className="radio checked:bg-primary"
+              v-model="accountType"
               checked
             />
           </label>
@@ -102,49 +160,56 @@ function addNotificationTest() {
             <input
               type="radio"
               name="radio-10"
+              value="corporation"
               className="radio checked:bg-primary"
+              v-model="accountType"
               checked
             />
           </label>
         </div>
         <div class="form-control">
           <label class="label">
-            <span class="label-text text-primary">Site URL:</span>
+            <span class="label-text text-primary">Site URL ﹡</span>
           </label>
           <input
             type="text"
+            v-model="siteUrl"
             placeholder="https://www.example.com"
             class="input input-sm input-bordered"
             required
           />
         </div>
       </div>
-      <div v-if="state === 3">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text text-primary">Contact No:</span>
-          </label>
-          <input
-            type="number"
-            placeholder="example: 67674455"
-            class="input input-sm input-bordered"
-            required
-          />
-        </div>
+      <div v-if="signupStepStore.step === 3">
         <FileUploaderComponent v-on:upload-image="setPhotoUrl" />
-      </div>
-      <div class="form-control mt-6" v-if="state === 3">
-        <button class="btn btn-primary" @click="printData()">
-          Save the Earth
-        </button>
       </div>
       <br />
       <button
-        v-if="state !== 3"
         class="btn btn-primary"
-        @click="addNotificationTest()"
+        @click.prevent="
+          register({
+            email,
+            password,
+            confirmPassword,
+            companyDescription,
+            companyName,
+            siteUrl,
+            phoneNo,
+            accountType,
+            photoUrl,
+          })
+        "
+        v-if="signupStepStore.step === 3"
       >
-        Continue
+        Save the Earth
+      </button>
+
+      <button
+        v-if="signupStepStore.step !== 3"
+        class="btn btn-primary"
+        @click.prevent="signupStepStore.next()"
+      >
+        Continue <IconArrowRight />
       </button>
     </form>
   </div>
@@ -155,7 +220,8 @@ import IconBuilding from "../icons/IconBuilding.vue";
 import IconCommunity from "../icons/IconCommunity.vue";
 import FileUploaderComponent from "../file/FileUploaderComponent.vue";
 import SignupSteps from "./steps/SignupSteps.vue";
-
+import IconEdenTitle from "../icons/IconEdenTitle.vue";
+import IconArrowRight from "../icons/IconArrowRight.vue";
 export default {
   components: {
     IconPlant,
@@ -163,19 +229,32 @@ export default {
     IconCommunity,
     FileUploaderComponent,
     SignupSteps,
+    IconEdenTitle,
+    IconArrowRight,
   },
   methods: {
-    printData: function () {
-      console.log(this.email, this.password, this.photoUrl);
-    },
+    // printData: function () {
+    //   console.log(this.email, this.password, this.photoUrl);
+    // },
     setPhotoUrl: function (url: string) {
       this.photoUrl = url;
+    },
+    incrementState() {
+      if (this.state < 4) {
+        this.state++;
+      }
     },
   },
   data() {
     return {
       email: "",
       password: "",
+      confirmPassword: "",
+      companyName: "",
+      companyDescription: "",
+      phoneNo: "",
+      accountType: undefined,
+      siteUrl: "",
       state: 0,
       photoUrl: "",
     };

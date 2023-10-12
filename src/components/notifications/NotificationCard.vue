@@ -13,11 +13,11 @@ function removeNotification(index: number) {
 </script>
 <template>
   <div
-    class="flex flex-row w-80 max-h-24 rounded-md shadow shadow-lg p-2 border border-2 select-none bg-white"
+    class="flex flex-row w-80 max-h-24 truncate rounded-md shadow shadow-lg p-2 border border-2 select-none bg-white"
   >
     <div class="flex-grow">
       <p class="text-primary font-bold">{{ title }}</p>
-      <p>{{ description }}</p>
+      <p class="text-clamp-2">{{ description }}</p>
     </div>
     <button
       class="btn btn-ghost btn-xs btn-square text-gray-400"

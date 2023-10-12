@@ -33,17 +33,20 @@ const { files, open, reset } = useFileDialog();
 <template>
   <form
     @submit.prevent="uploadPicture"
-    class="border border-1 rounded-lg overflow-hidden p-2"
+    class="border border-1 rounded-lg overflow-hidden p-2 h-fit flex flex-col"
   >
+    <div class="flex-grow" />
     <!-- disable the form while uploading -->
     <fieldset :disabled="!!uploadTask" class="flex flex-col">
       <button
-        class="flex-grow text-primary"
+        class="h-full text-primary"
         type="button"
         @click="open({ accept: 'image/*', multiple: false })"
       >
         <img v-if="url" :src="url" />
-
+        <div v-else class="flex">
+          <IconCameraPlus class="m-auto" />
+        </div>
         <template v-if="files?.length === 1" class="truncate">
           {{ files.item(0)!.name }}
         </template>
@@ -62,7 +65,9 @@ const { files, open, reset } = useFileDialog();
   </form>
 </template>
 <script lang="ts">
+import IconCameraPlus from "../icons/IconCameraPlus.vue";
 export default {
+  components: { IconCameraPlus },
   data() {
     return {
       url: this.url,
