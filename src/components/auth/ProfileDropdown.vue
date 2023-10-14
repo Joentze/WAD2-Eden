@@ -46,7 +46,9 @@ export default {
   methods: {
     logout: function () {
       signOut(auth)
-        .then(() => this.$router.push("/login"))
+        .then(() => {
+          this.$router.push("/login");
+        })
         .catch((error) => console.error(error.message));
     },
   },

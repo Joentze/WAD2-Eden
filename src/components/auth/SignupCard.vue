@@ -5,6 +5,7 @@ import {
 } from "../../stores/notificationStore";
 import { useRouter } from "vue-router";
 import { useSignupStep } from "../../stores/signupStepStore";
+import { useAuthStore } from "../../stores/authStore";
 import {
   validateEmail,
   validatePhoneNo,
@@ -17,6 +18,7 @@ import { createNewAccount } from "../../firebaseHelpers/accountHandler.ts";
 const notificationStore = useNotification();
 const signupStepStore = useSignupStep();
 const router = useRouter();
+const authStore = useAuthStore();
 const register = async (data) => {
   const {
     email,
@@ -43,6 +45,7 @@ const register = async (data) => {
     tempState = 3;
     // validatePhotoUrl(photoUrl);
     await createNewAccount(data);
+    authStore.$patch({ userData: data });
     router.push({ path: "/projects" });
   } catch (e) {
     notificationStore.add({

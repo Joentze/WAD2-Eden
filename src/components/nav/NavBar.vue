@@ -42,9 +42,10 @@ const userData = useAuthStore().getData;
         aria-label="close sidebar"
         class="drawer-overlay"
       ></label>
-      <ul class="menu w-80 min-h-full bg-base-200 text-primary">
+      <ul class="menu w-80 min-h-full bg-base-100 text-primary">
         <!-- Sidebar content here -->
         <!-- <p>{{ isDisplay }} {{ $route.path }}</p> -->
+        <div class="divider" />
         <NavItem
           v-for="content in navContent"
           :icon="content.icon"
