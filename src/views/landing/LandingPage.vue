@@ -1,9 +1,22 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from "vue";
+const scrollPosition = ref(0);
+
+const handleScroll = () => {
+  scrollPosition.value = window.scrollY;
+  console.log(window.scrollY);
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+});
+
+// onUnmounted(() => {
+//   window.removeEventListener("scroll", handleScroll);
+// });
+</script>
 <template>
   <canvas id="canvas3d"></canvas>
-  <div class="z-10 w-full h-full flex flex-col">
-    <p class="text-white">Scroll To Save Earth</p>
-  </div>
 </template>
 <style>
 canvas {
@@ -17,7 +30,10 @@ canvas {
 <script lang="ts">
 import { Application } from "@splinetool/runtime";
 import IconEdenTitle from "../../components/icons/IconEdenTitle.vue";
+
 export default {
+  setup() {},
+
   components: { IconEdenTitle },
   methods: {
     toLogin: function () {
@@ -30,6 +46,7 @@ export default {
       app.load("https://prod.spline.design/HZAITb2DIAVng87t/scene.splinecode");
     },
   },
+
   mounted() {
     this.loadSpline();
   },
