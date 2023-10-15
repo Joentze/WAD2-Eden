@@ -42,6 +42,7 @@ type ProjectType = {
   projectAddress: string;
   projectSize: number;
   projectTag: string;
+  completed: boolean;
 };
 
 // type ApplicationType = {
@@ -62,7 +63,7 @@ exports.onApplicationApproved = functions.firestore
     const statusAfter = snap.after.data().status;
     const { projectId, companyId, companyName, companyPhotoUrl } =
       snap.after.data();
-    console.log(projectId, companyId, companyName, companyPhotoUrl);
+    // console.log(projectId, companyId, companyName, companyPhotoUrl);
     if (
       statusBefore === ApplicationStatus.PENDING &&
       statusAfter === ApplicationStatus.APPROVED
@@ -90,6 +91,29 @@ exports.onApplicationApproved = functions.firestore
             .update({
               joined: [...joined, { companyId, companyName, companyPhotoUrl }],
             });
+        });
+    }
+  });
+exports.onProjectCompleted = functions.firestore
+  .document("/projects/{projectId}")
+  .onUpdate(async (snap, context) => {
+    const completedBefore = snap.before.data().completed;
+    const completedAfter = snap.after.data().completed;
+    const projectId = snap.after.id;
+    if (completedBefore === false && completedAfter === true) {
+      await admin
+        .firestore()
+        .collection("events")
+        .where("projectId", "==", projectId)
+        .get()
+        .then(async (querySnapshot) => {
+          querySnapshot.forEach(async (doc) => {
+            admin
+              .firestore()
+              .collection("events")
+              .doc(doc.id)
+              .update({ completed: true });
+          });
         });
     }
   });
