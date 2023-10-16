@@ -11,7 +11,9 @@
           <p class="text-gray-400 text-sm">Share an experience with others!</p>
         </div>
 
-        <button class="btn btn-square btn-primary"><IconArrowRight /></button>
+        <button class="btn btn-square btn-primary" @click="post">
+          <IconArrowRight />
+        </button>
       </div>
       <div class="divider" />
       <div class="form-control w-full">
@@ -21,6 +23,7 @@
           >
         </label>
         <textarea
+          v-model="postDescription"
           placeholder="Type here"
           class="textarea textarea-bordered h-24"
         />
@@ -42,17 +45,37 @@
 <script lang="ts">
 import IconArrowRight from "../icons/IconArrowRight.vue";
 import MediaFileUploaderComponent from "../file/MediaFileUploaderComponent.vue";
+import { useAuthStore } from "../../stores/authStore.ts";
 export default {
+  setup() {
+    const authStore = useAuthStore();
+    console.log(authStore.getData);
+    const { companyName, photoUrl, uid } = authStore.getData;
+    // this.creatorId = companyName;
+    // this.creatorPhotoUrl = photoUrl;
+    return { companyName, photoUrl, uid };
+  },
   components: { IconArrowRight, MediaFileUploaderComponent },
   methods: {
+    post: function () {
+      console.log(
+        this.postDescription,
+        this.postImages,
+        this.companyName,
+        this.photoUrl,
+        this.uid
+      );
+    },
     setFileUrls: function (urls) {
-      console.log("urls:", urls);
       this.postImages = urls;
     },
   },
   data() {
     return {
+      postDescription: "",
       postImages: [],
+      creatorId: "",
+      creatorPhotoUrl: "",
     };
   },
 };
