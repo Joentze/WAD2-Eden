@@ -49,6 +49,8 @@ enum ApplicationStatus {
 }
 export type ApplicationType = {
   companyId: string;
+  companyName: string;
+  companyPhotoUrl: string;
   enterpriseId: string;
   appliedOn: Date;
   status: ApplicationStatus;
