@@ -29,7 +29,19 @@ export type ProjectType = {
   projectTag: string;
   completed: boolean;
 };
-
+enum ApplicationStatus {
+  APPROVED = "APPROVED",
+  REJECTED = "REJECTED",
+  PENDING = "PENDING",
+}
+export type ApplicationType = {
+  companyId: string;
+  enterpriseId: string;
+  appliedOn: Date;
+  status: ApplicationStatus;
+  projectId: string;
+  projectName: string;
+};
 export const createNewProject = async (data: ProjectType): Promise<void> => {
   try {
     await addDoc(collection(db, "projects"), data);
@@ -43,5 +55,14 @@ export const setProjectCompleted = async (projectId: string): Promise<void> => {
     await updateDoc(doc(db, "projects", projectId), { completed: true });
   } catch (e) {
     throw new Error("Error with setting project as completed");
+  }
+};
+export const createProjectApplication = async (
+  data: ApplicationType
+): Promise<void> => {
+  try {
+    await addDoc(collection(db, "applications"), data);
+  } catch (e) {
+    throw new Error("Error with creating project application");
   }
 };
