@@ -5,7 +5,7 @@ import {
   collection,
   doc,
   Timestamp,
-  getDoc,
+  updateDoc,
   addDoc,
 } from "firebase/firestore";
 import { useFirebaseAuth } from "vuefire";
@@ -35,5 +35,13 @@ export const createNewProject = async (data: ProjectType): Promise<void> => {
     await addDoc(collection(db, "projects"), data);
   } catch (e) {
     throw new Error("Error with creating new project!");
+  }
+};
+
+export const setProjectCompleted = async (projectId: string): Promise<void> => {
+  try {
+    await updateDoc(doc(db, "projects", projectId), { completed: true });
+  } catch (e) {
+    throw new Error("Error with setting project as completed");
   }
 };
