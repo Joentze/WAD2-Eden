@@ -5,10 +5,10 @@
   <input
     type="file"
     class="file-input w-full max-w-xs mt-24"
-    @change="getImages"
+    @change="uploadImages"
     multiple
   />
-  <button class="btn btn-primary" @click="uploadImages">upload</button>
+  <!-- <button class="btn btn-primary" @click="uploadImages">upload</button> -->
 </template>
 <script lang="ts">
 import { uuid } from "vue-uuid";
@@ -16,26 +16,18 @@ import { storage } from "../../firebase.ts";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 export default {
   methods: {
-    getImages: function (event) {
-      for (let [idx, file] of Object.entries(event.target.files)) {
-        this.blobs.push(file);
-        console.log(file);
-      }
-    },
-    uploadImages: async function () {
-      this.blobs.forEach(async (blob) => {
+    uploadImages: async function (event) {
+      Object.values(event.target.files).forEach(async (blob) => {
         const storageRef = ref(storage, `images/${uuid.v4()}.jpg`);
         const response = await uploadBytes(storageRef, blob);
         const url = await getDownloadURL(storageRef);
         this.urls.push(url);
       });
-      console.log(this.urls);
     },
   },
 
   data() {
     return {
-      blobs: [],
       urls: [],
     };
   },
