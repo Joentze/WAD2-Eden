@@ -8,6 +8,9 @@ import {
   Timestamp,
   updateDoc,
   addDoc,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 import { useFirebaseAuth } from "vuefire";
 import { db } from "../firebase";
@@ -16,6 +19,15 @@ export type JoinedType = {
   companyId: string;
   companyName: string;
   companyPhotoUrl: string;
+};
+
+export type EventType = {
+  completed: boolean;
+  projectId: string;
+  projectName: string;
+  projectTag: string;
+  startDate: Timestamp | Date;
+  companyId: string;
 };
 
 export type ProjectType = {
@@ -76,5 +88,26 @@ export const updateProjectApplicationStatus = async (
     await updateDoc(doc(db, "applications", applicationId), { status });
   } catch (e) {
     throw new Error("There was an error with updating application status");
+  }
+};
+
+export const getEvents = async (companyId: string): Promise<EventType[]> => {
+  try {
+    let events: EventType[] = [];
+    const eventsRef = collection(db, "events");
+    const q = query(eventsRef, where("companyId", "==", companyId));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data() as EventType;
+      events.push({
+        ...data,
+        startDate: (data.startDate as Timestamp).toDate(),
+      });
+    });
+    return events.sort((a, b) => {
+      return (a.startDate as Date).getTime() - (b.startDate as Date).getTime();
+    }) as EventType[];
+  } catch (e) {
+    throw new Error("There was an error with getting events at this moment");
   }
 };
