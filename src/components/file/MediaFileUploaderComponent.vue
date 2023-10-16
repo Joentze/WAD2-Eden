@@ -1,13 +1,24 @@
 <script setup lang="ts"></script>
 
 <template>
-  <img v-for="url in urls" :src="url" style="width: 100px; height: 100px" />
-  <input
-    type="file"
-    class="file-input w-full max-w-xs mt-24"
-    @change="uploadImages"
-    multiple
-  />
+  <div class="flex flex-row w-full mt-64">
+    <div class="flex-grow overflow-x-scroll overflow-y-visible">
+      <div class="w-fit flex flex-row gap-2">
+        <div class="avatar mt-2" v-for="url in urls">
+          <div class="w-16 rounded-xl overflow-y-visible">
+            <img :src="url" />
+          </div>
+          <button class="btn btn-xs btn-primary -mx-2 -my-2 z-2">x</button>
+        </div>
+      </div>
+    </div>
+    <input
+      type="file"
+      class="file-input w-full max-w-xs file-input-xs m-auto"
+      @change="uploadImages"
+      multiple
+    />
+  </div>
   <!-- <button class="btn btn-primary" @click="uploadImages">upload</button> -->
 </template>
 <script lang="ts">
