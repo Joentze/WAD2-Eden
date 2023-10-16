@@ -1,5 +1,6 @@
 // HELPER FUNCTIONS FOR PROJECT DOCUMENTS IN FIREBASE
 
+import { update } from "firebase/database";
 import {
   setDoc,
   collection,
@@ -64,5 +65,16 @@ export const createProjectApplication = async (
     await addDoc(collection(db, "applications"), data);
   } catch (e) {
     throw new Error("Error with creating project application");
+  }
+};
+
+export const updateProjectApplicationStatus = async (
+  applicationId: string,
+  status: ApplicationStatus
+): Promise<void> => {
+  try {
+    await updateDoc(doc(db, "applications", applicationId), { status });
+  } catch (e) {
+    throw new Error("There was an error with updating application status");
   }
 };
