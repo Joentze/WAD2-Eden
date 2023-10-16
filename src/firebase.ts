@@ -3,6 +3,7 @@ import { connectAuthEmulator } from "firebase/auth";
 import { connectFirestoreEmulator } from "firebase/firestore";
 import { useFirebaseAuth, useFirestore } from "vuefire";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
+import { connectStorageEmulator, getStorage } from "firebase/storage";
 
 const isTestLocally = true;
 
@@ -18,9 +19,11 @@ export const firebaseApp = initializeApp({
 
 export const db = useFirestore();
 export const auth = useFirebaseAuth();
+export const storage = getStorage(firebaseApp);
 const functions = getFunctions(firebaseApp);
 if (isTestLocally && window.location.hostname.includes("localhost")) {
   connectFirestoreEmulator(db, "127.0.0.1", 8080);
   connectAuthEmulator(auth!, "http://127.0.0.1:9099");
   connectFunctionsEmulator(functions, "127.0.0.1", 5001);
+  connectStorageEmulator(storage, "127.0.0.1", 9199);
 }

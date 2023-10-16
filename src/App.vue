@@ -21,5 +21,6 @@ import NotificationStack from "./components/notifications/NotificationStack.vue"
   </header> -->
 
   <RouterView />
+
   <NotificationStack />
 </template>
