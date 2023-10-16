@@ -3,12 +3,17 @@
 <template>
   <div class="flex flex-row w-full mt-64">
     <div class="flex-grow overflow-x-scroll overflow-y-visible">
-      <div class="w-fit flex flex-row gap-2">
-        <div class="avatar mt-2" v-for="url in urls">
+      <div class="w-fit flex flex-row gap-2 h-16">
+        <div class="avatar mt-2" v-for="(url, idx) in urls">
           <div class="w-16 rounded-xl overflow-y-visible">
             <img :src="url" />
           </div>
-          <button class="btn btn-xs btn-primary -mx-2 -my-2 z-2">x</button>
+          <button
+            class="btn btn-xs btn-primary -mx-2 -my-2 z-2"
+            @click="removeImage(idx)"
+          >
+            x
+          </button>
         </div>
       </div>
     </div>
@@ -34,6 +39,9 @@ export default {
         const url = await getDownloadURL(storageRef);
         this.urls.push(url);
       });
+    },
+    removeImage: function (index: number) {
+      this.urls.splice(index, 1);
     },
   },
 
