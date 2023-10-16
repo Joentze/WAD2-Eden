@@ -20,7 +20,7 @@ import NotificationStack from "./components/notifications/NotificationStack.vue"
     </div>
   </header> -->
 
-  <RouterView />
+  <div class="mt-16 p-4"><RouterView /></div>
 
   <NotificationStack />
 </template>

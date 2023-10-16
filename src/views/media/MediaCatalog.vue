@@ -1,10 +1,10 @@
 <template>
   <!-- Media Catalog Page -->
-  <MediaFileUploaderComponent />
+  <MediaPosterModal />
 </template>
 <script>
-import MediaFileUploaderComponent from "../../components/file/MediaFileUploaderComponent.vue";
+import MediaPosterModal from "../../components/media/MediaPosterModal.vue";
 export default {
-  components: { MediaFileUploaderComponent },
+  components: { MediaPosterModal },
 };
 </script>

@@ -1,10 +1,13 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="flex flex-row w-full mt-64">
+  <div class="flex flex-col sm:flex-row w-full mt-4">
     <div class="flex-grow overflow-x-scroll overflow-y-visible">
       <div class="w-fit flex flex-row gap-2 h-16">
-        <div class="avatar mt-2" v-for="(url, idx) in urls">
+        <p v-if="urls.length === 0" class="text-gray-400 text-sm">
+          Click "Choose Files" to add Images
+        </p>
+        <div class="avatar mt-2" v-for="(url, idx) in urls" v-else>
           <div class="w-16 rounded-xl overflow-y-visible">
             <img :src="url" />
           </div>
