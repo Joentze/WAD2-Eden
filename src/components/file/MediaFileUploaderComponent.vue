@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="flex flex-col sm:flex-row w-full mt-4">
+  <div class="flex flex-col sm:flex-row w-full mt-4 border-t-2">
     <div class="flex-grow overflow-x-scroll overflow-y-visible">
       <div class="w-fit flex flex-row gap-2 h-16">
         <p v-if="urls.length === 0" class="text-gray-400 text-sm">
@@ -34,6 +34,10 @@ import { uuid } from "vue-uuid";
 import { storage } from "../../firebase.ts";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 export default {
+  emits: ["fileUrls"],
+  setup(props, { emit }) {
+    emit("fileUrls");
+  },
   methods: {
     uploadImages: async function (event) {
       Object.values(event.target.files).forEach(async (blob) => {
@@ -41,6 +45,7 @@ export default {
         const response = await uploadBytes(storageRef, blob);
         const url = await getDownloadURL(storageRef);
         this.urls.push(url);
+        this.$emit("fileUrls", this.urls);
       });
     },
     removeImage: function (index: number) {

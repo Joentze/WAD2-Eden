@@ -7,7 +7,7 @@
     <div class="modal-box w-11/12 max-w-5xl">
       <div class="flex flex-row">
         <div class="flex-grow">
-          <h1 class="font-bold text-xl">Make a Post!</h1>
+          <h1 class="font-bold text-xl">Make a Post 📝</h1>
           <p class="text-gray-400 text-sm">Share an experience with others!</p>
         </div>
 
@@ -16,7 +16,9 @@
       <div class="divider" />
       <div class="form-control w-full">
         <label class="label">
-          <span class="label-text text-primary">What's on your mind?</span>
+          <span class="label-text text-primary font-bold"
+            >What's on your mind?</span
+          >
         </label>
         <textarea
           placeholder="Type here"
@@ -25,7 +27,7 @@
       </div>
       <div class="form-control w-full">
         <label class="label">
-          <MediaFileUploaderComponent />
+          <MediaFileUploaderComponent v-on:fileUrls="setFileUrls" />
         </label>
       </div>
       <div class="modal-action">
@@ -42,5 +44,16 @@ import IconArrowRight from "../icons/IconArrowRight.vue";
 import MediaFileUploaderComponent from "../file/MediaFileUploaderComponent.vue";
 export default {
   components: { IconArrowRight, MediaFileUploaderComponent },
+  methods: {
+    setFileUrls: function (urls) {
+      console.log("urls:", urls);
+      this.postImages = urls;
+    },
+  },
+  data() {
+    return {
+      postImages: [],
+    };
+  },
 };
 </script>
