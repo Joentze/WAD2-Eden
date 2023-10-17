@@ -56,10 +56,7 @@ import { validateMediaPost } from "../../validators/mediaValidators.ts";
 export default {
   setup() {
     const authStore = useAuthStore();
-    console.log(authStore.getData);
     const { companyName, photoUrl, uid } = authStore.getData;
-    // this.creatorId = companyName;
-    // this.creatorPhotoUrl = photoUrl;
     return { companyName, photoUrl, uid };
   },
   components: { IconArrowRight, MediaFileUploaderComponent },
