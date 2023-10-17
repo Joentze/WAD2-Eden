@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="flex flex-col sm:flex-row w-full mt-4 border-t-2">
+  <div class="flex flex-col sm:flex-row-reverse gap-2 w-full mt-4 border-t-2">
     <div class="flex-grow overflow-x-scroll overflow-y-visible">
       <div class="w-fit flex flex-row gap-2 h-16">
         <p v-if="urls.length === 0" class="text-gray-400 text-sm mt-4">

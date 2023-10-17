@@ -1,7 +1,7 @@
 <template>
   <!-- You can open the modal using ID.showModal() method -->
-  <button class="btn btn-primary" onclick="my_modal_4.showModal()">
-    open modal
+  <button class="btn btn-primary btn-square " onclick="my_modal_4.showModal()">
+    +
   </button>
   <dialog id="my_modal_4" class="modal text-primary">
     <div class="modal-box w-11/12 max-w-5xl">
@@ -12,6 +12,7 @@
         </div>
 
         <button
+          :disabled="postDescription === ''"
           class="btn btn-square btn-primary"
           @click="async () => await post()"
         >
