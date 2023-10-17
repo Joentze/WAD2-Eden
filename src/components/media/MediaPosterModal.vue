@@ -11,7 +11,10 @@
           <p class="text-gray-400 text-sm">Share an experience with others!</p>
         </div>
 
-        <button class="btn btn-square btn-primary" @click="post">
+        <button
+          class="btn btn-square btn-primary"
+          @click="async () => await post()"
+        >
           <IconArrowRight />
         </button>
       </div>
@@ -30,13 +33,15 @@
       </div>
       <div class="form-control w-full">
         <label class="label">
-          <MediaFileUploaderComponent v-on:fileUrls="setFileUrls" />
+          <MediaFileUploaderComponent
+            v-on:fileUrls="async (event) => await setFileUrls(event)"
+          />
         </label>
       </div>
       <div class="modal-action">
         <form method="dialog">
           <!-- if there is a button, it will close the modal -->
-          <button class="btn">Close</button>
+          <button class="btn" id="closeButton">Close</button>
         </form>
       </div>
     </div>
@@ -46,6 +51,8 @@
 import IconArrowRight from "../icons/IconArrowRight.vue";
 import MediaFileUploaderComponent from "../file/MediaFileUploaderComponent.vue";
 import { useAuthStore } from "../../stores/authStore.ts";
+import { postMedia } from "../../firebaseHelpers/mediaHelpers.ts";
+import { validateMediaPost } from "../../validators/mediaValidators.ts";
 export default {
   setup() {
     const authStore = useAuthStore();
@@ -57,14 +64,27 @@ export default {
   },
   components: { IconArrowRight, MediaFileUploaderComponent },
   methods: {
-    post: function () {
-      console.log(
-        this.postDescription,
-        this.postImages,
-        this.companyName,
-        this.photoUrl,
-        this.uid
-      );
+    post: async function () {
+      try {
+        const media = {
+          postDescription: this.postDescription,
+          postImages: this.postImages,
+          createdBy: this.companyName,
+          creatorPhotoUrl: this.photoUrl,
+          creatorId: this.uid,
+          postTag: "",
+          postMentions: [],
+          createdOn: new Date(),
+        };
+        validateMediaPost(media);
+        this.isLoading = true;
+        await postMedia(media);
+        this.isLoading = false;
+        document.getElementById("closeButton").click();
+      } catch (e) {
+        console.error(e);
+        throw new Error("There was an error with making a post at this time!");
+      }
     },
     setFileUrls: function (urls) {
       this.postImages = urls;
@@ -72,6 +92,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       postDescription: "",
       postImages: [],
       creatorId: "",

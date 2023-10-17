@@ -12,14 +12,14 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { useFirebaseAuth } from "vuefire";
+
 import { db } from "../firebase";
 
-export type JoinedType = {
+export interface JoinedType {
   companyId: string;
   companyName: string;
   companyPhotoUrl: string;
-};
+}
 
 export type EventType = {
   completed: boolean;

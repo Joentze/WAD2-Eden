@@ -1,17 +1,24 @@
 //HELPER FUNCTIONS FOR MEDIA DOCUMENTS IN FIREBASE
 import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { JoinedType } from "./projectHelpers";
+// import { JoinedType } from "./projectHelpers";
 import { db } from "../firebase";
-type MediaPostType = {
+
+interface JoinedType {
+  companyId: string;
+  companyName: string;
+  companyPhotoUrl: string;
+}
+
+export interface MediaPostType {
   postDescription: string;
-  postMentions: JoinedType[];
+  postMentions?: JoinedType[];
   postImages: string[];
-  postTag: string;
+  postTag?: string;
   createdBy: string;
   creatorId: string;
   creatorPhotoUrl: string;
   createdOn: Date | Timestamp;
-};
+}
 
 export const postMedia = async (post: MediaPostType) => {
   try {
