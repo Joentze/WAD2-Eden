@@ -45,6 +45,12 @@ const userData = useAuthStore().getData;
       <ul class="menu w-80 min-h-full bg-base-100 text-primary">
         <!-- Sidebar content here -->
         <!-- <p>{{ isDisplay }} {{ $route.path }}</p> -->
+        <NavItem
+          label="Dashboard"
+          link="/dashboard"
+          :icon="IconDashboard"
+          v-if="userData.accountType === 'enterprise'"
+        />
         <div class="divider" />
         <NavItem
           v-for="content in navContent"
@@ -89,11 +95,18 @@ const userData = useAuthStore().getData;
 import IconBuilding from "../icons/IconBuilding.vue";
 import IconTV from "../icons/IconTV.vue";
 import IconPlant from "../icons/IconPlant.vue";
+import IconDashboard from "../icons/IconDashboard.vue";
 import ProfileDropdown from "../auth/ProfileDropdown.vue";
 import { useRouter } from "vue-router";
 
 export default {
-  components: { IconBuilding, IconTV, IconPlant, ProfileDropdown },
+  components: {
+    IconBuilding,
+    IconTV,
+    IconDashboard,
+    IconPlant,
+    ProfileDropdown,
+  },
   methods: {
     redirectToLogin: function () {
       this.$router.push("/login");
