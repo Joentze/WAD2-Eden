@@ -7,8 +7,10 @@
     <div class="modal-box w-11/12 max-w-5xl">
       <div class="flex flex-row">
         <div class="flex-grow">
-          <h1 class="font-bold text-xl">Make a Post 📝</h1>
-          <p class="text-gray-400 text-sm">Share an experience with others!</p>
+          <h1 class="font-bold text-xl">New Project 🌳</h1>
+          <p class="text-gray-400 text-sm">
+            Create a new project for your enterprise
+          </p>
         </div>
 
         <button
@@ -19,11 +21,48 @@
           <IconArrowRight />
         </button>
       </div>
+
       <div class="divider" />
+      <div class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-primary font-bold">Project Title</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Type here"
+            class="input input-bordered w-full"
+          />
+        </div>
+        <div class="form-control w-full max-w-xs">
+          <label class="label">
+            <span class="label-text text-primary font-bold">Project Tag</span>
+          </label>
+          <select class="select select-bordered">
+            <option disabled selected>Pick one</option>
+            <option>BEACH</option>
+            <option>FOREST</option>
+            <option>PEOPLE</option>
+            <option>ANIMALS</option>
+          </select>
+        </div>
+      </div>
       <div class="form-control w-full">
         <label class="label">
           <span class="label-text text-primary font-bold"
-            >What's on your mind?</span
+            >Project Location</span
+          >
+        </label>
+        <input
+          type="text"
+          placeholder="Type here"
+          class="input input-bordered w-full"
+        />
+      </div>
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text text-primary font-bold"
+            >Project Description</span
           >
         </label>
         <textarea
@@ -32,6 +71,7 @@
           class="textarea textarea-bordered h-24"
         />
       </div>
+      <DateRangeSelector />
       <div class="form-control w-full">
         <label class="label">
           <MediaFileUploaderComponent
@@ -54,13 +94,14 @@ import MediaFileUploaderComponent from "../../file/MediaFileUploaderComponent.vu
 import { useAuthStore } from "../../../stores/authStore.ts";
 import { postMedia } from "../../../firebaseHelpers/mediaHelpers.ts";
 import { validateMediaPost } from "../../../validators/mediaValidators.ts";
+import DateRangeSelector from "../../date/DateRangeSelector.vue";
 export default {
   setup() {
     const authStore = useAuthStore();
     const { companyName, photoUrl, uid } = authStore.getData;
     return { companyName, photoUrl, uid };
   },
-  components: { IconArrowRight, MediaFileUploaderComponent },
+  components: { IconArrowRight, MediaFileUploaderComponent, DateRangeSelector },
   methods: {
     post: async function () {},
     setFileUrls: function (urls) {
