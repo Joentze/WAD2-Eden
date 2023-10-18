@@ -23,7 +23,7 @@ onSnapshot(q, (querySnapshot) => {
 });
 </script>
 <template>
-  <div class="flex flex-col min-h-screen">
+  <div class="flex flex-col min-h-screen overflow-y-scroll">
     <div class="flex flex-row">
       <div class="flex-grow flex font-black sm:text-3xl text-2xl">
         <p class="my-auto text-primary ml-4">Project Dashboard 👨🏽‍💻</p>
@@ -43,7 +43,7 @@ onSnapshot(q, (querySnapshot) => {
           </thead>
           <tbody>
             <tr v-for="project in projects">
-              <th class="text-accent font-normal w-full">
+              <th class="text-primary font-normal w-full">
                 {{ project.projectTitle }}
               </th>
               <td>{{ project.startDate }}</td>
