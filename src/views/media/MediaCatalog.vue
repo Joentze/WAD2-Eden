@@ -9,21 +9,21 @@
         <h1 class="text-5xl font-bold text-accent">
           Welcome to our Media Catalog!
         </h1>
-        <p class="py-6 text-base-300">
+        <p class="py-6 text-neutral-content">
           Scroll down to view recent posts by our corporations
         </p>
       </div>
     </div>
   </div>
-
-  <div class="card w-96 bg-base-100 shadow-xl">
+<div class="flex justify-center">
+  <div class="card w-96 bg-base-100 shadow-xl justify-self-center">
     <div class="card-body">
       <h2 class="card-title text-accent">
-        <div>LOGO to be placed here</div>
+        <div><img src="" alt=""></div>
         Company Name Annual Beach Clean-Up
         <div class="badge badge-secondary">NEW</div>
       </h2>
-      <p class="text-base-300">
+      <p class="text-base-content">
         Save the world with us! Over the weekend, in collaboration with NEA, we,
         LeafySG, have organised our annual company wide beach clean-up! We are
         proud to announce that we have cleared a total of 5kg worth of beach
@@ -42,4 +42,6 @@
       />
     </figure>
   </div>
+</div>
+  
 </template>
