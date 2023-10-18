@@ -83,6 +83,7 @@ const user = useCurrentUser();
   width: 100%;
   padding: 0.75rem;
   height: fit-content;
+  z-index:1;
 }
 </style>
 <script lang="ts">
