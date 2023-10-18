@@ -33,7 +33,7 @@ onSnapshot(q, (querySnapshot) => {
     <div class="divider" />
     <div class="flex-grow mb-16 flex flex-col">
       <div class="overflow-x-auto" v-if="projects.length > 0">
-        <table class="table">
+        <table class="table z-1">
           <thead>
             <tr class="text-gray-300">
               <th class="">Name</th>
