@@ -45,9 +45,9 @@ const register = async (data) => {
     validateUrl(siteUrl);
     tempState = 3;
     // validatePhotoUrl(photoUrl);
-    const uid = await createNewAccount(data);
-    console.log(uid);
-    authStore.update(uid);
+    createNewAccount(data).then((credential) => {
+      authStore.update(credential);
+    });
     // console.log(authStore.getData);
     router.push({ path: "/projects" });
   } catch (e) {
@@ -199,19 +199,17 @@ const register = async (data) => {
       <button
         class="btn btn-primary"
         @click.prevent="
-          async () => {
-            register({
-              email,
-              password,
-              confirmPassword,
-              companyDescription,
-              companyName,
-              siteUrl,
-              phoneNo,
-              accountType,
-              photoUrl,
-            });
-          }
+          register({
+            email,
+            password,
+            confirmPassword,
+            companyDescription,
+            companyName,
+            siteUrl,
+            phoneNo,
+            accountType,
+            photoUrl,
+          })
         "
         v-if="signupStepStore.step === 3"
       >

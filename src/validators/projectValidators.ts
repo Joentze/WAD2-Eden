@@ -41,7 +41,6 @@ export const validateProject = (project: ProjectType) => {
     !(
       creatorId &&
       creatorName &&
-      creatorPhotoUrl &&
       projectTitle &&
       projectDescription &&
       projectAddress &&
