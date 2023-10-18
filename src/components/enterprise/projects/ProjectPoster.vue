@@ -129,6 +129,7 @@ export default {
         this.isLoading = true;
         await createNewProject(projectData);
         this.isLoading = false;
+        document.getElementById("closeButton").click();
       } catch (e) {
         throw new Error(e.message);
       }

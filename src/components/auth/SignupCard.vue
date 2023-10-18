@@ -15,6 +15,7 @@ import {
   validatePassword,
 } from "../../validators/authValidators.ts";
 import { createNewAccount } from "../../firebaseHelpers/accountHandler.ts";
+import { useStorage } from "@vueuse/core";
 const notificationStore = useNotification();
 const signupStepStore = useSignupStep();
 const router = useRouter();
@@ -44,8 +45,10 @@ const register = async (data) => {
     validateUrl(siteUrl);
     tempState = 3;
     // validatePhotoUrl(photoUrl);
-    await createNewAccount(data);
-    authStore.$patch({ userData: data });
+    const uid = await createNewAccount(data);
+    console.log(uid);
+    authStore.update(uid);
+    // console.log(authStore.getData);
     router.push({ path: "/projects" });
   } catch (e) {
     notificationStore.add({
@@ -196,17 +199,19 @@ const register = async (data) => {
       <button
         class="btn btn-primary"
         @click.prevent="
-          register({
-            email,
-            password,
-            confirmPassword,
-            companyDescription,
-            companyName,
-            siteUrl,
-            phoneNo,
-            accountType,
-            photoUrl,
-          })
+          async () => {
+            register({
+              email,
+              password,
+              confirmPassword,
+              companyDescription,
+              companyName,
+              siteUrl,
+              phoneNo,
+              accountType,
+              photoUrl,
+            });
+          }
         "
         v-if="signupStepStore.step === 3"
       >

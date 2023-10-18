@@ -19,7 +19,7 @@ export interface AccountSignUp extends Account {
 const auth = useFirebaseAuth();
 export const createNewAccount = async (
   account: AccountSignUp
-): Promise<void> => {
+): Promise<string> => {
   const {
     email,
     password,
@@ -31,7 +31,7 @@ export const createNewAccount = async (
     photoUrl,
   } = account;
   //   let uid = "";
-  createUserWithEmailAndPassword(auth!, email, password)
+  let uid = createUserWithEmailAndPassword(auth!, email, password)
     .then(async (response) => {
       try {
         await postNewAccount(response.user.uid, {
@@ -43,7 +43,7 @@ export const createNewAccount = async (
           accountType,
           photoUrl,
         });
-        // return response.user.uid as string;
+        return response.user.uid as string;
       } catch (e) {
         console.error(e);
         throw new Error("There was something wrong with Firestore");
@@ -52,7 +52,7 @@ export const createNewAccount = async (
     .catch((error) => {
       throw new Error(error.message);
     });
-  //   return uid as string;
+  return uid as string;
 };
 
 export const postNewAccount = async (
