@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { watch, ref } from "vue";
+const emit = defineEmits(["emitDate"]);
 const startDate = ref(dateFormat(new Date()));
 const endDate = ref(dateFormat(new Date()));
 function dateFormat(now) {
@@ -12,6 +13,9 @@ function dateFormat(now) {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 // watch(startDate, () => {});
+const emitDates = () => {
+  emit("emitDate", { startDate, endDate });
+};
 </script>
 
 <template>
@@ -25,6 +29,7 @@ function dateFormat(now) {
         class="input input-bordered text-primary"
         :min="dateFormat(new Date())"
         v-model="startDate"
+        @change="emitDates"
       />
     </div>
 
@@ -39,32 +44,9 @@ function dateFormat(now) {
         class="input input-bordered text-primary"
         :min="startDate"
         v-model="endDate"
+        @change="emitDates"
       />
     </div>
   </div>
 </template>
-<script lang="ts">
-// export default {
-//   methods: {
-//     dateFormat: function (now) {
-//       now = new Date(now);
-//       const year = now.getFullYear();
-//       const month = String(now.getMonth() + 1).padStart(2, "0");
-//       const day = String(now.getDate()).padStart(2, "0");
-//       const hours = String(now.getHours()).padStart(2, "0");
-//       const minutes = String(now.getMinutes()).padStart(2, "0");
-
-//       return `${year}-${month}-${day}T${hours}:${minutes}`;
-//     },
-//     showDate: function () {
-//       console.log(this.startDate, this.endDate);
-//     },
-//     data() {
-//       return {
-//         startDate: dateFormat(new Date()),
-//         endDate: dateFormat(new Date()),
-//       };
-//     },
-//   },
-// };
-</script>
+<!-- <script lang="ts"></script> -->

@@ -31,15 +31,18 @@ export type EventType = {
 };
 
 export type ProjectType = {
+  creatorId: string;
   creatorName: string;
   creatorPhotoUrl: string;
   joined: JoinedType[];
-  projectStart: Timestamp;
-  projectEnd: Timestamp;
+  projectTitle: string;
+  projectStart: Timestamp | Date;
+  projectEnd: Timestamp | Date;
   projectDescription: string;
   projectAddress: string;
   projectSize: number;
   projectTag: string;
+  projectImages: [];
   completed: boolean;
 };
 enum ApplicationStatus {

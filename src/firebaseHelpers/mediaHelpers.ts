@@ -22,7 +22,7 @@ export interface MediaPostType {
 
 export const postMedia = async (post: MediaPostType) => {
   try {
-    await addDoc(collection(db, "projects"), post);
+    await addDoc(collection(db, "media"), post);
   } catch (e) {
     throw new Error("There was an error in uploading media");
   }
