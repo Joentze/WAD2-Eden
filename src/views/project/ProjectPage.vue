@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { db } from "../../firebase.ts";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, Timestamp } from "firebase/firestore";
 import { useRoute } from "vue-router";
 const postData = ref(undefined);
 const route = useRoute();
@@ -9,43 +9,149 @@ const route = useRoute();
 onSnapshot(doc(db, "projects", route.params.projectId), (doc) => {
   postData.value = doc.data();
 });
+
+const locationUrl = (address) => {
+  return (
+    "https://www.google.com/maps/embed/v1/place?key=AIzaSyA0QRy8UHpLXE2zWyq3lj_NiP79IzC4zno&q=" +
+    encodeURIComponent(address)
+  );
+};
+const convertTimestampToDate = (timestamp: Timestamp) => {
+  let date = timestamp.toDate();
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Month is zero-based, so we add 1
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  // Add leading zeros if necessary
+  const formattedDay = day < 10 ? `0${day}` : day;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedHours = hours < 10 ? `0${hours}` : hours;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  // Return the formatted date string using a template string
+  return `${formattedDay}/${formattedMonth}/${year} ${formattedHours}:${formattedMinutes}`;
+};
 </script>
 
 <template>
-  <div class="flex flex-row p-4 sm:px-36">
-    <div class="grow">
-      <p class="m-auto mt-4 text-2xl text-primary font-bold">
-        {{ postData.projectTitle }}
-      </p>
+  <div class="sm:px-36 w-full h-full flex flex-col gap-4">
+    <div class="flex flex-row p-4">
+      <div class="grow">
+        <p class="m-auto mt-4 text-2xl text-primary font-bold">
+          {{ postData.projectTitle }}
+        </p>
+      </div>
+      <ProjectAvatarGroup :joined="postData.joined" class="m-auto" />
     </div>
-    <button class="btn btn-primary btn-square">+</button>
-  </div>
-  <div class="divider sm:px-36"></div>
-  <div class="w-full p-4 sm:px-36 flex flex-col sm:flex-row gap-4">
-    <div
-      class="w-full sm:grow border border-2 rounded-lg m-auto max-h-[680px] overflow-hidden"
-    >
-      <div class="w-full h-full carousel">
+    <!-- <div class="divider sm:px-36"></div> -->
+    <div class="w-full flex flex-col sm:flex-row gap-4">
+      <div
+        class="w-full sm:grow border border-2 rounded-lg m-auto max-h-[680px] overflow-hidden"
+      >
+        <div class="w-full h-full carousel">
+          <div
+            class="carousel-item w-full flex flex-col"
+            v-for="image in postData.projectImages"
+          >
+            <img :src="image" class="m-auto bg-center" />
+          </div>
+        </div>
+      </div>
+      <div class="sm:w-96 w-full grow flex flex-col gap-6">
         <div
-          class="carousel-item w-full flex flex-col"
-          v-for="image in postData.projectImages"
+          class="rounded-lg border sm:w-96 w-full border-2 h-full shadow shadow-xl flex flex-col p-6 gap-4 bg-white"
         >
-          <img :src="image" class="m-auto bg-center" />
+          <iframe
+            class="rounded-lg w-full h-full border border-1"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            :src="locationUrl(postData.projectAddress)"
+          >
+          </iframe>
+
+          <p class="text-xl text-primary font-bold">Project Details</p>
+
+          <p class="text-sm text-primary flex flex-row">
+            <span class="text-gray-400 grow">Address: </span
+            >{{ postData.projectAddress }}
+          </p>
+          <p class="text-sm text-primary flex flex-row">
+            <span class="text-gray-400 grow">Start: </span>
+            <span class="badge badge-primary text-white shadow">{{
+              convertTimestampToDate(postData.projectStart)
+            }}</span>
+          </p>
+          <p class="text-sm text-primary flex flex-row">
+            <span class="text-gray-400 grow">End: </span
+            ><span class="badge badge-primary text-white shadow">{{
+              convertTimestampToDate(postData.projectEnd)
+            }}</span>
+          </p>
+          <div class="divider -my-0" />
+          <p class="text-gray-300 text-sm">How many joining?</p>
+          <div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="25"
+              class="range range-xs range-primary"
+              step="25"
+            />
+            <div class="w-full flex justify-between text-xs px-2 text-gray-400">
+              <span>1</span>
+              <span>5</span>
+              <span>10</span>
+              <span>15</span>
+              <span>20+</span>
+            </div>
+          </div>
+          <button class="btn btn-primary">Apply Now</button>
         </div>
       </div>
     </div>
-    <div class="sm:w-96 w-full grow flex flex-col gap-4">
-      <div class="rounded-lg border border-2 h-full shadow shadow-xl"></div>
-      <div class="rounded-lg border border-2 sm:w-96 h-96 overflow-hidden">
-        <iframe
-          style="border: 0; width: 100%; height: 100%"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0QRy8UHpLXE2zWyq3lj_NiP79IzC4zno&q=Space+Needle,Seattle+WA"
-        >
-        </iframe>
+    <div
+      class="p-8 flex flex-col gap-4 border border-2 bg-white shadow shadow-lg rounded-lg"
+    >
+      <div class="flex flex-row">
+        <div class="grow">
+          <p class="text-xl sm:text-2xl text-primary font-bold">
+            Project Description
+          </p>
+        </div>
+        <div class="flex flex-row">
+          <div class="avatar" v-if="postData.creatorPhotoUrl">
+            <div class="w-8 rounded-full">
+              <img :src="creatorPhotoUrl" />
+            </div>
+          </div>
+          <div class="avatar placeholder" v-else>
+            <div
+              class="bg-neutral-focus text-neutral-content rounded-full w-10"
+            >
+              <span class="text-lg">
+                {{ postData.creatorName[0].toUpperCase() }}</span
+              >
+            </div>
+            <p class="m-auto text-left w-full pl-4 text-lg text-gray-400">
+              by {{ postData.creatorName }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="h-48 overflow-y-scroll">
+        <p class="text-justify text-gray-500">
+          {{ postData.projectDescription }}
+        </p>
       </div>
     </div>
   </div>
 </template>
-<script></script>
+<script lang="ts">
+import ProjectAvatarGroup from "../../components/project/ProjectAvatarGroup.vue";
+export default {
+  components: { ProjectAvatarGroup },
+};
+</script>
