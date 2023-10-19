@@ -98,12 +98,13 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
           <p class="text-gray-300 text-sm">How many joining?</p>
           <div>
             <input
+              v-model="pax"
               type="range"
-              min="0"
-              max="100"
-              value="25"
+              min="1"
+              max="20"
               class="range range-xs range-primary"
-              step="25"
+              step="5"
+              :disabled="isSubmitted"
             />
             <div class="w-full flex justify-between text-xs px-2 text-gray-400">
               <span>1</span>
@@ -113,7 +114,15 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
               <span>20+</span>
             </div>
           </div>
-          <button class="btn btn-primary">Apply Now</button>
+          <button
+            :disabled="isSubmitted"
+            class="btn btn-primary"
+            @click="
+              createApplication(postData.projectTitle, postData.creatorId)
+            "
+          >
+            Save The Earth
+          </button>
         </div>
       </div>
     </div>
@@ -180,14 +189,44 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
 </template>
 <script lang="ts">
 import ProjectAvatarGroup from "../../components/project/ProjectAvatarGroup.vue";
-import { useRouter } from "vue-router";
-const router = useRouter();
+import {
+  ApplicationType,
+  ApplicationStatus,
+  createProjectApplication,
+} from "../../firebaseHelpers/projectHelpers.ts";
+import { useAuthStore } from "../../stores/authStore.ts";
 export default {
+  setup() {
+    const authStore = useAuthStore();
+    const { uid, companyName, photoUrl } = authStore.getData;
+    // console.log(authStore.getData);
+    return { uid, companyName, photoUrl };
+  },
   components: { ProjectAvatarGroup },
   methods: {
-    redirect(path) {
+    redirect: function (path) {
       this.$router.push({ path });
     },
+    createApplication: async function (projectTitle, enterpriseId) {
+      const authStore = useAuthStore();
+      const { uid, companyName, photoUrl } = authStore.getData;
+      const data = {
+        companyId: uid,
+        companyName: companyName,
+        companyPhotoUrl: photoUrl,
+        enterpriseId,
+        appliedOn: new Date(),
+        status: ApplicationStatus.PENDING,
+        projectId: this.$route.params.projectId,
+        projectName: projectTitle,
+        pax: this.pax,
+      };
+      await createProjectApplication(data);
+      this.isSubmitted = true;
+    },
+  },
+  data() {
+    return { pax: 5, isSubmitted: false };
   },
 };
 </script>

@@ -45,7 +45,7 @@ export type ProjectType = {
   projectImages: [];
   completed: boolean;
 };
-enum ApplicationStatus {
+export enum ApplicationStatus {
   APPROVED = "APPROVED",
   REJECTED = "REJECTED",
   PENDING = "PENDING",
@@ -59,6 +59,7 @@ export type ApplicationType = {
   status: ApplicationStatus;
   projectId: string;
   projectName: string;
+  pax: string;
 };
 export const createNewProject = async (data: ProjectType): Promise<void> => {
   try {

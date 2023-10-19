@@ -31,7 +31,7 @@ export const createNewAccount = async (
     photoUrl,
   } = account;
   //   let uid = "";
-  let uid = createUserWithEmailAndPassword(auth!, email, password)
+  let uid: string = createUserWithEmailAndPassword(auth!, email, password)
     .then(async (response) => {
       try {
         await postNewAccount(response.user.uid, {
