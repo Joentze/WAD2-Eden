@@ -71,7 +71,12 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
           >
           </iframe>
 
-          <p class="text-xl text-primary font-bold">Project Details</p>
+          <div class="flex flex-row">
+            <p class="text-xl text-primary font-bold grow">Details</p>
+            <span class="badge badge-primary text-white">{{
+              postData.projectTag
+            }}</span>
+          </div>
 
           <p class="text-sm text-primary flex flex-row">
             <span class="text-gray-400 grow">Address: </span
@@ -79,13 +84,13 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
           </p>
           <p class="text-sm text-primary flex flex-row">
             <span class="text-gray-400 grow">Start: </span>
-            <span class="badge badge-primary text-white shadow">{{
+            <span class="badge shadow">{{
               convertTimestampToDate(postData.projectStart)
             }}</span>
           </p>
           <p class="text-sm text-primary flex flex-row">
             <span class="text-gray-400 grow">End: </span
-            ><span class="badge badge-primary text-white shadow">{{
+            ><span class="badge shadow">{{
               convertTimestampToDate(postData.projectEnd)
             }}</span>
           </p>
@@ -113,45 +118,76 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
       </div>
     </div>
     <div
-      class="p-8 flex flex-col gap-4 border border-2 bg-white shadow shadow-lg rounded-lg"
+      class="p-8 flex flex-col sm:flex-row gap-4 border border-2 bg-white shadow shadow-lg rounded-lg"
     >
-      <div class="flex flex-row">
-        <div class="grow">
-          <p class="text-xl sm:text-2xl text-primary font-bold">
-            Project Description
-          </p>
-        </div>
+      <div class="flex flex-col gap-4 grow">
         <div class="flex flex-row">
-          <div class="avatar" v-if="postData.creatorPhotoUrl">
-            <div class="w-8 rounded-full">
-              <img :src="creatorPhotoUrl" />
-            </div>
+          <div class="grow">
+            <p class="text-xl sm:text-2xl text-primary font-bold">About ✨</p>
           </div>
-          <div class="avatar placeholder" v-else>
-            <div
-              class="bg-neutral-focus text-neutral-content rounded-full w-10"
-            >
-              <span class="text-lg">
-                {{ postData.creatorName[0].toUpperCase() }}</span
-              >
+          <div class="flex flex-row gap-2">
+            <div class="avatar" v-if="postData.creatorPhotoUrl">
+              <div class="w-8 rounded-full">
+                <img :src="creatorPhotoUrl" />
+              </div>
             </div>
-            <p class="m-auto text-left w-full pl-4 text-lg text-gray-400">
+            <div class="avatar placeholder" v-else>
+              <div
+                class="bg-neutral-focus text-neutral-content rounded-full w-10"
+              >
+                <span class="text-lg">
+                  {{ postData.creatorName[0].toUpperCase() }}</span
+                >
+              </div>
+            </div>
+            <p
+              class="m-auto text-left w-full text-lg text-gray-400 text-xs sm:text-lg"
+            >
               by {{ postData.creatorName }}
             </p>
           </div>
         </div>
+        <div class="h-48 overflow-y-scroll">
+          <p class="text-justify text-gray-500">
+            {{ postData.projectDescription }}
+          </p>
+        </div>
       </div>
-      <div class="h-48 overflow-y-scroll">
-        <p class="text-justify text-gray-500">
-          {{ postData.projectDescription }}
-        </p>
+      <div class="divider sm:divider-horizontal"></div>
+      <div id="joined" class="w-fit h-full">
+        <div class="w-80 flex flex-col gap-2">
+          <p class="font-bold text-primary text-xl">Who's Coming ✋🏼</p>
+          <div class="h-48 mt-2 overflow-y-scroll flex flex-col gap-2">
+            <div
+              v-for="join in postData.joined"
+              class="border-b-2 flex flex-row gap-4 p-2"
+              @click="redirect(`/company/${join.companyId}`)"
+            >
+              <div class="avatar">
+                <div class="w-10 rounded-full border border-2">
+                  <img :src="join.companyPhotoUrl" />
+                </div>
+              </div>
+              <a class="text-md text-primary font-bold mt-2">
+                {{ join.companyName }}
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
 import ProjectAvatarGroup from "../../components/project/ProjectAvatarGroup.vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 export default {
   components: { ProjectAvatarGroup },
+  methods: {
+    redirect(path) {
+      this.$router.push({ path });
+    },
+  },
 };
 </script>

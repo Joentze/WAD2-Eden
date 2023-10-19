@@ -13,7 +13,7 @@ defineProps<{
         v-for="userJoin in joined.slice(0, 3)"
       >
         <div
-          class="w-10 avatar rounded-full ring ring-gray-300 ring-offset-gray-300"
+          class="w-10 avatar rounded-full ring ring-primary ring-offset-gray-300"
         >
           <div class="w-10">
             <img :src="userJoin.companyPhotoUrl" />
@@ -22,9 +22,13 @@ defineProps<{
       </div>
     </div>
     <div class="hidden sm:block m-auto">
-      <p v-if="joined.length > 3" class="text-xs text-gray-400">
+      <a
+        v-if="joined.length > 3"
+        class="text-xs text-gray-400 hover:text-underline"
+        href="#joined"
+      >
         & {{ joined.length - joined.slice(-3).length }} others joined
-      </p>
+      </a>
       <p v-else class="text-sm text-gray-400">joined</p>
     </div>
   </div>
