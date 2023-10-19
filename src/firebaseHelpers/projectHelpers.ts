@@ -117,3 +117,21 @@ export const getEvents = async (companyId: string): Promise<EventType[]> => {
     throw new Error("There was an error with getting events at this moment");
   }
 };
+
+export const checkIfRegistered = async (
+  data: ApplicationType
+): Promise<void> => {
+  const { companyId, projectId } = data;
+  const eventsRef = collection(db, "events");
+  const q = query(
+    eventsRef,
+    where("companyId", "==", companyId),
+    where("projectId", "==", projectId)
+  );
+  let applications: ApplicationType[] = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    applications.push(doc.data() as ApplicationType);
+  });
+  if (applications.length > 0) throw new Error("You've already registered");
+};

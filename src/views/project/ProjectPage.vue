@@ -193,6 +193,7 @@ import {
   ApplicationType,
   ApplicationStatus,
   createProjectApplication,
+  checkIfRegistered,
 } from "../../firebaseHelpers/projectHelpers.ts";
 import { useAuthStore } from "../../stores/authStore.ts";
 export default {
@@ -208,21 +209,26 @@ export default {
       this.$router.push({ path });
     },
     createApplication: async function (projectTitle, enterpriseId) {
-      const authStore = useAuthStore();
-      const { uid, companyName, photoUrl } = authStore.getData;
-      const data = {
-        companyId: uid,
-        companyName: companyName,
-        companyPhotoUrl: photoUrl,
-        enterpriseId,
-        appliedOn: new Date(),
-        status: ApplicationStatus.PENDING,
-        projectId: this.$route.params.projectId,
-        projectName: projectTitle,
-        pax: this.pax,
-      };
-      await createProjectApplication(data);
-      this.isSubmitted = true;
+      try {
+        const authStore = useAuthStore();
+        const { uid, companyName, photoUrl } = authStore.getData;
+        const data = {
+          companyId: uid,
+          companyName: companyName,
+          companyPhotoUrl: photoUrl,
+          enterpriseId,
+          appliedOn: new Date(),
+          status: ApplicationStatus.PENDING,
+          projectId: this.$route.params.projectId,
+          projectName: projectTitle,
+          pax: this.pax,
+        };
+        await checkIfRegistered(data);
+        await createProjectApplication(data);
+        this.isSubmitted = true;
+      } catch (e) {
+        throw new Error(e.message);
+      }
     },
   },
   data() {
