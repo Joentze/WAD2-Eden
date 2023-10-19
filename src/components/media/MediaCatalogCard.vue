@@ -1,30 +1,31 @@
 <script setup></script>
 <template>
+  <br />
   <div class="card lg:w-6/12 bg-base-100 shadow-xl justify-self-center">
     <div class="card-body">
-      <h2 class="card-title text-accent">
-        <div class="avatar">
-          <div class="w-20 rounded-full">
-            <img :src="companyLogo" alt="" />
+      <div class="flex flex-row">
+        <h2 class="card-title text-primary flex-grow">
+          <div class="avatar">
+            <div class="w-12 rounded-full">
+              <img :src="companyLogo" alt="" />
+            </div>
           </div>
-        </div>
-        {{ companyName }}
-        <div class="badge badge-secondary">NEW</div>
-      </h2>
-      <h3 class="text-accent">{{ postTitle }}</h3>
+          {{ companyName }}
+        </h2>
+        <div class="badge badge-primary text-white m-auto">{{ tagOne }}</div>
+      </div>
+      <h3 class="text-primary">{{ postTitle }}</h3>
       <p class="text-base-content">
         {{ postDescription }}
       </p>
-      <div class="card-actions justify-end">
-        <div class="badge badge-outline">{{ tagOne }}</div>
-        <div class="badge badge-outline">{{ tagTwo }}</div>
+    </div>
+
+    <div class="w-full carousel rounded-box">
+      <div v-for="post in postMedia" class="carousel-item w-full">
+        <img :src="post" class="w-full p-1 rounded-box" alt="" />
       </div>
     </div>
-    <figure>
-      <img class="p-1" :src="postMedia" alt="" />
-    </figure>
   </div>
-  <br>
 </template>
 <script>
 export default {
@@ -34,8 +35,7 @@ export default {
     postTitle: String,
     postDescription: String,
     tagOne: String,
-    tagTwo: String,
-    postMedia: String,
+    postMedia: Array,
   },
 };
 </script>

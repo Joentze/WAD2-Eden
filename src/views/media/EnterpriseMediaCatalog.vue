@@ -1,2 +1,4 @@
 <template>Enterprise Media Catalog</template>
-<script></script>
+<script>
+import MediaCatalogCard from "../../components/media/MediaCatalogCard.vue";
+</script>
