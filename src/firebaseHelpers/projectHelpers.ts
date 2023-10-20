@@ -11,6 +11,7 @@ import {
   query,
   where,
   getDocs,
+  deleteDoc,
 } from "firebase/firestore";
 
 import { db } from "../firebase";
@@ -134,4 +135,12 @@ export const checkIfRegistered = async (
     applications.push(doc.data() as ApplicationType);
   });
   if (applications.length > 0) throw new Error("You've already registered");
+};
+
+export const deleteEvent = async (eventId: string): Promise<void> => {
+  try {
+    await deleteDoc(doc(db, "events", eventId));
+  } catch (e) {
+    throw new Error("There was an error with trying to delete event");
+  }
 };
