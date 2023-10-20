@@ -13,7 +13,7 @@ import LoginPage from "../views/auth/LoginPage.vue";
 import SignupPage from "../views/auth/SignupPage.vue";
 import LandingPage from "../views/landing/LandingPage.vue";
 import EnterpriseDashboardPage from "../views/enterprise/EnterpriseDashboardPage.vue";
-import CompanyEventsPage from "../views/company/CompanyEventsPage.vue";
+import CompanyDashboardPage from "../views/company/CompanyDashboardPage.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -33,14 +33,14 @@ const router = createRouter({
       component: LandingPage,
     },
     {
-      path: "/dashboard",
+      path: "/enterprise-dashboard",
       name: "enterprise dashboard",
       component: EnterpriseDashboardPage,
     },
     {
-      path: "/events",
-      name: "corporation events page",
-      component: CompanyEventsPage,
+      path: "/corporation-dashboard",
+      name: "corporation dashboard",
+      component: CompanyDashboardPage,
     },
     {
       path: "/companies",

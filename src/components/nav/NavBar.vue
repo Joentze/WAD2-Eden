@@ -47,14 +47,14 @@ const userData = useAuthStore().getData;
         <!-- <p>{{ isDisplay }} {{ $route.path }}</p> -->
         <NavItem
           label="Dashboard"
-          link="/dashboard"
+          link="/enterprise-dashboard"
           :icon="IconDashboard"
           v-if="userData.accountType === 'enterprise'"
         />
         <NavItem
-          label="Events"
-          link="/events"
-          :icon="IconCalendar"
+          label="Dashboard"
+          link="/corporation-dashboard"
+          :icon="IconDashboard"
           v-if="userData.accountType === 'corporation'"
         />
         <div class="divider" />
