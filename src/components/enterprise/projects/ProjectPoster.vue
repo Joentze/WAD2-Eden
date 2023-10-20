@@ -142,7 +142,7 @@ export default {
       console.log(startDate, endDate);
       this.projectStart = startDate;
       this.projectEnd = endDate;
-    },
+    }, 
   },
   data() {
     return {

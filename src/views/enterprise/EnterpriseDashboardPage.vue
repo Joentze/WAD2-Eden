@@ -42,7 +42,11 @@ onSnapshot(q, (querySnapshot) => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="project in projects">
+            <tr
+              v-for="project in projects"
+              class="hover"
+              @click="redirectToApplications(project.id, project.projectTitle)"
+            >
               <th class="text-primary font-normal w-full">
                 {{ project.projectTitle }}
               </th>
@@ -71,5 +75,15 @@ import ProjectPoster from "../../components/enterprise/projects/ProjectPoster.vu
 import IconEarth from "../../components/icons/IconEarth.vue";
 export default {
   components: { ProjectPoster, IconEarth },
+  methods: {
+    redirectToApplications: function (projectId: string, projectName: string) {
+      this.$router.push({
+        path: `/application/project/${projectId}`,
+        query: {
+          title: projectName,
+        },
+      });
+    },
+  },
 };
 </script>
