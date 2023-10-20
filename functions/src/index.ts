@@ -33,6 +33,7 @@ type JoinedType = {
 };
 
 type ProjectType = {
+  projectTitle: string;
   creatorName: string;
   creatorPhotoUrl: string;
   joined: JoinedType[];
@@ -74,9 +75,10 @@ exports.onApplicationApproved = functions.firestore
         .doc(projectId)
         .get()
         .then(async (response) => {
-          const { projectStart, projectEnd, projectTag, joined } =
+          const { projectStart, projectEnd, projectTag, joined, projectTitle } =
             response.data() as ProjectType;
           await admin.firestore().collection("events").add({
+            projectTitle,
             projectId,
             projectStart,
             projectEnd,
