@@ -51,6 +51,12 @@ const userData = useAuthStore().getData;
           :icon="IconDashboard"
           v-if="userData.accountType === 'enterprise'"
         />
+        <NavItem
+          label="Events"
+          link="/events"
+          :icon="IconCalendar"
+          v-if="userData.accountType === 'corporation'"
+        />
         <div class="divider" />
         <NavItem
           v-for="content in navContent"
@@ -97,6 +103,7 @@ import IconTV from "../icons/IconTV.vue";
 import IconPlant from "../icons/IconPlant.vue";
 import IconDashboard from "../icons/IconDashboard.vue";
 import ProfileDropdown from "../auth/ProfileDropdown.vue";
+import IconCalendar from "../icons/IconCalendar.vue";
 import { useRouter } from "vue-router";
 
 export default {
@@ -106,6 +113,7 @@ export default {
     IconDashboard,
     IconPlant,
     ProfileDropdown,
+    IconCalendar,
   },
   methods: {
     redirectToLogin: function () {
