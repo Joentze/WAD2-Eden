@@ -2,14 +2,18 @@
 import { ref } from "vue";
 import { ProjectType } from "../../firebaseHelpers/projectHelpers.ts";
 import { useAuthStore } from "../../stores/authStore.ts";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { collection, query, where, onSnapshot, and } from "firebase/firestore";
 import { db } from "../../firebase.ts";
 import { useRoute } from "vue-router";
+import {
+  ApplicationStatus,
+  updateProjectApplicationStatus,
+} from "../../firebaseHelpers/projectHelpers.ts";
 const route = useRoute();
 const projectId = route.params.projectId;
 const q = query(
   collection(db, "applications"),
-  where("projectId", "==", projectId)
+  and(where("projectId", "==", projectId), where("status", "==", "PENDING"))
 );
 const applications = ref([]);
 
@@ -44,11 +48,41 @@ onSnapshot(q, (querySnapshot) => {
             </p>
           </div>
           <div class="divider divider-horizontal mx-0" />
-          <button class="btn btn-sm btn-error text-white">REJECT</button>
-          <button class="btn btn-sm btn-success">APPROVE</button>
+          <button
+            class="btn btn-sm btn-error text-white"
+            @click="onStatusUpdate(application.id, ApplicationStatus.REJECTED)"
+          >
+            REJECT
+          </button>
+          <button
+            class="btn btn-sm btn-success"
+            @click="onStatusUpdate(application.id, ApplicationStatus.APPROVED)"
+          >
+            APPROVE
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
-<script></script>
+<script lang="ts">
+import {
+  ApplicationStatus,
+  updateProjectApplicationStatus,
+} from "../../firebaseHelpers/projectHelpers.ts";
+export default {
+  methods: {
+    onStatusUpdate: async function (
+      applicationId: string,
+      applicationStatus: ApplicationStatus
+    ) {
+      try {
+        await updateProjectApplicationStatus(applicationId, applicationStatus);
+      } catch (e) {
+        console.error(e);
+        throw new Error(e.message);
+      }
+    },
+  },
+};
+</script>
