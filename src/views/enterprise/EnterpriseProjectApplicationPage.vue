@@ -35,7 +35,7 @@ onSnapshot(q, (querySnapshot) => {
     </p>
     <div class="divider" />
 
-    <div class="grow flex flex-col gap-2">
+    <div class="grow flex flex-col gap-2" v-if="applications.length > 0">
       <p class="text-lg text-gray-300">Applicants:</p>
       <div
         class="border border-2 rounded-lg p-4 bg-white shadow shadow-lg"
@@ -63,6 +63,15 @@ onSnapshot(q, (querySnapshot) => {
         </div>
       </div>
     </div>
+    <div v-else class="grow flex flex-col">
+      <div class="m-auto flex flex-col gap-2">
+        <IconAd class="w-16 h-16 text-gray-300 m-auto" />
+        <p class="m-auto text-gray-300 text-center">
+          No outstanding applications for:<br />
+          {{ $route.query.title }}
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -70,7 +79,9 @@ import {
   ApplicationStatus,
   updateProjectApplicationStatus,
 } from "../../firebaseHelpers/projectHelpers.ts";
+import IconAd from "../../components/icons/IconAd.vue";
 export default {
+  components: { IconAd },
   methods: {
     onStatusUpdate: async function (
       applicationId: string,
