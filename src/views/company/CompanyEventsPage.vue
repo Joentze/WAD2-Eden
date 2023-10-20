@@ -1,4 +1,27 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { ProjectType } from "../../firebaseHelpers/projectHelpers.ts";
+import { useAuthStore } from "../../stores/authStore.ts";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase.ts";
+const authStore = useAuthStore();
+const q = query(
+  collection(db, "events"),
+  where("companyId", "==", authStore.getData.uid)
+);
+const events = ref([]);
+onSnapshot(q, (querySnapshot) => {
+  const currData = [];
+  querySnapshot.forEach((doc) => {
+    currData.push({ ...doc.data(), id: doc.id });
+  });
+  currData.sort(
+    (a, b) => (a.startDate as Timestamp) - (b.startDate as Timestamp)
+  );
+  events.value = currData;
+});
+console.log(events);
+</script>
 
 <template>
   <div class="flex flex-col min-h-screen overflow-y-scroll">
