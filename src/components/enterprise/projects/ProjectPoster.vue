@@ -126,7 +126,6 @@ export default {
           projectImages: this.projectImages,
           completed: false,
         };
-        console.log(projectData);
         validateProject(projectData);
         this.isLoading = true;
         await createNewProject(projectData);
