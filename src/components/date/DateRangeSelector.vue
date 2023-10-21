@@ -19,7 +19,7 @@ const emitDates = () => {
 </script>
 
 <template>
-  <div class="flex flex-row gap-4">
+  <div class="flex flex-col sm:flex-row sm:gap-4">
     <div class="form-control w-full">
       <label class="label">
         <span class="label-text text-primary font-bold">Start Time</span>
@@ -33,7 +33,7 @@ const emitDates = () => {
       />
     </div>
 
-    <span class="mt-12 text-gray-400">-</span>
+    <span class="hidden sm:block mt-12 text-gray-400">-</span>
     <div class="form-control w-full">
       <label class="label">
         <span class="label-text text-primary font-bold">End Time</span>

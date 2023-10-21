@@ -35,7 +35,7 @@
             class="input input-bordered w-full"
           />
         </div>
-        <div class="form-control w-full max-w-xs">
+        <div class="form-control w-full">
           <label class="label">
             <span class="label-text text-primary font-bold">Project Tag</span>
           </label>
@@ -73,7 +73,9 @@
           class="textarea textarea-bordered h-24 text-black"
         />
       </div>
-      <DateRangeSelector v-on:emitDate="onDateChange" />
+      <div class="form-control w-full">
+        <DateRangeSelector v-on:emitDate="onDateChange" />
+      </div>
       <div class="form-control w-full">
         <label class="label">
           <MediaFileUploaderComponent
@@ -142,7 +144,7 @@ export default {
       console.log(startDate, endDate);
       this.projectStart = startDate;
       this.projectEnd = endDate;
-    }, 
+    },
   },
   data() {
     return {
