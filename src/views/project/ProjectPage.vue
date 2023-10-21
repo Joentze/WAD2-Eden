@@ -172,9 +172,16 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
               class="border-b-2 flex flex-row gap-4 p-2"
               @click="redirect(`/company/${join.companyId}`)"
             >
-              <div class="avatar">
-                <div class="w-10 rounded-full border border-2">
+              <div class="avatar" v-if="join.companyPhotoUrl.length">
+                <div class="w-10 rounded-full border">
                   <img :src="join.companyPhotoUrl" />
+                </div>
+              </div>
+              <div class="avatar placeholder" v-else>
+                <div
+                  class="bg-neutral-focus text-neutral-content rounded-full w-10 border"
+                >
+                  <span>{{ join.companyName[0].toUpperCase() }}</span>
                 </div>
               </div>
               <a class="text-md text-primary font-bold mt-2">
