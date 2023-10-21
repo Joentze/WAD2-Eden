@@ -23,43 +23,71 @@ onSnapshot(q, (querySnapshot) => {
     currData.push({ ...doc.data(), id: doc.id });
   });
   currData.sort(
-    (a, b) => (a.startDate as Timestamp) - (b.startDate as Timestamp)
+    (a, b) => (a.appliedOn as Timestamp) - (b.appliedOn as Timestamp)
   );
   applications.value = currData;
 });
 </script>
 <template>
   <div class="w-full flex flex-col h-screen k">
-    <p class="font-bold text-2xl text-primary">
-      {{ $route.query.title }}
-    </p>
+    <div class="flex flex-row">
+      <button class="btn btn-square btn-ghost" @click="$router.go(-1)">
+        <IconArrowLeft class="text-gray-400" />
+      </button>
+      <p class="font-bold text-2xl text-primary grow text-right m-auto">
+        {{ $route.query.title }}
+      </p>
+    </div>
     <div class="divider" />
 
     <div class="grow flex flex-col gap-2" v-if="applications.length > 0">
-      <p class="text-lg text-gray-300">Applicants:</p>
+      <p class="text-md text-gray-300">Applicants:</p>
       <div
         class="border border-2 rounded-lg p-4 bg-white shadow shadow-lg"
         v-for="application in applications"
       >
         <div class="flex flex-row gap-2">
+          <div class="m-auto">
+            <div class="avatar" v-if="application.companyPhotoUrl.length">
+              <div class="w-10 max-h-10 rounded-full border">
+                <img :src="application.companyPhotoUrl" />
+              </div>
+            </div>
+            <div class="avatar placeholder" v-else>
+              <div
+                class="bg-neutral-focus text-neutral-content rounded-full w-10 border"
+              >
+                <span>{{ application.companyName[0].toUpperCase() }}</span>
+              </div>
+            </div>
+          </div>
           <div class="grow m-auto">
             <p class="font-bold text-primary">
               {{ application.companyName }}
             </p>
+            <p class="text-gray-400 text-sm">
+              Applying for: {{ application.pax }} Pax
+            </p>
           </div>
           <div class="divider divider-horizontal mx-0" />
-          <button
-            class="btn btn-sm btn-error text-white"
-            @click="onStatusUpdate(application.id, ApplicationStatus.REJECTED)"
-          >
-            REJECT
-          </button>
-          <button
-            class="btn btn-sm btn-success"
-            @click="onStatusUpdate(application.id, ApplicationStatus.APPROVED)"
-          >
-            APPROVE
-          </button>
+          <div class="m-auto flex sm:flex-row flex-col gap-2">
+            <button
+              class="btn btn-sm btn-error text-white"
+              @click="
+                onStatusUpdate(application.id, ApplicationStatus.REJECTED)
+              "
+            >
+              REJECT
+            </button>
+            <button
+              class="btn btn-sm btn-success"
+              @click="
+                onStatusUpdate(application.id, ApplicationStatus.APPROVED)
+              "
+            >
+              APPROVE
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -80,8 +108,9 @@ import {
   updateProjectApplicationStatus,
 } from "../../firebaseHelpers/projectHelpers.ts";
 import IconAd from "../../components/icons/IconAd.vue";
+import IconArrowLeft from "../../components/icons/IconArrowLeft.vue";
 export default {
-  components: { IconAd },
+  components: { IconAd, IconArrowLeft },
   methods: {
     onStatusUpdate: async function (
       applicationId: string,
