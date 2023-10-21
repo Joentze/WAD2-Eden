@@ -27,6 +27,23 @@ onSnapshot(q, (querySnapshot) => {
   );
   applications.value = currData;
 });
+function formatDDMMYYYY(date: Timestamp) {
+  date = date.toDate();
+  var day = date.getDate();
+  var month = date.getMonth() + 1; // the month starts from 0
+  var year = date.getFullYear();
+
+  // add leading zero if day or month is less than 10
+  if (day < 10) {
+    day = "0" + day;
+  }
+  if (month < 10) {
+    month = "0" + month;
+  }
+
+  var convertedDate = day + "/" + month + "/" + year;
+  return convertedDate;
+}
 </script>
 <template>
   <div class="w-full flex flex-col h-screen k">
