@@ -2,35 +2,105 @@
 import { ref, onMounted, onUnmounted } from "vue";
 const scrollPosition = ref(0);
 
-const handleScroll = () => {
-  scrollPosition.value = window.scrollY;
-  console.log(window.scrollY);
-};
+// const handleScroll = () => {
+//   scrollPosition.value = window.scrollY;
+//   console.log(window.scrollY);
+// };
 
-onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
-});
+// onMounted(() => {
+//   window.addEventListener("scroll", handleScroll);
+// });
 
 // onUnmounted(() => {
 //   window.removeEventListener("scroll", handleScroll);
 // });
 </script>
 <template>
-  <canvas id="canvas3d"></canvas>
+  <canvas
+    id="canvas3d"
+    class="fixed top-0 left-0 h-full z-2 bg-gradient-to-r from-gray-700 via-gray-900 to-black"
+  >
+  </canvas>
+  <div class="absolute z-5 text-white h-fit flex flex-col w-full" id="part1">
+    <div class="flex flex-row h-screen">
+      <div class="w-1/2 flex flex-col h-full">
+        <div class="ml-24 my-auto ml-32 my-auto">
+          <p class="text-6xl font-bold text-gray-400">There is no</p>
+          <p class="text-8xl font-bold text-white drop-shadow-xl">
+            Planet No. 2
+          </p>
+          <p class="mt-12 text-justify text-gray-300 text-lg w-5/6">
+            The Earth is dying, there is no plan B. Sea levels are rising,
+            animals are suffering. We need to do something.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-row-reverse h-screen" id="part2">
+      <div class="w-1/2 flex flex-col h-full">
+        <div class="ml-24 my-auto ml-32 my-auto">
+          <p class="text-6xl font-bold text-gray-400">Climate Action</p>
+          <p class="text-8xl font-bold text-white drop-shadow-xl">NOW.</p>
+          <p class="mt-12 text-justify text-gray-300 text-lg w-5/6">
+            Taking action now can help preserve the planet for future
+            generations and ensure a sustainable and resilient future for all.
+            We need to change
+            <u
+              class="text-underline-8 decoration-2 hover:decoration-4 ease-in duration-200"
+              >culture</u
+            >
+            and values.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-row h-screen" id="part3">
+      <div class="w-1/2 flex flex-col h-full">
+        <div class="ml-24 my-auto ml-32 my-auto">
+          <p class="text-6xl font-bold text-gray-400">There is no</p>
+          <p class="text-8xl font-bold text-white drop-shadow-xl">
+            Planet No. 2
+          </p>
+          <p class="mt-12 text-justify text-gray-300 text-lg w-5/6">
+            The Earth is dying, there is no plan B. Sea levels are rising,
+            animals are suffering. We need to do something.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="flex h-screen" id="part4">
+      <div class="m-auto flex flex-col gap-4">
+        <p class="text-5xl font-bold text-primary mt-80 m-auto">Join now.</p>
+        <p class="text-xl text-gray-300 m-auto w-96 text-center">
+          Cultivate climate action by engaging with corporations. Sign up and
+          change the world now.
+        </p>
+        <div class="flex gap-4 m-auto mt-16">
+          <button
+            class="shadow shadow-lg shadow-gray-600 btn w-48 btn bg-slate-600/50 hover:bg-slate-600/50 hover:text-slate-200 text-slate-400 border-gray-400 border-2"
+          >
+            See Projects
+          </button>
+          <button class="shadow shadow-lg shadow-gray-600 btn w-48 btn-primary">
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <style>
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+html {
+  background: black;
 }
 </style>
 <script lang="ts">
 import { Application } from "@splinetool/runtime";
 import IconEdenTitle from "../../components/icons/IconEdenTitle.vue";
-
+import { gsap } from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 export default {
   setup() {},
 
@@ -41,9 +111,49 @@ export default {
     },
     loadSpline: function () {
       const canvas = document.getElementById("canvas3d");
-      console.log(canvas);
-      const app = new Application(canvas);
-      app.load("https://prod.spline.design/HZAITb2DIAVng87t/scene.splinecode");
+      const spline = new Application(canvas);
+      spline
+        .load("https://prod.spline.design/i7XBB-iLa0TQnANF/scene.splinecode")
+        .then(() => {
+          const earth = spline.findObjectByName("Earth");
+          gsap.registerPlugin(ScrollTrigger);
+          gsap.to(earth.position, { x: 60 });
+
+          gsap
+            .timeline({
+              scrollTrigger: {
+                trigger: "#part2",
+                start: "top center",
+                end: "bottom bottom",
+                scrub: true,
+              },
+            })
+            .to(earth.position, { x: -60 });
+
+          gsap
+            .timeline({
+              scrollTrigger: {
+                trigger: "#part3",
+                start: "top center",
+                end: "bottom bottom",
+
+                scrub: true,
+              },
+            })
+            .to(earth.position, { x: 60 });
+          gsap
+            .timeline({
+              scrollTrigger: {
+                trigger: "#part4",
+                start: "top center",
+                end: "bottom bottom",
+
+                scrub: true,
+              },
+            })
+            .to(earth.position, { x: 0, y: 30 })
+            .to(earth.scale, { x: 0.6, y: 0.6, z: 0.6 });
+        });
     },
   },
 
