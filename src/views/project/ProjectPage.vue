@@ -169,7 +169,7 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
           <div class="h-48 mt-2 overflow-y-scroll flex flex-col gap-2">
             <div
               v-for="join in postData.joined"
-              class="border-b-2 flex flex-row gap-4 p-2"
+              class="border-b-2 flex flex-row gap-4 p-2 cursor-pointer"
               @click="redirect(`/company/${join.companyId}`)"
             >
               <div class="avatar" v-if="join.companyPhotoUrl.length">
