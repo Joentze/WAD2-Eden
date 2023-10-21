@@ -4,7 +4,9 @@
     <figure><img class="w-full h-64" src={{src}}  /></figure>
     <div class="card-body">
       <h2 class="card-title text-primary" style="margin-bottom: 10px">{{title}}
-        <div class="badge badge-primary text-white">{{ ranking }}</div>
+        <div class="badge badge-primary text-white">
+          {{ ranking }} in Sustainability
+        </div>
       </h2>
       
       <p style="margin-bottom: 10px; text-align: left">{{desc}}</p>
@@ -13,7 +15,7 @@
           v-bind:to="'/company/' + id"
           class="btn btn-primary"
         >
-        Find Out More
+        Discover here
         </router-link>
       </div>
     </div>
@@ -53,5 +55,6 @@ export default{
   .card-body p {
     font-size: small;
   }  */
+
 </style>
 

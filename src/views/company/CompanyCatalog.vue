@@ -3,7 +3,7 @@
     <div class="companies-body">
         <!-- Companies Title -->
     <p class="text-primary w-full my-5 font-bold">Companies</p>
-    <p class="text-secondary text-lg">Discover the Eco-Conscious Initiatives Embarked</p>
+    <p class="text-secondary text-lg">Discover the Embarked Eco-Conscious Initiatives</p>
     <br>
 
     <!-- Search Bar -->
@@ -38,7 +38,7 @@
     </div>
     </div>
     <div class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center">
-        <EnterpriseCatalogCard 
+        <CompanyCatalogCard 
             v-for="card in cards"
             :id="card.id"
             :title="card.title"
@@ -50,12 +50,12 @@
 
 
 <script>
-    import EnterpriseCatalogCard from '/Users/germaine/Documents/WAD2-Eden/src/components/enterprise/card/EnterpriseCatalogCard.vue'
+    import CompanyCatalogCard from '/src/components/companies/CompanyCatalogCard.vue'
 
     export default{
         name:'CompanyCatalog',
         components:{
-            EnterpriseCatalogCard,
+            CompanyCatalogCard,
         },
         data() {
             return {
@@ -64,42 +64,42 @@
                 id: 1,
                 title: "BlueSG",
                 desc: "BlueSG is a Singaporean company providing electric car sharing and electric car charging services.",
-                src: "images/blueSG.png",
+                src: "src/views/company/images/blueSG.png",
                 ranking: "#1",
                 },
                 {
                 id: 2,
                 title: "Prophet",
                 desc: "Prophet is an integrated growth consulting firm that specializes in strategy, transformation, innovation, branding, marketing, and design.",
-                src: "src/views/enterprise/NEWater Visitor Centre.webp",
+                src: "src/views/company/images/Prophet_Featuredimage_0121.png",
                 ranking: "#2",
                 },
                 {
                 id: 3,
                 title: "Uniqlo",
                 desc: "Uniqlo Co., Ltd. is a Japanese casual wear designer, manufacturer and retailer.",
-                src: "src/views/enterprise/opp.jpeg",
+                src: "src/views/company/images/uniqlo.jpeg",
                 ranking: "#3",
                 },
                 {
                 id: 4,
                 title: "H&M",
                 desc: "H&M is a multinational clothing company based in Sweden that focuses on fast-fashion clothing. ",
-                src: "src/views/enterprise/20200817_Willing-Hearts_CCH0927-scaled.jpeg",
+                src: "src/views/company/images/HM-Share-Image.jpg",
                 ranking: "#4",
                 },
                 {
                 id: 5,
                 title: "Apple",
                 desc: "Apple Inc (Apple) designs, manufactures, and markets smartphones, tablets, personal computers, and wearable devices.",
-                src: "src/views/enterprise/Special_Gift_Hero.png",
+                src: "src/views/company/images/apple.jpeg",
                 ranking: "#5",
                 },
                 {
                 id: 6,
                 title: "Nike",
                 desc: "Nike, Inc. (stylized as NIKE) is an American athletic footwear and apparel corporation headquartered near Beaverton, Oregon, United States.",
-                src: "src/views/enterprise/ymca_4.jpeg",
+                src: "src/views/company/images/nike.webp",
                 ranking: "#6",
                 },
             ],
