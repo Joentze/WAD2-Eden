@@ -15,6 +15,7 @@ import {
   validatePassword,
 } from "../../validators/authValidators.ts";
 import { createNewAccount } from "../../firebaseHelpers/accountHandler.ts";
+import { useStorage } from "@vueuse/core";
 const notificationStore = useNotification();
 const signupStepStore = useSignupStep();
 const router = useRouter();
@@ -44,8 +45,10 @@ const register = async (data) => {
     validateUrl(siteUrl);
     tempState = 3;
     // validatePhotoUrl(photoUrl);
-    await createNewAccount(data);
-    authStore.$patch({ userData: data });
+    createNewAccount(data).then((credential) => {
+      authStore.update(credential);
+    });
+    // console.log(authStore.getData);
     router.push({ path: "/projects" });
   } catch (e) {
     notificationStore.add({

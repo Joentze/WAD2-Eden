@@ -6,7 +6,7 @@ import { useAuthStore } from "../../stores/authStore.ts";
 const userData = useAuthStore().getData;
 </script>
 <template>
-  <div class="drawer h-16" id="navBar" v-if="isDisplay()">
+  <div class="drawer h-16 z-10" id="navBar" v-if="isDisplay()">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="grow"></div>
 
@@ -45,6 +45,18 @@ const userData = useAuthStore().getData;
       <ul class="menu w-80 min-h-full bg-base-100 text-primary">
         <!-- Sidebar content here -->
         <!-- <p>{{ isDisplay }} {{ $route.path }}</p> -->
+        <NavItem
+          label="Dashboard"
+          link="/enterprise-dashboard"
+          :icon="IconDashboard"
+          v-if="userData.accountType === 'enterprise'"
+        />
+        <NavItem
+          label="Dashboard"
+          link="/corporation-dashboard"
+          :icon="IconDashboard"
+          v-if="userData.accountType === 'corporation'"
+        />
         <div class="divider" />
         <NavItem
           v-for="content in navContent"
@@ -89,11 +101,20 @@ const userData = useAuthStore().getData;
 import IconBuilding from "../icons/IconBuilding.vue";
 import IconTV from "../icons/IconTV.vue";
 import IconPlant from "../icons/IconPlant.vue";
+import IconDashboard from "../icons/IconDashboard.vue";
 import ProfileDropdown from "../auth/ProfileDropdown.vue";
+import IconCalendar from "../icons/IconCalendar.vue";
 import { useRouter } from "vue-router";
 
 export default {
-  components: { IconBuilding, IconTV, IconPlant, ProfileDropdown },
+  components: {
+    IconBuilding,
+    IconTV,
+    IconDashboard,
+    IconPlant,
+    ProfileDropdown,
+    IconCalendar,
+  },
   methods: {
     redirectToLogin: function () {
       this.$router.push("/login");
