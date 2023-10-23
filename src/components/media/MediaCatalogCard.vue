@@ -1,19 +1,30 @@
 <script setup></script>
 <template>
   <div
-    class="card lg:w-6/12 bg-base-100 shadow-xl justify-self-center border border-2"
+    class="card sm:w-1/2 w-full bg-base-100 shadow-xl justify-self-center border border-2"
   >
     <div class="card-body">
       <div class="flex flex-row gap-4">
         <h2 class="card-title text-primary grow">
-          <div class="avatar border border-2 rounded-full">
-            <div class="w-8 rounded-full">
-              <img :src="companyLogo" alt="" />
+          <div class="avatar" v-if="creatorPhotoUrl.length > 0">
+            <div class="w-8 rounded-full border">
+              <img :src="creatorPhotoUrl" />
             </div>
           </div>
-          {{ companyName }}
+          <div class="avatar placeholder" v-else>
+            <div
+              class="bg-neutral-focus text-neutral-content rounded-full w-8 border"
+            >
+              <span>{{ createdBy[0].toUpperCase() }}</span>
+            </div>
+          </div>
+          <a class="hover:underline" :href="'/' + creatorType + '/' + id">{{
+            createdBy
+          }}</a>
         </h2>
-        <div class="badge badge-primary text-white m-auto">{{ tagOne }}</div>
+        <div v-if="tagOne" class="badge badge-primary text-white m-auto">
+          {{ tagOne }}
+        </div>
       </div>
       <p class="text-gray-500 line-clamp-3" v-if="seeMore === false">
         {{ postDescription }}
@@ -38,7 +49,7 @@
     </div>
 
     <div class="w-full carousel -mt-4 rounded-box">
-      <div v-for="post in postMedia" class="carousel-item w-full">
+      <div v-for="post in postImages" class="carousel-item w-full">
         <img :src="post" class="w-full p-1 rounded-box" alt="" />
       </div>
     </div>
@@ -47,12 +58,14 @@
 <script>
 export default {
   props: {
-    companyName: String,
-    companyLogo: String,
+    creatorId: String,
+    creatorType: String,
+    createdBy: String,
+    creatorPhotoUrl: String,
     postTitle: String,
     postDescription: String,
     tagOne: String,
-    postMedia: Array,
+    postImages: Array,
   },
   data() {
     return {

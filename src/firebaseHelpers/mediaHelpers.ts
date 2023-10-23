@@ -2,7 +2,10 @@
 import {
   addDoc,
   collection,
+  getDoc,
   getDocs,
+  limit,
+  orderBy,
   query,
   Timestamp,
   where,
@@ -17,6 +20,7 @@ interface JoinedType {
 }
 
 export interface MediaPostType {
+  id?: string;
   postDescription: string;
   postMentions?: JoinedType[];
   postImages: string[];
@@ -39,21 +43,45 @@ export const getMedias = async (
   creatorId: string
 ): Promise<MediaPostType[]> => {
   try {
-    let events: MediaPostType[] = [];
-    const eventsRef = collection(db, "media");
-    const q = query(eventsRef, where("creatorId", "==", creatorId));
+    let medias: MediaPostType[] = [];
+    const mediaRef = collection(db, "media");
+    const q = query(mediaRef, where("creatorId", "==", creatorId));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const data = doc.data() as MediaPostType;
-      events.push({
+      medias.push({
         ...data,
         createdOn: (data.createdOn as Timestamp).toDate(),
       });
     });
-    return events.sort((a, b) => {
+    return medias.sort((a, b) => {
       return (a.createdOn as Date).getTime() - (b.createdOn as Date).getTime();
     }) as MediaPostType[];
   } catch (e) {
+    throw new Error("There was an error with getting media at this moment");
+  }
+};
+
+export const getAllMedias = async (
+  limitNo: number
+): Promise<MediaPostType[]> => {
+  try {
+    let medias: MediaPostType[] = [];
+    const mediaRef = collection(db, "media");
+    const q = query(mediaRef, orderBy("createdOn"), limit(limitNo));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data() as MediaPostType;
+      medias.push({ ...data, id: doc.id });
+    });
+    return medias.sort((a, b) => {
+      return (
+        (a.createdOn as Timestamp).toDate().getTime() -
+        (b.createdOn as Timestamp).toDate().getTime()
+      );
+    }) as MediaPostType[];
+  } catch (e) {
+    console.error(e);
     throw new Error("There was an error with getting media at this moment");
   }
 };

@@ -1,21 +1,8 @@
 <script setup>
 import { useFirebaseAuth } from "vuefire";
 const auth = useFirebaseAuth();
-console.log(auth);
 </script>
 <template>
-  <!-- <div class="hero min-h-screen bg-base-200 ">
-    <div class="hero-content text-center">
-      <div class="max-w-2xl">
-        <h1 class="text-5xl font-bold text-primary">
-          Welcome to our Media Catalog!
-        </h1>
-        <p class="py-6 text-neutral-content">
-          Scroll down to view recent posts by our corporations
-        </p>
-      </div>
-    </div>
-  </div> -->
   <div class="flex flex-col gap-8 w-full h-full pt-10">
     <div
       class="flex flex-row gap-2 m-auto w-full sm:w-4/6 pb-6 border-b-2"
@@ -40,30 +27,14 @@ console.log(auth);
 
     <div class="flex flex-col justify-center items-center gap-8" id="posts">
       <MediaCatalogCard
-        companyName="LeafySG"
-        companyLogo="https://i.pinimg.com/736x/28/c3/52/28c352e5fc943372be17a199727ae05f.jpg"
-        postTitle="Annual Beach Clean-Up"
-        postDescription=" Save the world with us! Over the weekend, in collaboration with NEA,
-          we, LeafySG, have organised our annual company wide beach clean-up! We
-          are proud to announce that we have cleared a total of 5kg worth of
-          beach trash!! #LoveSG #SavetheWorld #LeafySG Save the world with us! Over the weekend, in collaboration with NEA,
-          we, LeafySG, have organised our annual company wide beach clean-up! We
-          are proud to announce that we have cleared a total of 5kg worth of
-          beach trash!! #LoveSG #SavetheWorld #LeafySG "
-        tagOne="Climate Action"
-        :postMedia="postMedia1"
-      >
-      </MediaCatalogCard>
-      <MediaCatalogCard
-        companyName=" Water4U"
-        companyLogo="https://st2.depositphotos.com/3487615/5722/v/450/depositphotos_57222633-stock-illustration-waterdrop-fresh-leaf-logo-design.jpg"
-        postTitle="Water Conservation Education Campaign"
-        postDescription="Learn about good water consumption practices at Water4U's education
-          campaign! In a 3 day campaign from 1-3 Oct, Water4U organised a water
-          conservation education campaign for all secondary school students.
-          #Water4U #Waterisprecious"
-        tagOne="Water Conservation"
-        :postMedia="postMedia2"
+        :v-if="medias.length > 0"
+        v-for="media in medias"
+        :creatorId="media.id"
+        :postDescription="media.postDescription"
+        :postImages="media.postImages"
+        :createdBy="media.createdBy"
+        :creatorPhotoUrl="media.creatorPhotoUrl"
+        :creatorType="media.creatorType"
       >
       </MediaCatalogCard>
     </div>
@@ -75,10 +46,24 @@ console.log(auth);
 
 import MediaCatalogCard from "../../components/media/MediaCatalogCard.vue";
 import MediaPosterModal from "../../components/media/MediaPosterModal.vue";
+import { getAllMedias } from "../../firebaseHelpers/mediaHelpers.ts";
 export default {
   components: { MediaCatalogCard, MediaPosterModal },
+  async created() {
+    await this.getMedias();
+  },
+  async mounted() {
+    await this.getMedias();
+  },
+  methods: {
+    getMedias: async function () {
+      this.medias = await getAllMedias(10);
+      console.log(this.medias);
+    },
+  },
   data() {
     return {
+      medias: [],
       postMedia1: ["https://static.mothership.sg/1/2019/09/Gai-Gai-1.jpg"],
       postMedia2: [
         "https://static1.straitstimes.com.sg/s3fs-public/styles/large30x20/public/articles/2023/03/10/20230308344561551d0489a7-eaed-4472-9cf0-9428d6c03914.jpg?VersionId=ZY0b39Jp3PEBsk7c.fTAtOI1P2mNgUaI",
