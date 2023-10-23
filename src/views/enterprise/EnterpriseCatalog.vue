@@ -41,24 +41,35 @@
         class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center"
       >
         <div
-          class="card w-80 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2"
+          class="card w-64 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2 pt-4 flex flex-col"
           v-for="card in enterprises"
           v-bind:key="card.id"
         >
           <figure>
-            <img class="w-full h-48" v-bind:src="card.photoUrl" />
+            <div class="avatar" v-if="card.photoUrl.length">
+              <div class="w-36 rounded-full border">
+                <img :src="card.photoUrl" />
+              </div>
+            </div>
+            <div class="avatar placeholder" v-else>
+              <div
+                class="bg-neutral-focus text-neutral-content rounded-full w-36 border"
+              >
+                <span>{{ card.companyName[0].toUpperCase() }}</span>
+              </div>
+            </div>
           </figure>
-          <div class="card-body text-center">
-            <h2 class="card-title text-primary" style="margin-bottom: 10px">
+          <div class="card-body text-center m-auto">
+            <h2 class="card-title text-primary text-center m-auto text-xl">
               {{ card.companyName }}
             </h2>
-            <p class="-mt-1 text-left text-gray-500 line-clamp-3">
+            <p class="-mt-1 text-gray-500 line-clamp-3 text-center">
               {{ card.companyDescription }}
             </p>
             <div class="card-actions justify-end pb-0 mt-2">
               <router-link
                 v-bind:to="'/enterprise/' + card.id"
-                class="btn btn-primary"
+                class="btn btn-primary m-auto"
               >
                 Find Out More
               </router-link>
