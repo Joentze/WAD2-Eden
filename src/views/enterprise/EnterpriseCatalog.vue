@@ -3,37 +3,22 @@
   <div class="enterprise">
     <div class="enterprise-body">
       <!-- Enterprise Title -->
-      <p class="text-primary w-full my-5 text-6xl font-bold">
+      <p class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold">
         Social Enterprises
+      </p>
+      <p class="text-gray-400 w-full text-sm my-2">
+        Join the fight against climate change with our social enterprises 🌍
       </p>
 
       <!-- Search Bar -->
-      <div class="form-control w-5/6">
+      <div class="form-control w-5/6 mt-4">
         <div class="join shadow shadow-lg">
           <input
             type="text"
-            placeholder="Search…"
-            class="input input-primary input-primary w-full join-item"
-            v-model="searchQuery"
+            placeholder="🔎 Search…"
+            class="input input-primary input-primary w-full join-item input-bordered"
             @input="onSearch"
           />
-          <button class="btn btn-square bg-primary join-item" @click="search">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke="white"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
         </div>
       </div>
 
