@@ -2,18 +2,20 @@
   <div class="enterprise">
     <div class="enterprise-body">
       <!-- Enterprise Title -->
-      <p class="text-primary w-full my-5">Social Enterprises</p>
+      <p class="text-primary w-full my-5 text-6xl font-bold">
+        Social Enterprises
+      </p>
 
       <!-- Search Bar -->
       <div class="form-control w-5/6">
-        <div class="input-group shadow-lg">
+        <div class="join shadow shadow-lg">
           <input
             type="text"
             placeholder="Search…"
-            class="input input-bordered input-success input-primary w-full"
+            class="input input-primary input-primary w-full join-item"
             v-model="searchQuery"
           />
-          <button class="btn btn-square bg-success" @click="search">
+          <button class="btn btn-square bg-primary join-item" @click="search">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6"
@@ -38,18 +40,21 @@
         class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center"
       >
         <div
-          class="card w-96 bg-base-100 my-5 mx-2 shadow-xl justify-self-center"
+          class="card w-96 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2"
           v-for="card in filteredCards"
-          v-bind:key="card.id">
-          <figure><img class="w-full h-64" v-bind:src="card.src" /></figure>
+          v-bind:key="card.id"
+        >
+          <figure>
+            <img class="w-full h-64" v-bind:src="card.src" />
+          </figure>
           <div class="card-body">
             <h2 class="card-title text-primary" style="margin-bottom: 10px">
               {{ card.title }}
             </h2>
-            <p style="margin-bottom: 10px; text-align: left">
+            <p class="-mt-1 text-left text-gray-500 line-clamp-3">
               {{ card.desc }}
             </p>
-            <div class="card-actions justify-end pb-0">
+            <div class="card-actions justify-end pb-0 mt-2">
               <router-link
                 v-bind:to="'/enterprise/' + card.id"
                 class="btn btn-primary"
@@ -144,8 +149,9 @@ export default {
   text-align: center;
   margin: auto;
   margin-top: 5rem;
-  /* display:flex;
-    flex-direction: column; */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   /* padding:100px; */
   /* background-image: url('src/views/enterprise/1920_plants1.jpeg'); */
 }
