@@ -1,6 +1,9 @@
 <script setup lang="ts"></script>
 <template>
   <div class="w-full h-screen flex flex-col p-4">
+    <button class="btn btn-square btn-ghost mb-4" @click="$router.go(-1)">
+      <IconArrowLeft class="text-gray-400" />
+    </button>
     <div class="flex flex-row gap-8">
       <div>
         <div class="avatar" v-if="data.photoUrl.length > 0">
@@ -46,19 +49,54 @@
         {{ data.companyDescription }}
       </p>
     </div>
+    <div
+      class="flex flex-col sm:p-8 pt-10 gap-8"
+      v-if="tabState === 'projects'"
+    >
+      <div
+        class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center"
+      >
+        <ProjectCard
+          v-for="project in projects"
+          :id="project.id"
+          :projectImages="project.projectImages"
+          :projectTitle="project.projectTitle"
+          :projectTag="project.projectTag"
+          :projectDescription="project.projectDescription"
+          :creatorName="project.creatorName"
+        />
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
+import {
+  and,
+  query,
+  orderBy,
+  limit,
+  startAt,
+  collection,
+  where,
+  endAt,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "../../firebase.ts";
 import { getAccountData } from "../../firebaseHelpers/accountHandler.ts";
 import { getMedias } from "../../firebaseHelpers/mediaHelpers.ts";
+import IconArrowLeft from "../../components/icons/IconArrowLeft.vue";
+import ProjectCard from "../../components/project/ProjectCard.vue";
 export default {
+  components: { IconArrowLeft, ProjectCard },
   async mounted() {
     await this.getEnterpriseData();
     await this.getMedias();
+    await this.getProjects();
   },
   async created() {
     await this.getEnterpriseData();
     await this.getMedias();
+    await this.getProjects();
   },
   methods: {
     setTabState: function (state: string) {
@@ -68,7 +106,23 @@ export default {
       this.medias = await getMedias(this.$route.params.enterpriseId);
       console.log(this.medias);
     },
-    getProjects: async function () {},
+    getProjects: async function () {
+      const projectRef = collection(db, "projects");
+      const q = query(
+        projectRef,
+        and(
+          where("completed", "==", false),
+          where("creatorId", "==", this.$route.params.enterpriseId)
+        )
+      );
+      const querySnapshot = await getDocs(q);
+
+      let projects = [];
+      querySnapshot.forEach((doc) => {
+        projects.push({ ...doc.data(), id: doc.id });
+      });
+      this.projects = projects;
+    },
     getEnterpriseData: async function () {
       this.data = await getAccountData(this.$route.params.enterpriseId);
       console.log(this.data);

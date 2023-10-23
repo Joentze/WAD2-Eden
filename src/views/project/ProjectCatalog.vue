@@ -84,8 +84,10 @@ import {
 import { db } from "../../firebase.ts";
 import IconArrowRight from "../../components/icons/IconArrowRight.vue";
 export default {
+
   components: { IconArrowRight },
   data() {
+
     return {
       cursor: 8,
       projects: [],
