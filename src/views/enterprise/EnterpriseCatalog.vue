@@ -1,3 +1,4 @@
+<script lang="ts" setup></script>
 <template>
   <div class="enterprise">
     <div class="enterprise-body">
@@ -37,17 +38,17 @@
 
       <!-- Cards -->
       <div
-        class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center"
+        class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center"
       >
         <div
-          class="card w-96 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2"
+          class="card w-80 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2"
           v-for="card in filteredCards"
           v-bind:key="card.id"
         >
           <figure>
-            <img class="w-full h-64" v-bind:src="card.src" />
+            <img class="w-full h-48" v-bind:src="card.src" />
           </figure>
-          <div class="card-body">
+          <div class="card-body text-center">
             <h2 class="card-title text-primary" style="margin-bottom: 10px">
               {{ card.title }}
             </h2>
@@ -65,14 +66,28 @@
           </div>
         </div>
       </div>
+      <div id="scroll-line" />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import {
+  query,
+  orderBy,
+  limit,
+  startAt,
+  collection,
+  where,
+  endAt,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "../../firebase.ts";
 export default {
   data() {
     return {
+      cursor: 8,
+      enterprises: [],
       cards: [
         {
           id: 1,
@@ -115,10 +130,29 @@ export default {
       filteredCards: [],
     };
   },
-  created() {
+  async created() {
     this.filteredCards = this.cards;
+    await this.queryPaginate();
+  },
+  async mounted() {
+    await this.queryPaginate();
   },
   methods: {
+    queryPaginate: async function () {
+      const enterpriseRef = collection(db, "account");
+      const q = query(
+        enterpriseRef,
+        where("accountType", "==", "enterprise"),
+        limit(8)
+      );
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot);
+      let enterprises = [];
+      querySnapshot.forEach((doc) => {
+        enterprises.push({ ...doc.data(), id: doc.id });
+      });
+      this.enterprises = enterprises;
+    },
     search() {
       const query = this.searchQuery.toLowerCase();
       this.filteredCards = this.cards.filter((card) => {
