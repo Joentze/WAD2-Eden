@@ -24,7 +24,7 @@ const scrollPosition = ref(0);
   <div class="absolute z-5 text-white h-fit flex flex-col w-full" id="part1">
     <div class="flex flex-row h-screen">
       <div class="w-1/2 flex flex-col h-full">
-        <div class="ml-24 my-auto ml-32 my-auto">
+        <div class="ml-24 my-auto ml-32 my-auto" id="text-section-1">
           <p class="text-6xl font-bold text-gray-400">There is no</p>
           <p class="text-8xl font-bold text-white drop-shadow-xl">
             Planet No. 2
@@ -39,7 +39,7 @@ const scrollPosition = ref(0);
 
     <div class="flex flex-row-reverse h-screen" id="part2">
       <div class="w-1/2 flex flex-col h-full">
-        <div class="ml-24 my-auto ml-32 my-auto">
+        <div class="ml-24 my-auto ml-32 my-auto" id="text-section-2">
           <p class="text-6xl font-bold text-gray-400">Climate Action</p>
           <p class="text-8xl font-bold text-white drop-shadow-xl">NOW.</p>
           <p class="mt-12 text-justify text-gray-300 text-lg w-5/6">
@@ -58,20 +58,20 @@ const scrollPosition = ref(0);
 
     <div class="flex flex-row h-screen" id="part3">
       <div class="w-1/2 flex flex-col h-full">
-        <div class="ml-24 my-auto ml-32 my-auto">
-          <p class="text-6xl font-bold text-gray-400">There is no</p>
-          <p class="text-8xl font-bold text-white drop-shadow-xl">
-            Planet No. 2
-          </p>
+        <div class="ml-24 my-auto ml-32 my-auto" id="text-section-3">
+          <p class="text-6xl font-bold text-gray-400">Restoring...</p>
+          <p class="text-8xl font-bold text-white drop-shadow-xl">Our Eden</p>
+
           <p class="mt-12 text-justify text-gray-300 text-lg w-5/6">
-            The Earth is dying, there is no plan B. Sea levels are rising,
-            animals are suffering. We need to do something.
+            Eden aims to connect the largest corporations with social
+            enterprises to instill climate action. By setting culture, we can
+            save the planet <u>together</u>.
           </p>
         </div>
       </div>
     </div>
     <div class="flex h-screen" id="part4">
-      <div class="m-auto flex flex-col gap-4">
+      <div class="m-auto flex flex-col gap-4" id="text-section-4">
         <p class="text-5xl font-bold text-primary mt-80 m-auto">Join now.</p>
         <p class="text-xl text-gray-300 m-auto w-96 text-center">
           Cultivate climate action by engaging with corporations. Sign up and
@@ -80,10 +80,14 @@ const scrollPosition = ref(0);
         <div class="flex gap-4 m-auto mt-16">
           <button
             class="shadow shadow-lg shadow-gray-600 btn w-48 btn bg-slate-600/50 hover:bg-slate-600/50 hover:text-slate-200 text-slate-400 border-gray-400 border-2"
+            @click="redirectToProjects"
           >
             See Projects
           </button>
-          <button class="shadow shadow-lg shadow-gray-600 btn w-48 btn-primary">
+          <button
+            class="shadow shadow-lg shadow-gray-600 btn w-48 btn-primary"
+            @click="redirectToSignup"
+          >
             Sign Up
           </button>
         </div>
@@ -106,6 +110,12 @@ export default {
 
   components: { IconEdenTitle },
   methods: {
+    redirectToProjects: function () {
+      this.$router.push("/projects");
+    },
+    redirectToSignup: function () {
+      this.$router.push("/signup");
+    },
     toLogin: function () {
       this.$router.push("login");
     },
@@ -118,7 +128,14 @@ export default {
           const earth = spline.findObjectByName("Earth");
           gsap.registerPlugin(ScrollTrigger);
           gsap.to(earth.position, { x: 60 });
+          let textSection1 = document.getElementById("text-section-1");
 
+          let textSection2 = document.getElementById("text-section-2");
+          gsap.to(textSection2, { opacity: 0 });
+          let textSection3 = document.getElementById("text-section-3");
+          gsap.to(textSection3, { opacity: 0 });
+          let textSection4 = document.getElementById("text-section-4");
+          gsap.to(textSection4, { opacity: 0 });
           gsap
             .timeline({
               scrollTrigger: {
@@ -128,7 +145,8 @@ export default {
                 scrub: true,
               },
             })
-            .to(earth.position, { x: -60 });
+            .to(earth.position, { x: -60 })
+            .to(textSection2, { opacity: 1 });
 
           gsap
             .timeline({
@@ -140,7 +158,8 @@ export default {
                 scrub: true,
               },
             })
-            .to(earth.position, { x: 60 });
+            .to(earth.position, { x: 60 })
+            .to(textSection3, { opacity: 1 });
           gsap
             .timeline({
               scrollTrigger: {
@@ -152,7 +171,8 @@ export default {
               },
             })
             .to(earth.position, { x: 0, y: 30 })
-            .to(earth.scale, { x: 0.6, y: 0.6, z: 0.6 });
+            .to(earth.scale, { x: 0.6, y: 0.6, z: 0.6 })
+            .to(textSection4, { opacity: 1 });
         });
     },
   },
