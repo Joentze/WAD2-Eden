@@ -30,6 +30,7 @@ const auth = useFirebaseAuth();
         :v-if="medias.length > 0"
         v-for="media in medias"
         :creatorId="media.id"
+        :createdOn="media.createdOn"
         :postDescription="media.postDescription"
         :postImages="media.postImages"
         :createdBy="media.createdBy"

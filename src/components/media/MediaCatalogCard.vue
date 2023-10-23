@@ -1,4 +1,22 @@
-<script setup></script>
+<script setup lang="ts">
+function formatDDMMYYYY(date: Timestamp) {
+  date = date.toDate();
+  var day = date.getDate();
+  var month = date.getMonth() + 1; // the month starts from 0
+  var year = date.getFullYear();
+
+  // add leading zero if day or month is less than 10
+  if (day < 10) {
+    day = "0" + day;
+  }
+  if (month < 10) {
+    month = "0" + month;
+  }
+
+  var convertedDate = day + "/" + month + "/" + year;
+  return convertedDate;
+}
+</script>
 <template>
   <div
     class="card sm:w-1/2 w-full bg-base-100 shadow-xl justify-self-center border border-2"
@@ -22,6 +40,9 @@
             createdBy
           }}</a>
         </h2>
+        <p class="grow text-sm text-gray-300 m-auto text-right">
+          {{ formatDDMMYYYY(createdOn) }}
+        </p>
         <div v-if="tagOne" class="badge badge-primary text-white m-auto">
           {{ tagOne }}
         </div>
@@ -55,9 +76,10 @@
     </div>
   </div>
 </template>
-<script>
+<script lang="ts">
 export default {
   props: {
+    createdOn: Date,
     creatorId: String,
     creatorType: String,
     createdBy: String,
