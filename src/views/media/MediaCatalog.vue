@@ -11,8 +11,8 @@
       </div>
     </div>
   </div> -->
-  <div class="bg-base-300 h-12"></div>
-  <div class="flex flex-col justify-center items-center bg-base-300" id="posts">
+  <div class="h-12"></div>
+  <div class="flex flex-col justify-center items-center" id="posts">
     <MediaCatalogCard
       companyName="LeafySG"
       companyLogo="https://i.pinimg.com/736x/28/c3/52/28c352e5fc943372be17a199727ae05f.jpg"
@@ -20,7 +20,10 @@
       postDescription=" Save the world with us! Over the weekend, in collaboration with NEA,
           we, LeafySG, have organised our annual company wide beach clean-up! We
           are proud to announce that we have cleared a total of 5kg worth of
-          beach trash!! #LoveSG #SavetheWorld #LeafySG"
+          beach trash!! #LoveSG #SavetheWorld #LeafySG Save the world with us! Over the weekend, in collaboration with NEA,
+          we, LeafySG, have organised our annual company wide beach clean-up! We
+          are proud to announce that we have cleared a total of 5kg worth of
+          beach trash!! #LoveSG #SavetheWorld #LeafySG "
       tagOne="Climate Action"
       :postMedia="postMedia1"
     >

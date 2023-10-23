@@ -1,12 +1,14 @@
 <script setup></script>
 <template>
   <br />
-  <div class="card lg:w-6/12 bg-base-100 shadow-xl justify-self-center">
+  <div
+    class="card lg:w-6/12 bg-base-100 shadow-xl justify-self-center border border-2"
+  >
     <div class="card-body">
-      <div class="flex flex-row">
-        <h2 class="card-title text-primary flex-grow">
-          <div class="avatar">
-            <div class="w-12 rounded-full">
+      <div class="flex flex-row gap-4">
+        <h2 class="card-title text-primary grow">
+          <div class="avatar border border-2 rounded-full">
+            <div class="w-8 rounded-full">
               <img :src="companyLogo" alt="" />
             </div>
           </div>
@@ -14,10 +16,26 @@
         </h2>
         <div class="badge badge-primary text-white m-auto">{{ tagOne }}</div>
       </div>
-      <h3 class="text-primary">{{ postTitle }}</h3>
-      <p class="text-base-content">
+      <p class="text-gray-500 line-clamp-3" v-if="seeMore === false">
         {{ postDescription }}
       </p>
+      <p class="text-gray-500" v-if="seeMore === true">
+        {{ postDescription }}
+      </p>
+      <button
+        @click="() => (seeMore = !seeMore)"
+        class="btn btn-sm btn-ghost text-gray-300 hover:text-gray-600"
+        v-if="postDescription.length > 270 && seeMore === false"
+      >
+        See More
+      </button>
+      <button
+        @click="() => (seeMore = !seeMore)"
+        class="btn btn-sm btn-ghost text-gray-300 hover:text-gray-600"
+        v-if="postDescription.length > 270 && seeMore === true"
+      >
+        See Less
+      </button>
     </div>
 
     <div class="w-full carousel rounded-box">
@@ -36,6 +54,11 @@ export default {
     postDescription: String,
     tagOne: String,
     postMedia: Array,
+  },
+  data() {
+    return {
+      seeMore: false,
+    };
   },
 };
 </script>
