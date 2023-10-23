@@ -53,6 +53,7 @@
       class="flex flex-col sm:p-8 pt-10 gap-8"
       v-if="tabState === 'projects'"
     >
+      <p class="text-3xl text-primary font-bold -mb-10">Upcoming Projects</p>
       <div
         class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center"
       >
