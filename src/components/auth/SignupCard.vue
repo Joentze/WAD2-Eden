@@ -61,6 +61,13 @@ const register = async (data) => {
 };
 </script>
 <template>
+    <div class="hero min-h-screen bg-base-200" style="background-image: url(src/components/auth/hon-sustainability-2880x1440px.jpeg);">
+    <div class="hero-content flex-col lg:flex-row-reverse">
+      <div class="text-center lg:text-left">
+        <h1 class="text-5xl font-bold text-white">Sign Up now!</h1>
+        <p class="py-6 text-white">Your journey to sustainability begins with Eden</p>
+      </div>
+    <div>
   <div
     class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 h-fit m-auto border border-1"
   >
@@ -225,6 +232,9 @@ const register = async (data) => {
       </button>
     </form>
   </div>
+</div>
+</div>
+</div>
 </template>
 <script lang="ts">
 import IconPlant from "../icons/IconPlant.vue";

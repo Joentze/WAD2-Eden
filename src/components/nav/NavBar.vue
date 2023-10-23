@@ -95,6 +95,8 @@ const userData = useAuthStore().getData;
   border-bottom: 1px solid whitesmoke;
   width: 100%;
   padding: 0.75rem;
+  height: fit-content;
+  z-index:1;
 }
 </style>
 <script lang="ts">
