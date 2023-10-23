@@ -1,3 +1,8 @@
+<script setup>
+import { useFirebaseAuth } from "vuefire";
+const auth = useFirebaseAuth();
+console.log(auth);
+</script>
 <template>
   <!-- <div class="hero min-h-screen bg-base-200 ">
     <div class="hero-content text-center">
@@ -11,35 +16,57 @@
       </div>
     </div>
   </div> -->
-  <div class="h-12"></div>
-  <div class="flex flex-col justify-center items-center" id="posts">
-    <MediaCatalogCard
-      companyName="LeafySG"
-      companyLogo="https://i.pinimg.com/736x/28/c3/52/28c352e5fc943372be17a199727ae05f.jpg"
-      postTitle="Annual Beach Clean-Up"
-      postDescription=" Save the world with us! Over the weekend, in collaboration with NEA,
+  <div class="flex flex-col gap-8 w-full h-full pt-10">
+    <div
+      class="flex flex-row gap-2 m-auto w-full sm:w-4/6 pb-6 border-b-2"
+      v-if="auth.currentUser !== null"
+    >
+      <div class="grow flex flex-col">
+        <p class="text-3xl text-primary font-bold grow">Make a Post</p>
+        <p class="text-sm text-gray-400">
+          Influence climate culture by sharing a post!
+        </p>
+      </div>
+      <MediaPosterModal />
+    </div>
+    <div
+      class="flex flex-row gap-2 m-auto w-full sm:w-4/6 pb-6 border-b-2"
+      v-else
+    >
+      <div class="grow flex flex-col">
+        <p class="text-3xl text-primary font-bold grow">Latest Post</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-center items-center gap-8" id="posts">
+      <MediaCatalogCard
+        companyName="LeafySG"
+        companyLogo="https://i.pinimg.com/736x/28/c3/52/28c352e5fc943372be17a199727ae05f.jpg"
+        postTitle="Annual Beach Clean-Up"
+        postDescription=" Save the world with us! Over the weekend, in collaboration with NEA,
           we, LeafySG, have organised our annual company wide beach clean-up! We
           are proud to announce that we have cleared a total of 5kg worth of
           beach trash!! #LoveSG #SavetheWorld #LeafySG Save the world with us! Over the weekend, in collaboration with NEA,
           we, LeafySG, have organised our annual company wide beach clean-up! We
           are proud to announce that we have cleared a total of 5kg worth of
           beach trash!! #LoveSG #SavetheWorld #LeafySG "
-      tagOne="Climate Action"
-      :postMedia="postMedia1"
-    >
-    </MediaCatalogCard>
-    <MediaCatalogCard
-      companyName=" Water4U"
-      companyLogo="https://st2.depositphotos.com/3487615/5722/v/450/depositphotos_57222633-stock-illustration-waterdrop-fresh-leaf-logo-design.jpg"
-      postTitle="Water Conservation Education Campaign"
-      postDescription="Learn about good water consumption practices at Water4U's education
+        tagOne="Climate Action"
+        :postMedia="postMedia1"
+      >
+      </MediaCatalogCard>
+      <MediaCatalogCard
+        companyName=" Water4U"
+        companyLogo="https://st2.depositphotos.com/3487615/5722/v/450/depositphotos_57222633-stock-illustration-waterdrop-fresh-leaf-logo-design.jpg"
+        postTitle="Water Conservation Education Campaign"
+        postDescription="Learn about good water consumption practices at Water4U's education
           campaign! In a 3 day campaign from 1-3 Oct, Water4U organised a water
           conservation education campaign for all secondary school students.
           #Water4U #Waterisprecious"
-      tagOne="Water Conservation"
-      :postMedia="postMedia2"
-    >
-    </MediaCatalogCard>
+        tagOne="Water Conservation"
+        :postMedia="postMedia2"
+      >
+      </MediaCatalogCard>
+    </div>
   </div>
 </template>
 <script>
@@ -47,9 +74,9 @@
 // v-for the list and create the below cards accordingly
 
 import MediaCatalogCard from "../../components/media/MediaCatalogCard.vue";
-
+import MediaPosterModal from "../../components/media/MediaPosterModal.vue";
 export default {
-  components: { MediaCatalogCard },
+  components: { MediaCatalogCard, MediaPosterModal },
   data() {
     return {
       postMedia1: ["https://static.mothership.sg/1/2019/09/Gai-Gai-1.jpg"],

@@ -1,6 +1,6 @@
 <template>
   <!-- You can open the modal using ID.showModal() method -->
-  <button class="btn btn-primary btn-square " onclick="my_modal_4.showModal()">
+  <button class="btn btn-primary btn-square" onclick="my_modal_4.showModal()">
     +
   </button>
   <dialog id="my_modal_4" class="modal text-primary">
@@ -57,14 +57,16 @@ import { validateMediaPost } from "../../validators/mediaValidators.ts";
 export default {
   setup() {
     const authStore = useAuthStore();
-    const { companyName, photoUrl, uid } = authStore.getData;
-    return { companyName, photoUrl, uid };
+    console.log(authStore.getData);
+    const { companyName, photoUrl, uid, accountType } = authStore.getData;
+    return { companyName, photoUrl, uid, accountType };
   },
   components: { IconArrowRight, MediaFileUploaderComponent },
   methods: {
     post: async function () {
       try {
         const media = {
+          creatorType: this.accountType,
           postDescription: this.postDescription,
           postImages: this.postImages,
           createdBy: this.companyName,

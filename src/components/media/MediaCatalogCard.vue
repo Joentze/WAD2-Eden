@@ -1,6 +1,5 @@
 <script setup></script>
 <template>
-  <br />
   <div
     class="card lg:w-6/12 bg-base-100 shadow-xl justify-self-center border border-2"
   >
@@ -38,7 +37,7 @@
       </button>
     </div>
 
-    <div class="w-full carousel rounded-box">
+    <div class="w-full carousel -mt-4 rounded-box">
       <div v-for="post in postMedia" class="carousel-item w-full">
         <img :src="post" class="w-full p-1 rounded-box" alt="" />
       </div>

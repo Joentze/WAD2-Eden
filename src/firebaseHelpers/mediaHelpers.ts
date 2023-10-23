@@ -21,6 +21,7 @@ export interface MediaPostType {
   postMentions?: JoinedType[];
   postImages: string[];
   postTag?: string;
+  creatorType: string;
   createdBy: string;
   creatorId: string;
   creatorPhotoUrl: string;
