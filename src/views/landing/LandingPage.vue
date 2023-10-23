@@ -16,6 +16,15 @@ const scrollPosition = ref(0);
 // });
 </script>
 <template>
+  <div class="fixed h-16 top-0 left-0 w-full p-4 z-10 flex flex-row">
+    <div class="grow" />
+    <button
+      class="shadow shadow-lg shadow-gray-600 btn w-48 btn bg-slate-600/50 hover:bg-slate-600/50 hover:text-slate-200 text-slate-400 border-gray-400 border-2 backdrop-blur-md"
+      @click="redirectToLogin"
+    >
+      Start Eden Here
+    </button>
+  </div>
   <canvas
     id="canvas3d"
     class="fixed top-0 left-0 h-full z-2 bg-gradient-to-r from-gray-700 via-gray-900 to-black"
@@ -33,6 +42,11 @@ const scrollPosition = ref(0);
             The Earth is dying, there is no plan B. Sea levels are rising,
             animals are suffering. We need to do something.
           </p>
+          <a
+            class="btn btn-primary mt-6 w-32"
+            href="https://www.un.org/en/climatechange"
+            >SEE WHY?</a
+          >
         </div>
       </div>
     </div>
@@ -112,6 +126,9 @@ export default {
   methods: {
     redirectToProjects: function () {
       this.$router.push("/projects");
+    },
+    redirectToLogin: function () {
+      this.$router.push("/login");
     },
     redirectToSignup: function () {
       this.$router.push("/signup");
