@@ -15,6 +15,7 @@
             placeholder="Search…"
             class="input input-primary input-primary w-full join-item"
             v-model="searchQuery"
+            @input="onSearch"
           />
           <button class="btn btn-square bg-primary join-item" @click="search">
             <svg
@@ -42,7 +43,7 @@
       >
         <div
           class="card w-64 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2 pt-4 flex flex-col"
-          v-for="card in enterprises"
+          v-for="card in showEnterprises"
           v-bind:key="card.id"
         >
           <figure>
@@ -99,6 +100,7 @@ export default {
     return {
       cursor: 8,
       enterprises: [],
+      showEnterprises: [],
       cards: [
         {
           id: 1,
@@ -141,6 +143,7 @@ export default {
       filteredCards: [],
     };
   },
+
   async created() {
     this.filteredCards = this.cards;
     await this.queryPaginate();
@@ -149,13 +152,21 @@ export default {
     await this.queryPaginate();
   },
   methods: {
+    onSearch: function (event) {
+      const currVal = event.target.value;
+      if (currVal === "") {
+        this.showEnterprises = this.enterprises;
+        return;
+      }
+      this.showEnterprises = this.enterprises.filter(
+        (item) =>
+          item.companyName.toLowerCase().includes(currVal.toLowerCase()) ||
+          item.companyDescription.toLowerCase().includes(currVal.toLowerCase())
+      );
+    },
     queryPaginate: async function () {
       const enterpriseRef = collection(db, "account");
-      const q = query(
-        enterpriseRef,
-        where("accountType", "==", "enterprise"),
-        limit(8)
-      );
+      const q = query(enterpriseRef, where("accountType", "==", "enterprise"));
       const querySnapshot = await getDocs(q);
       console.log(querySnapshot);
       let enterprises = [];
@@ -163,6 +174,7 @@ export default {
         enterprises.push({ ...doc.data(), id: doc.id });
       });
       this.enterprises = enterprises;
+      this.showEnterprises = enterprises;
     },
     search() {
       const query = this.searchQuery.toLowerCase();
