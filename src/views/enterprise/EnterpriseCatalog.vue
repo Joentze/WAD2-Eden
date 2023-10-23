@@ -42,18 +42,18 @@
       >
         <div
           class="card w-80 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2"
-          v-for="card in filteredCards"
+          v-for="card in enterprises"
           v-bind:key="card.id"
         >
           <figure>
-            <img class="w-full h-48" v-bind:src="card.src" />
+            <img class="w-full h-48" v-bind:src="card.photoUrl" />
           </figure>
           <div class="card-body text-center">
             <h2 class="card-title text-primary" style="margin-bottom: 10px">
-              {{ card.title }}
+              {{ card.companyName }}
             </h2>
             <p class="-mt-1 text-left text-gray-500 line-clamp-3">
-              {{ card.desc }}
+              {{ card.companyDescription }}
             </p>
             <div class="card-actions justify-end pb-0 mt-2">
               <router-link
