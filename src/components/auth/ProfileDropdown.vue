@@ -12,11 +12,13 @@ const notificationStore = useNotification();
 function logout() {
   signOut(auth)
     .then(() => {
+      // notificationStore.add({
+      //   title: "See You Soon!",
+      //   description: "Successfully logged out!",
+      // });
+      // router.go({ path: "/login" });
+      router.replace({ path: "/login" });
       authStore.clear();
-      notificationStore.add({
-        title: "See You Soon!",
-        description: "Successfully logged out!",
-      });
     })
     .catch((error) => console.error(error.message));
 }
@@ -46,9 +48,7 @@ function logout() {
       </li>
       <!-- <li><a>Item 2</a></li> -->
       <li>
-        <a class="text-error" @click.prevent="logout()"
-          ><IconLogout /> Log Out</a
-        >
+        <a class="text-error" @click="logout()"><IconLogout /> Log Out</a>
       </li>
     </ul>
   </div>

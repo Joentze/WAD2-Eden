@@ -124,8 +124,14 @@ export default {
   setup() {},
   mounted() {
     const authStore = useAuthStore();
-    authStore.$subscribe(() => {
-      location.reload();
+    authStore.$subscribe((mutation, state) => {
+      if (state.userData.uid) {
+        location.reload();
+      }
+
+      // if (mutation.payload === undefined) {
+
+      // }
     });
   },
   methods: {

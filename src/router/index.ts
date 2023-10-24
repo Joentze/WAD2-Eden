@@ -49,6 +49,7 @@ const router = createRouter({
       path: "/corporation-dashboard",
       name: "corporation dashboard",
       component: CompanyDashboardPage,
+      // meta: { protected: true },
     },
     {
       path: "/corporations",
