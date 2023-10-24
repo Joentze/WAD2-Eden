@@ -152,7 +152,12 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
             <p
               class="m-auto text-left w-full text-lg text-gray-400 text-xs sm:text-lg"
             >
-              by {{ postData.creatorName }}
+              by
+              <a
+                :href="'/enterprise/' + postData.creatorId"
+                class="hover:underline"
+                >{{ postData.creatorName }}</a
+              >
             </p>
           </div>
         </div>
@@ -170,7 +175,7 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
             <div
               v-for="join in postData.joined"
               class="border-b-2 flex flex-row gap-4 p-2 cursor-pointer"
-              @click="redirect(`/company/${join.companyId}`)"
+              @click="redirect(`/corporation/${join.companyId}`)"
             >
               <div class="avatar" v-if="join.companyPhotoUrl.length">
                 <div class="w-10 rounded-full border">
