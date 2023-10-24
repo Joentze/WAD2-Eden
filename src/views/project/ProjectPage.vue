@@ -38,8 +38,13 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
 <template>
   <div class="sm:px-36 w-full h-full flex flex-col gap-4">
     <div class="flex flex-row p-4">
-      <div class="grow">
-        <p class="m-auto mt-4 text-2xl text-primary font-bold">
+      <div class="grow flex flex-row gap-4">
+        <button @click="goBack()" class="btn btn-ghost btn-square">
+          <IconArrowLeft class="text-gray-400" />
+        </button>
+        <p
+          class="m-auto mt-auto text-2xl text-primary font-bold text-left w-full"
+        >
           {{ postData.projectTitle }}
         </p>
       </div>
@@ -209,6 +214,7 @@ import {
 } from "../../firebaseHelpers/projectHelpers.ts";
 import { useAuthStore } from "../../stores/authStore.ts";
 import { useNotification } from "../../stores/notificationStore.ts";
+import IconArrowLeft from "../../components/icons/IconArrowLeft.vue";
 export default {
   setup() {
     const authStore = useAuthStore();
@@ -217,8 +223,11 @@ export default {
     // console.log(authStore.getData);
     return { uid, companyName, photoUrl, notificationStore };
   },
-  components: { ProjectAvatarGroup },
+  components: { ProjectAvatarGroup, IconArrowLeft },
   methods: {
+    goBack: function () {
+      this.$router.go(-1);
+    },
     redirect: function (path) {
       this.$router.push({ path });
     },
