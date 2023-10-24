@@ -36,9 +36,11 @@ function formatDDMMYYYY(date: Timestamp) {
               <span>{{ createdBy[0].toUpperCase() }}</span>
             </div>
           </div>
-          <a class="hover:underline" :href="'/' + creatorType + '/' + id">{{
-            createdBy
-          }}</a>
+          <a
+            class="hover:underline"
+            :href="'/' + creatorType + '/' + creatorId"
+            >{{ createdBy }}</a
+          >
         </h2>
         <p class="grow text-sm text-gray-300 m-auto text-right">
           {{ formatDDMMYYYY(createdOn) }}

@@ -29,7 +29,7 @@ const auth = useFirebaseAuth();
       <MediaCatalogCard
         :v-if="medias.length > 0"
         v-for="media in medias"
-        :creatorId="media.id"
+        :creatorId="media.creatorId"
         :createdOn="media.createdOn"
         :postDescription="media.postDescription"
         :postImages="media.postImages"
