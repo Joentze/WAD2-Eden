@@ -1,7 +1,7 @@
 <template>
   <div
     class="card w-64 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2 pt-4 flex flex-col"
-    v-bind:key="card.id"
+    v-bind:key="id"
   >
     <figure>
       <div class="avatar" v-if="photoUrl.length">

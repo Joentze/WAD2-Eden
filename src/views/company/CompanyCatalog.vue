@@ -1,146 +1,192 @@
 <template>
-<div class="companies">
-    <div class="companies-body">
-        <!-- Companies Title -->
-    <p class="text-primary w-full my-5 font-bold">Companies</p>
-    <p class="text-secondary text-lg">Discover the Embarked Eco-Conscious Initiatives</p>
-    <br>
+  <div class="corporation">
+    <div class="corporation-body">
+      <!-- Enterprise Title -->
+      <p class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold">
+        Corporations
+      </p>
+      <p class="text-gray-400 w-full text-sm my-2">
+        Support corporations fighting for climate culture 🏢
+      </p>
 
-    <!-- Search Bar -->
-    <div class="form-control w-5/6">
-          <div class="input-group shadow-lg">
-            <input
-              type="text"
-              placeholder="Search…"
-              class="input input-bordered input-success input-primary w-full"
-              v-model="searchQuery"
-            />
-            <button class="btn btn-square bg-success" @click="search">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke="white"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
-            </button>
-          </div>
+      <!-- Search Bar -->
+      <div class="form-control w-5/6 mt-4">
+        <div class="join shadow shadow-lg">
+          <input
+            type="text"
+            placeholder="🔎 Search…"
+            class="input input-primary input-primary w-full join-item input-bordered"
+            @input="onSearch"
+          />
         </div>
+      </div>
 
+      <!-- Cards -->
+      <div
+        class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center"
+      >
+        <CompanyCatalogCard
+          v-for="(corporation, index) in showCorporations"
+          :id="corporation.id"
+          :companyName="corporation.companyName"
+          :companyDescription="corporation.companyDescription"
+          :photoUrl="corporation.photoUrl"
+          :ranking="index"
+        />
+      </div>
+      <div id="scroll-line" />
     </div>
-    </div>
-    <div class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center">
-        <CompanyCatalogCard 
-            v-for="card in cards"
-            :id="card.id"
-            :title="card.title"
-            :desc="card.desc"
-            :src="card.src"
-            :ranking="card.ranking"/>
-    </div>
+  </div>
 </template>
 
+<script lang="ts">
+import {
+  query,
+  orderBy,
+  limit,
+  startAt,
+  collection,
+  where,
+  endAt,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "../../firebase.ts";
+import CompanyCatalogCard from "../../components/companies/CompanyCatalogCard.vue";
+export default {
+  components: { CompanyCatalogCard },
+  data() {
+    return {
+      cursor: 8,
+      corporations: [],
+      showCorporations: [],
+      cards: [
+        {
+          id: 1,
+          title: "Public Hygiene Council",
+          desc: "Join us to make a meaningful contribution towards a cleaner Singapore",
+          src: "src/views/corporation/kcs-2020-masthead-qigonga5e3b435b581616488cfff000004b801.png",
+        },
+        {
+          id: 2,
+          title: "NEWater",
+          desc: "Be part of our efforts to make drinking water reusable and sustainable",
+          src: "src/views/corporation/NEWater Visitor Centre.webp",
+        },
+        {
+          id: 3,
+          title: "Ocean Purpose Project",
+          desc: "OCEAN PURPOSE PROJECT AIMS to solve the ocean pollution crisis and promote ocean conservation at scale.",
+          src: "src/views/corporation/opp.jpeg",
+        },
+        {
+          id: 4,
+          title: "Willing Hearts SG",
+          desc: "At Willing Hearts, we provide for the needy by offering them with food cooked in our centralised kitchen, which is managed by volunteers like you.",
+          src: "src/views/corporation/20200817_Willing-Hearts_CCH0927-scaled.jpeg",
+        },
+        {
+          id: 5,
+          title: "World Vision",
+          desc: "Global Aid Organisation In Nearly 100 Countries. Join Us To Provide Support To Children.",
+          src: "src/views/corporation/Special_Gift_Hero.png",
+        },
+        {
+          id: 6,
+          title: "YMCA",
+          desc: "YMCA of Singapore is a volunteer-based Christian organisation that seeks to serve and impact all members of the community, regardless of race, language or religion, through programmes, services and enterprises to develop the body, mind and spirit.",
+          src: "src/views/corporation/ymca_4.jpeg",
+        },
+      ],
+      searchQuery: "",
+      filteredCards: [],
+    };
+  },
 
-<script>
-    import CompanyCatalogCard from '/src/components/companies/CompanyCatalogCard.vue'
+  async created() {
+    await this.queryPaginate();
+  },
+  async mounted() {
+    await this.queryPaginate();
+  },
+  methods: {
+    onSearch: function (event) {
+      const currVal = event.target.value;
+      if (currVal === "") {
+        this.showCorporations = this.corporations;
+        return;
+      }
+      this.showCorporations = this.corporations.filter(
+        (item) =>
+          item.companyName.toLowerCase().includes(currVal.toLowerCase()) ||
+          item.companyDescription.toLowerCase().includes(currVal.toLowerCase())
+      );
+    },
+    queryPaginate: async function () {
+      const enterpriseRef = collection(db, "account");
+      const q = query(enterpriseRef, where("accountType", "==", "corporation"));
+      const querySnapshot = await getDocs(q);
+      console.log(querySnapshot);
+      let corporations = [];
+      querySnapshot.forEach((doc) => {
+        corporations.push({ ...doc.data(), id: doc.id });
+      });
 
-    export default{
-        name:'CompanyCatalog',
-        components:{
-            CompanyCatalogCard,
-        },
-        data() {
-            return {
-            cards: [
-                {
-                id: 1,
-                title: "BlueSG",
-                desc: "BlueSG is a Singaporean company providing electric car sharing and electric car charging services.",
-                src: "src/views/company/images/blueSG.png",
-                ranking: "#1",
-                },
-                {
-                id: 2,
-                title: "Prophet",
-                desc: "Prophet is an integrated growth consulting firm that specializes in strategy, transformation, innovation, branding, marketing, and design.",
-                src: "src/views/company/images/Prophet_Featuredimage_0121.png",
-                ranking: "#2",
-                },
-                {
-                id: 3,
-                title: "Uniqlo",
-                desc: "Uniqlo Co., Ltd. is a Japanese casual wear designer, manufacturer and retailer.",
-                src: "src/views/company/images/uniqlo.jpeg",
-                ranking: "#3",
-                },
-                {
-                id: 4,
-                title: "H&M",
-                desc: "H&M is a multinational clothing company based in Sweden that focuses on fast-fashion clothing. ",
-                src: "src/views/company/images/HM-Share-Image.jpg",
-                ranking: "#4",
-                },
-                {
-                id: 5,
-                title: "Apple",
-                desc: "Apple Inc (Apple) designs, manufactures, and markets smartphones, tablets, personal computers, and wearable devices.",
-                src: "src/views/company/images/apple.jpeg",
-                ranking: "#5",
-                },
-                {
-                id: 6,
-                title: "Nike",
-                desc: "Nike, Inc. (stylized as NIKE) is an American athletic footwear and apparel corporation headquartered near Beaverton, Oregon, United States.",
-                src: "src/views/company/images/nike.webp",
-                ranking: "#6",
-                },
-            ],
-            searchQuery: "",
-            filteredCards: [],
-            };
-        },
-        created() {
-            this.filteredCards = this.cards;
-        },
-        methods: {
-            search() {
-            const query = this.searchQuery.toLowerCase();
-            this.filteredCards = this.cards.filter((card) => {
-                const title = card.title.toLowerCase();
-                const description = card.desc.toLowerCase();
-                return title.includes(query) || description.includes(query);
-            });
-            },
-        },
-        }
-
+      this.corporations = corporations;
+      this.showCorporations = corporations;
+    },
+    search() {
+      const query = this.searchQuery.toLowerCase();
+      this.filteredCards = this.cards.filter((card) => {
+        const title = card.title.toLowerCase();
+        const description = card.desc.toLowerCase();
+        return title.includes(query) || description.includes(query);
+      });
+    },
+  },
+};
 </script>
-  
-  <style>
-  .form-control {
-    width: 83.33%;
-    margin: auto;
-    justify-content: center;
-  }
-  
-  
-  .companies-body {
-   
-    font-size: 5rem;
-    text-align: center;
-    margin: auto;
-    margin-top: 5rem;
-    
-  }
-  
-  </style>
-  
 
+<style>
+.form-control {
+  width: 83.33%;
+  margin: auto;
+  justify-content: center;
+}
+
+/* .corporation {
+          border: 1px solid red;
+          margin-left:0;
+      } */
+
+.corporation-body {
+  /* border: 1px solid black; */
+  font-size: 5rem;
+  text-align: center;
+  margin: auto;
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* padding:100px; */
+  /* background-image: url('src/views/corporation/1920_plants1.jpeg'); */
+}
+
+.cards {
+  padding-top: 3rem;
+  display: flex;
+  width: 100%;
+  margin: auto;
+  /* align-items:center;
+    justify-content:center; */
+  /* padding:auto; */
+  align-content: center;
+  /* border:1px solid red; */
+  padding-bottom: 3rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.card-body p {
+  font-size: small;
+}
+</style>
