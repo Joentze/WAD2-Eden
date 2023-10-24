@@ -1,60 +1,50 @@
 <template>
-
-  <div class="card w-96 bg-base-100 my-5 mx-2 shadow-xl justify-self-center">
-    <figure><img class="w-full h-64" src={{src}}  /></figure>
-    <div class="card-body">
-      <h2 class="card-title text-primary" style="margin-bottom: 10px">{{title}}
-        <div class="badge badge-primary text-white">
-          {{ ranking }} in Sustainability
+  <div
+    class="card w-64 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2 pt-4 flex flex-col"
+    v-bind:key="card.id"
+  >
+    <figure>
+      <div class="avatar" v-if="photoUrl.length">
+        <div class="w-36 rounded-full border">
+          <img :src="photoUrl" />
         </div>
-      </h2>
-      
-      <p style="margin-bottom: 10px; text-align: left">{{desc}}</p>
-      <div class="card-actions justify-end pb-0">
-        <router-link
-          v-bind:to="'/company/' + id"
-          class="btn btn-primary"
+      </div>
+      <div class="avatar placeholder" v-else>
+        <div
+          class="bg-neutral-focus text-neutral-content rounded-full w-36 border"
         >
-        Discover here
+          <span>{{ companyName[0].toUpperCase() }}</span>
+        </div>
+      </div>
+    </figure>
+    <div class="card-body text-center m-auto">
+      <h2 class="card-title text-primary text-center m-auto text-xl">
+        {{ companyName }}
+      </h2>
+      <p class="-mt-1 text-gray-500 line-clamp-3 text-center">
+        {{ companyDescription }}
+      </p>
+      <div class="card-actions justify-end pb-0 mt-2">
+        <router-link
+          v-bind:to="'/enterprise/' + id"
+          class="btn btn-primary m-auto"
+        >
+          Find Out More
         </router-link>
       </div>
     </div>
   </div>
-
 </template>
 
-<script>
-
-export default{
-  name:'EnterpriseCatalogCard',
-  props:[
-    'id',
-    'title',
-    'desc',
-    'src',
-    'ranking',
-  ]
-      
-}
+<script lang="ts">
+export default {
+  props: {
+    id: String,
+    companyName: String,
+    companyDescription: String,
+    photoUrl: String,
+    ranking: Number,
+  },
+  // ["id", "title", "desc", "src", "ranking"],
+};
 </script>
-
-<style>
- /* .cards {
-    padding-top: 3rem;
-    display: flex;
-    width: 100%;
-    align-content: center;
-
-    padding-bottom: 3rem;
-    padding-left: 3rem;
-    padding-right: 3rem;
-
-    
-  }
-  
-  .card-body p {
-    font-size: small;
-  }  */
-
-</style>
-
