@@ -96,7 +96,7 @@ const userData = useAuthStore().getData;
   width: 100%;
   padding: 0.75rem;
   height: fit-content;
-  z-index:1;
+  z-index: 1;
 }
 </style>
 <script lang="ts">
@@ -107,6 +107,8 @@ import IconDashboard from "../icons/IconDashboard.vue";
 import ProfileDropdown from "../auth/ProfileDropdown.vue";
 import IconCalendar from "../icons/IconCalendar.vue";
 import { useRouter } from "vue-router";
+import { watch } from "vue";
+import { useAuthStore } from "../../stores/authStore.ts";
 
 export default {
   components: {
@@ -116,6 +118,13 @@ export default {
     IconPlant,
     ProfileDropdown,
     IconCalendar,
+  },
+  setup() {},
+  mounted() {
+    const authStore = useAuthStore();
+    authStore.$subscribe(() => {
+      location.reload();
+    });
   },
   methods: {
     redirectToLogin: function () {
@@ -131,7 +140,7 @@ export default {
 
       navContent: [
         { icon: IconPlant, label: "Social Enterprises", link: "/enterprises" },
-        { icon: IconBuilding, label: "Companies", link: "/companies" },
+        { icon: IconBuilding, label: "Corporations", link: "/corporations" },
         { icon: IconTV, label: "Media", link: "/media" },
       ],
     };

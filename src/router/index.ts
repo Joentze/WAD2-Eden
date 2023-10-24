@@ -50,7 +50,7 @@ const router = createRouter({
       component: CompanyDashboardPage,
     },
     {
-      path: "/companies",
+      path: "/corporations",
       name: "company catalog",
       component: CompanyCatalog,
     },
