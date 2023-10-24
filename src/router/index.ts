@@ -15,6 +15,7 @@ import LandingPage from "../views/landing/LandingPage.vue";
 import EnterpriseDashboardPage from "../views/enterprise/EnterpriseDashboardPage.vue";
 import CompanyDashboardPage from "../views/company/CompanyDashboardPage.vue";
 import EnterpriseProjectApplicationPage from "../views/enterprise/EnterpriseProjectApplicationPage.vue";
+import AwaitPage from "../views/misc/AwaitPage.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -78,6 +79,11 @@ const router = createRouter({
       path: "/project/:projectId",
       name: "project about page",
       component: ProjectPage,
+    },
+    {
+      path: "/await",
+      name: "await page",
+      component: AwaitPage,
     },
     {
       path: "/media",

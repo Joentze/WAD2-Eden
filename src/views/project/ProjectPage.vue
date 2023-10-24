@@ -208,12 +208,14 @@ import {
   checkIfRegistered,
 } from "../../firebaseHelpers/projectHelpers.ts";
 import { useAuthStore } from "../../stores/authStore.ts";
+import { useNotification } from "../../stores/notificationStore.ts";
 export default {
   setup() {
     const authStore = useAuthStore();
+
     const { uid, companyName, photoUrl } = authStore.getData;
     // console.log(authStore.getData);
-    return { uid, companyName, photoUrl };
+    return { uid, companyName, photoUrl, notificationStore };
   },
   components: { ProjectAvatarGroup },
   methods: {
@@ -221,8 +223,10 @@ export default {
       this.$router.push({ path });
     },
     createApplication: async function (projectTitle, enterpriseId) {
+      const notificationStore = useNotification();
       try {
         const authStore = useAuthStore();
+
         const { uid, companyName, photoUrl } = authStore.getData;
         const data = {
           companyId: uid,
@@ -239,7 +243,7 @@ export default {
         await createProjectApplication(data);
         this.isSubmitted = true;
       } catch (e) {
-        throw new Error(e.message);
+        notificationStore.add({ title: "Error", description: e.message });
       }
     },
   },
