@@ -55,7 +55,7 @@ const router = createRouter({
       component: CompanyCatalog,
     },
     {
-      path: "/company/:companyId",
+      path: "/corporation/:corporationId",
       name: "company about page",
       component: CompanyPage,
     },

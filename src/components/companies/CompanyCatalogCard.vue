@@ -26,7 +26,7 @@
       </p>
       <div class="card-actions justify-end pb-0 mt-2">
         <router-link
-          v-bind:to="'/enterprise/' + id"
+          v-bind:to="'/corporation/' + id"
           class="btn btn-primary m-auto"
         >
           Find Out More

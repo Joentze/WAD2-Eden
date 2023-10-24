@@ -1,108 +1,123 @@
+<script setup lang="ts"></script>
 <template>
-  <div v-if="company">
-    
-    <CompanyStats 
-    
-      :projectsCompleted="company.projectsCompleted"
-      :employees="company.employees"
-      :esgRating="company.esgRating"
-    />
-
-    <p class="title text-primary text-4xl font-bold">{{company.title}}</p>
-    <img class="image w-full opacity-50" :src="company.src"/>
+  <div class="w-full h-screen flex flex-col p-4">
+    <button class="btn btn-square btn-ghost mb-4" @click="$router.go(-1)">
+      <IconArrowLeft class="text-gray-400" />
+    </button>
+    <div class="flex flex-row gap-8">
+      <div>
+        <div class="avatar" v-if="data.photoUrl.length > 0">
+          <div class="sm:w-36 w-16 rounded-full border">
+            <img :src="data.photoUrl" />
+          </div>
+        </div>
+        <div class="avatar placeholder" v-else>
+          <div
+            class="bg-neutral-focus text-neutral-content rounded-full sm:w-36 w-16 border text-xl"
+          >
+            <span>{{ data.companyName[0].toUpperCase() }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col sm:gap-4 grow">
+        <a
+          :href="data.siteUrl"
+          class="text-lg sm:text-4xl text-primary font-bold hover:underline"
+        >
+          {{ data.companyName }}
+        </a>
+        <p class="text-gray-400">{{ data.email }}</p>
+        <p class="text-gray-400">{{ data.phoneNo }}</p>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="tabs">
+      <a v-if="tabState === 'about'" class="tab tab-lifted tab-active">About</a>
+      <a @click="setTabState('about')" v-else class="tab tab-lifted">About</a>
+      <a v-if="tabState === 'media'" class="tab tab-lifted tab-active">Media</a>
+      <a @click="setTabState('media')" v-else class="tab tab-lifted">Media</a>
+      <a v-if="tabState === 'achievements'" class="tab tab-lifted tab-active"
+        >Achievements</a
+      >
+      <a @click="setTabState('achievements')" v-else class="tab tab-lifted"
+        >Achievements</a
+      >
+    </div>
+    <div class="flex flex-col sm:p-8 pt-10 gap-8" v-if="tabState === 'about'">
+      <p class="text-3xl text-primary font-bold">About Us</p>
+      <p class="text-lg text-gray-500 text-justify">
+        {{ data.companyDescription }}
+      </p>
+    </div>
   </div>
 </template>
-
-<script>
-
-import CompanyStats from '/src/components/companies/CompanyStats.vue'
-
-    export default{
-        name:'CompanyPage',
-        components:{
-            CompanyStats,
-        },
-   
-        data() {
-            return {
-            data: [
-                {
-                id: 1,
-                title: "BlueSG",
-                desc: "BlueSG is a Singaporean company providing electric car sharing and electric car charging services.",
-                src: "src/views/company/images/blueSG.png",
-                ranking: "#1",
-                projectsCompleted:"50",
-                employees:"400",
-                esgRating:"80%",
-                },
-                {
-                id: 2,
-                title: "Prophet",
-                desc: "Prophet is an integrated growth consulting firm that specializes in strategy, transformation, innovation, branding, marketing, and design.",
-                src: "src/views/company/images/Prophet_Featuredimage_0121.png",
-                ranking: "#2",
-                projectsCompleted:"30",
-                employees:"500",
-                esgRating:"78%",
-                },
-                {
-                id: 3,
-                title: "Uniqlo",
-                desc: "Uniqlo Co., Ltd. is a Japanese casual wear designer, manufacturer and retailer.",
-                src: "src/views/company/images/uniqlo.jpeg",
-                ranking: "#3",
-                projectsCompleted:"40",
-                employees:"1000",
-                esgRating:"70%",
-                },
-                {
-                id: 4,
-                title: "H&M",
-                desc: "H&M is a multinational clothing company based in Sweden that focuses on fast-fashion clothing. ",
-                src: "src/views/company/images/HM-Share-Image.jpg",
-                ranking: "#4",
-                projectsCompleted:"60",
-                employees:"400",
-                esgRating:"60%",
-                },
-                {
-                id: 5,
-                title: "Apple",
-                desc: "Apple Inc (Apple) designs, manufactures, and markets smartphones, tablets, personal computers, and wearable devices.",
-                src: "src/views/company/images/apple.jpeg",
-                ranking: "#5",
-                projectsCompleted:"70",
-                employees:"4100",
-                esgRating:"60%",
-                },
-                {
-                id: 6,
-                title: "Nike",
-                desc: "Nike, Inc. (stylized as NIKE) is an American athletic footwear and apparel corporation headquartered near Beaverton, Oregon, United States.",
-                src: "src/views/company/images/nike.webp",
-                ranking: "#6",
-                projectsCompleted:"3",
-                employees:"6000",
-                esgRating:"40%",
-                },
-            ],
-            company:null,
-            };
-        },
-        created(){
-    this.loadCompany();
-    console.log(this.$route.params.companyId);
+<script lang="ts">
+import {
+  and,
+  query,
+  orderBy,
+  limit,
+  startAt,
+  collection,
+  where,
+  endAt,
+  getDocs,
+} from "firebase/firestore";
+import { db } from "../../firebase.ts";
+import { getAccountData } from "../../firebaseHelpers/accountHandler.ts";
+import { getMedias } from "../../firebaseHelpers/mediaHelpers.ts";
+import IconArrowLeft from "../../components/icons/IconArrowLeft.vue";
+import ProjectCard from "../../components/project/ProjectCard.vue";
+export default {
+  components: { IconArrowLeft, ProjectCard },
+  async mounted() {
+    await this.getEnterpriseData();
+    await this.getMedias();
+    await this.getProjects();
+  },
+  async created() {
+    await this.getEnterpriseData();
+    await this.getMedias();
+    await this.getProjects();
   },
   methods: {
-    loadCompany(){
-        const id = this.$route.params.companyId;
-        const company = this.data.find((company) => company.id.toString() === id);
-        this.company = company;
-        console.log(company);
-        console.log(company.src);
-    }
+    setTabState: function (state: string) {
+      this.tabState = state;
+    },
+    getMedias: async function () {
+      this.medias = await getMedias(this.$route.params.corporationId);
+      console.log(this.medias);
+    },
+    getProjects: async function () {
+      const projectRef = collection(db, "projects");
+      const q = query(
+        projectRef,
+        and(
+          where("completed", "==", false),
+          where("creatorId", "==", this.$route.params.corporationId)
+        )
+      );
+      const querySnapshot = await getDocs(q);
+
+      let projects = [];
+      querySnapshot.forEach((doc) => {
+        projects.push({ ...doc.data(), id: doc.id });
+      });
+      this.projects = projects;
+    },
+    getEnterpriseData: async function () {
+      this.data = await getAccountData(this.$route.params.corporationId);
+      console.log(this.data);
+    },
+  },
+
+  data() {
+    return {
+      data: {},
+      medias: [],
+      projects: [],
+      tabState: "about",
+    };
   },
 };
-        
 </script>
