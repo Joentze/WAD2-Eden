@@ -1,7 +1,25 @@
 <script setup lang="ts">
+import { signOut } from "firebase/auth";
+import { useFirebaseAuth } from "vuefire";
 import { useAuthStore } from "../../stores/authStore.ts";
-
-const userData = useAuthStore().getData;
+import { useRouter } from "vue-router";
+import { useNotification } from "../../stores/notificationStore.ts";
+const auth = useFirebaseAuth();
+const authStore = useAuthStore();
+const userData = authStore.getData;
+const router = useRouter();
+const notificationStore = useNotification();
+function logout() {
+  signOut(auth)
+    .then(() => {
+      authStore.clear();
+      notificationStore.add({
+        title: "See You Soon!",
+        description: "Successfully logged out!",
+      });
+    })
+    .catch((error) => console.error(error.message));
+}
 </script>
 <template>
   <div class="dropdown dropdown-end text-primary">
@@ -38,19 +56,10 @@ const userData = useAuthStore().getData;
 <script lang="ts">
 import IconLogout from "../icons/IconLogout.vue";
 import IconPerson from "../icons/IconPerson.vue";
-import { signOut } from "firebase/auth";
-import { useFirebaseAuth } from "vuefire";
-const auth = useFirebaseAuth();
+
 export default {
+  setup() {},
   components: { IconLogout, IconPerson },
-  methods: {
-    logout: function () {
-      signOut(auth)
-        .then(() => {
-          this.$router.push("/login");
-        })
-        .catch((error) => console.error(error.message));
-    },
-  },
+  methods: {},
 };
 </script>

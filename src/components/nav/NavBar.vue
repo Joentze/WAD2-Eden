@@ -106,6 +106,7 @@ import IconPlant from "../icons/IconPlant.vue";
 import IconDashboard from "../icons/IconDashboard.vue";
 import ProfileDropdown from "../auth/ProfileDropdown.vue";
 import IconCalendar from "../icons/IconCalendar.vue";
+import IconProject from "../icons/IconProject.vue";
 import { useRouter } from "vue-router";
 import { watch } from "vue";
 import { useAuthStore } from "../../stores/authStore.ts";
@@ -118,6 +119,7 @@ export default {
     IconPlant,
     ProfileDropdown,
     IconCalendar,
+    IconProject,
   },
   setup() {},
   mounted() {
@@ -139,6 +141,7 @@ export default {
       // isDisplay: !["/login", "/signup", "/"].includes(this.$route.fullPath),
 
       navContent: [
+        { icon: IconProject, label: "Projects", link: "/projects" },
         { icon: IconPlant, label: "Social Enterprises", link: "/enterprises" },
         { icon: IconBuilding, label: "Corporations", link: "/corporations" },
         { icon: IconTV, label: "Media", link: "/media" },
