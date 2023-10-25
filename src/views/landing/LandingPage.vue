@@ -163,7 +163,8 @@ export default {
               },
             })
             .to(earth.position, { x: -60 })
-            .to(textSection2, { opacity: 1 });
+            .to(textSection2, { opacity: 1 })
+            .to(earth.scale, { x: 1.2, y: 1.2, z: 1.2 });
 
           gsap
             .timeline({

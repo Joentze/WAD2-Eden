@@ -108,7 +108,7 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
               min="1"
               max="20"
               class="range range-xs range-primary"
-              step="5"
+              step="1"
               :disabled="isSubmitted"
             />
             <div class="w-full flex justify-between text-xs px-2 text-gray-400">
