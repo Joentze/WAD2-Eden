@@ -16,6 +16,9 @@ import EnterpriseDashboardPage from "../views/enterprise/EnterpriseDashboardPage
 import CompanyDashboardPage from "../views/company/CompanyDashboardPage.vue";
 import EnterpriseProjectApplicationPage from "../views/enterprise/EnterpriseProjectApplicationPage.vue";
 import AwaitPage from "../views/misc/AwaitPage.vue";
+import { useFirebaseAuth } from "vuefire";
+import { useNotification, NotificationType } from "@/stores/notificationStore";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,6 +41,7 @@ const router = createRouter({
       path: "/enterprise-dashboard",
       name: "enterprise dashboard",
       component: EnterpriseDashboardPage,
+      meta: { protected: true },
     },
 
     {
@@ -49,7 +53,7 @@ const router = createRouter({
       path: "/corporation-dashboard",
       name: "corporation dashboard",
       component: CompanyDashboardPage,
-      // meta: { protected: true },
+      meta: { protected: true },
     },
     {
       path: "/corporations",
@@ -111,7 +115,16 @@ const router = createRouter({
 });
 
 router.beforeEach((to: any, from: any) => {
-  if (to.meta.protected) return false;
+  const auth = useFirebaseAuth();
+  const notificationStore = useNotification();
+  if (to.meta.protected && auth?.currentUser === null) {
+    router.push({ path: "/login" });
+    notificationStore.add({
+      title: "Not Authorised",
+      description: "You've have to be logged in to access that page",
+      type: NotificationType.ERROR,
+    });
+  }
   return true;
 });
 
