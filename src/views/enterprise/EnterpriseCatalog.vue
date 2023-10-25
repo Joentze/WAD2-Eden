@@ -1,17 +1,18 @@
 <script lang="ts" setup></script>
 <template>
+  <img src="../mediaFade.png" class="w-full h-full fixed top-0 left-0" />
   <div class="enterprise">
     <div class="enterprise-body">
       <!-- Enterprise Title -->
-      <p class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold">
+      <p class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10">
         Social Enterprises
       </p>
-      <p class="text-gray-400 w-full text-sm my-2">
+      <p class="text-gray-400 w-full text-sm my-2 z-10">
         Join the fight against climate change with our social enterprises 🌍
       </p>
 
       <!-- Search Bar -->
-      <div class="form-control w-5/6 mt-4">
+      <div class="form-control w-5/6 mt-4 z-10">
         <div class="join shadow shadow-lg">
           <input
             type="text"

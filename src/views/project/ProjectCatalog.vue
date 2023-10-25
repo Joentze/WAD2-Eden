@@ -5,18 +5,21 @@ console.log(authStore.getData);
 </script>
 
 <template>
+  <img src="../mediaFade.png" class="w-full h-full fixed top-0 left-0" />
   <div class="project">
     <div class="project-body">
       <!-- project Title -->
-      <p class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold">
+      <p
+        class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10 transition-opacity ease-in duration-300"
+      >
         Projects
       </p>
-      <p class="text-gray-400 w-full text-sm my-2">
+      <p class="text-gray-400 w-full text-sm my-2 z-10">
         Join the a project to shift climate culture 🌍
       </p>
 
       <!-- Search Bar -->
-      <div class="form-control w-5/6 mt-4">
+      <div class="form-control w-5/6 mt-4 z-10">
         <div class="join shadow shadow-lg">
           <input
             type="text"

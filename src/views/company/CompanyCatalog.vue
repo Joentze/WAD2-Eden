@@ -1,16 +1,17 @@
 <template>
+  <img src="../mediaFade.png" class="w-full h-full fixed top-0 left-0" />
   <div class="corporation">
     <div class="corporation-body">
       <!-- Enterprise Title -->
-      <p class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold">
+      <p class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10">
         Corporations
       </p>
-      <p class="text-gray-400 w-full text-sm my-2">
+      <p class="text-gray-400 w-full text-sm my-2 z-10">
         Support corporations fighting for climate culture 🏢
       </p>
 
       <!-- Search Bar -->
-      <div class="form-control w-5/6 mt-4">
+      <div class="form-control w-5/6 mt-4 z-10">
         <div class="join shadow shadow-lg">
           <input
             type="text"

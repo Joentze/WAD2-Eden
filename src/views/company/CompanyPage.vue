@@ -1,5 +1,6 @@
 <script setup lang="ts"></script>
 <template>
+  
   <div class="w-full h-screen flex flex-col p-4">
     <button class="btn btn-square btn-ghost mb-4" @click="$router.go(-1)">
       <IconArrowLeft class="text-gray-400" />

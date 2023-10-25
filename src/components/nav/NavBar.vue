@@ -6,7 +6,7 @@ import { useAuthStore } from "../../stores/authStore.ts";
 const userData = useAuthStore().getData;
 </script>
 <template>
-  <div class="drawer h-16 z-10" id="navBar" v-if="isDisplay()">
+  <div class="drawer h-16" id="navBar" v-if="isDisplay()">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="grow"></div>
 
@@ -96,7 +96,7 @@ const userData = useAuthStore().getData;
   width: 100%;
   padding: 0.75rem;
   height: fit-content;
-  z-index: 1;
+  z-index: 50;
 }
 </style>
 <script lang="ts">

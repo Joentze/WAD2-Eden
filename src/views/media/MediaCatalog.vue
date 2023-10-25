@@ -3,9 +3,10 @@ import { useFirebaseAuth } from "vuefire";
 const auth = useFirebaseAuth();
 </script>
 <template>
+  <img src="../mediaFade.png" class="w-full h-full fixed top-0 left-0" />
   <div class="flex flex-col gap-8 w-full h-full pt-10">
     <div
-      class="flex flex-row gap-2 m-auto w-full sm:w-4/6 pb-6 border-b-2"
+      class="flex flex-row gap-2 m-auto w-full sm:w-4/6 pb-6 border-b-2 z-20"
       v-if="auth.currentUser !== null"
     >
       <div class="grow flex flex-col">
@@ -25,7 +26,10 @@ const auth = useFirebaseAuth();
       </div>
     </div>
 
-    <div class="flex flex-col justify-center items-center gap-8" id="posts">
+    <div
+      class="flex flex-col justify-center items-center gap-8 z-10"
+      id="posts"
+    >
       <MediaCatalogCard
         :v-if="medias.length > 0"
         v-for="media in medias"

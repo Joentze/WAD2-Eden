@@ -36,9 +36,29 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
 </script>
 
 <template>
+  <img
+    v-if="postData.projectTag === 'BEACH'"
+    src="../beach.png"
+    class="w-full h-full fixed top-0 left-0"
+  />
+  <img
+    v-if="postData.projectTag === 'FOREST'"
+    src="../forest.png"
+    class="w-full h-full fixed top-0 left-0"
+  />
+  <img
+    v-if="postData.projectTag === 'PEOPLE'"
+    src="../people.png"
+    class="w-full h-full fixed top-0 left-0"
+  />
+  <img
+    v-if="postData.projectTag === 'ANIMALS'"
+    src="../animals.png"
+    class="w-full h-full fixed top-0 left-0"
+  />
   <div class="sm:px-36 w-full h-full flex flex-col gap-4">
     <div class="flex flex-row p-4">
-      <div class="grow flex flex-row gap-4">
+      <div class="grow flex flex-row gap-4 z-20">
         <button @click="goBack()" class="btn btn-ghost btn-square">
           <IconArrowLeft class="text-gray-400" />
         </button>
@@ -48,10 +68,10 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
           {{ postData.projectTitle }}
         </p>
       </div>
-      <ProjectAvatarGroup :joined="postData.joined" class="m-auto" />
+      <ProjectAvatarGroup :joined="postData.joined" class="m-auto z-20" />
     </div>
     <!-- <div class="divider sm:px-36"></div> -->
-    <div class="w-full flex flex-col sm:flex-row gap-4">
+    <div class="w-full flex flex-col sm:flex-row gap-4 z-20">
       <div
         class="w-full sm:grow border border-2 rounded-lg m-auto max-h-[680px] overflow-hidden"
       >
@@ -66,10 +86,10 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
       </div>
       <div class="sm:w-96 w-full grow flex flex-col gap-6">
         <div
-          class="rounded-lg border sm:w-96 w-full border-2 h-full shadow shadow-xl flex flex-col p-6 gap-4 bg-white"
+          class="rounded-lg border sm:w-96 w-full border-2 h-full shadow shadow-xl flex flex-col p-6 gap-4 bg-white z-20"
         >
           <iframe
-            class="rounded-lg w-full h-full border border-1"
+            class="rounded-lg w-full h-full border border-1 z-20"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
             :src="locationUrl(postData.projectAddress)"
@@ -132,7 +152,7 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
       </div>
     </div>
     <div
-      class="p-8 flex flex-col sm:flex-row gap-4 border border-2 bg-white shadow shadow-lg rounded-lg"
+      class="p-8 flex flex-col sm:flex-row gap-4 border border-2 bg-white shadow shadow-lg rounded-lg z-20"
     >
       <div class="flex flex-col gap-4 grow">
         <div class="flex flex-row">

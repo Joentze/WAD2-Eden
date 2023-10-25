@@ -55,9 +55,13 @@ export const getMedias = async (
       });
     });
     return medias.sort((a, b) => {
-      return (a.createdOn as Date).getTime() - (b.createdOn as Date).getTime();
+      return (
+        (a.createdOn as Timestamp).toDate().getTime() -
+        (b.createdOn as Timestamp).toDate().getTime()
+      );
     }) as MediaPostType[];
   } catch (e) {
+    console.error(e);
     throw new Error("There was an error with getting media at this moment");
   }
 };
@@ -68,7 +72,7 @@ export const getAllMedias = async (
   try {
     let medias: MediaPostType[] = [];
     const mediaRef = collection(db, "media");
-    const q = query(mediaRef, orderBy("createdOn"), limit(limitNo));
+    const q = query(mediaRef, orderBy("createdOn", "desc"), limit(limitNo));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       const data = doc.data() as MediaPostType;

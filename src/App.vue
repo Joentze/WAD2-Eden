@@ -21,6 +21,7 @@ import NotificationStack from "./components/notifications/NotificationStack.vue"
   </header> -->
 
   <div class="mt-16 p-4"><RouterView /></div>
-
+  
   <NotificationStack />
 </template>
+<style></style>

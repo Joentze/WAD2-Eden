@@ -1,9 +1,9 @@
 <template>
   <!-- You can open the modal using ID.showModal() method -->
-  <button class="btn btn-primary btn-square" onclick="my_modal_4.showModal()">
+  <button class="btn btn-primary btn-square " onclick="my_modal_4.showModal()">
     +
   </button>
-  <dialog id="my_modal_4" class="modal text-primary">
+  <dialog id="my_modal_4" class="modal text-primary z-10">
     <div class="modal-box w-11/12 max-w-5xl">
       <div class="flex flex-row">
         <div class="flex-grow">
@@ -85,6 +85,7 @@ export default {
         console.error(e);
         throw new Error("There was an error with making a post at this time!");
       }
+      location.reload();
     },
     setFileUrls: function (urls) {
       this.postImages = urls;
