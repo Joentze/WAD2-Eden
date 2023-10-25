@@ -38,6 +38,7 @@ const auth = useFirebaseAuth();
         :creatorType="media.creatorType"
       >
       </MediaCatalogCard>
+      <div id="endLine" />
     </div>
   </div>
 </template>
@@ -55,15 +56,22 @@ export default {
   },
   async mounted() {
     await this.getMedias();
+    let endLine = document.getElementById("endLine");
+    let observer = new IntersectionObserver(async (items) => {
+      this.getNo += 10;
+      await this.getMedias();
+    });
+    observer.observe(endLine);
   },
   methods: {
     getMedias: async function () {
-      this.medias = await getAllMedias(10);
+      this.medias = await getAllMedias(this.getNo);
       console.log(this.medias);
     },
   },
   data() {
     return {
+      getNo: 10,
       medias: [],
       postMedia1: ["https://static.mothership.sg/1/2019/09/Gai-Gai-1.jpg"],
       postMedia2: [
