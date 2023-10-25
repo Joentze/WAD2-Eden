@@ -19,7 +19,7 @@ function formatDDMMYYYY(date: Timestamp) {
 </script>
 <template>
   <div
-    class="card sm:w-1/2 w-full bg-base-100 shadow-xl justify-self-center border border-2"
+    class="card sm:w-1/2 w-full bg-base-100 justify-self-center border border-2"
   >
     <div class="card-body">
       <div class="flex flex-row gap-4">

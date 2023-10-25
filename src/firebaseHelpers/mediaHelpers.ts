@@ -51,7 +51,7 @@ export const getMedias = async (
       const data = doc.data() as MediaPostType;
       medias.push({
         ...data,
-        createdOn: (data.createdOn as Timestamp).toDate(),
+        createdOn: data.createdOn as Timestamp,
       });
     });
     return medias.sort((a, b) => {
@@ -76,8 +76,8 @@ export const getAllMedias = async (
     });
     return medias.sort((a, b) => {
       return (
-        (a.createdOn as Timestamp).toDate().getTime() -
-        (b.createdOn as Timestamp).toDate().getTime()
+        (b.createdOn as Timestamp).toDate().getTime() -
+        (a.createdOn as Timestamp).toDate().getTime()
       );
     }) as MediaPostType[];
   } catch (e) {
