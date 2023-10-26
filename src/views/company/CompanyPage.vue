@@ -67,6 +67,16 @@
       >
       </MediaCatalogCard>
     </div>
+    <div
+      v-if="tabState === 'achievements'"
+      class="flex flex-col justify-center items-center gap-8 p-8"
+    >
+      <p class="text-3xl text-primary font-bold w-full">Achievements 🏆</p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <TreeHuggerSpline :count="3" />
+        <PeoplePleaserSpline :count="3" />
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -87,8 +97,16 @@ import { getMedias } from "../../firebaseHelpers/mediaHelpers.ts";
 import IconArrowLeft from "../../components/icons/IconArrowLeft.vue";
 import ProjectCard from "../../components/project/ProjectCard.vue";
 import MediaCatalogCard from "../../components/media/MediaCatalogCard.vue";
+import TreeHuggerSpline from "../../components/awards/TreeHuggerSpline.vue";
+import PeoplePleaserSpline from "../../components/awards/PeoplePleaserSpline.vue";
 export default {
-  components: { IconArrowLeft, ProjectCard, MediaCatalogCard },
+  components: {
+    IconArrowLeft,
+    ProjectCard,
+    MediaCatalogCard,
+    TreeHuggerSpline,
+    PeoplePleaserSpline,
+  },
   async mounted() {
     await this.getEnterpriseData();
     await this.getMedias();
