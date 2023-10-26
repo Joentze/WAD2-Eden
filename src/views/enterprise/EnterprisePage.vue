@@ -123,8 +123,9 @@ export default {
       this.tabState = state;
     },
     getMedias: async function () {
-      this.medias = await getMedias(this.$route.params.enterpriseId);
-      console.log(this.medias);
+      const medias = await getMedias(this.$route.params.enterpriseId);
+      medias.reverse();
+      this.medias = medias;
     },
     getProjects: async function () {
       const projectRef = collection(db, "projects");

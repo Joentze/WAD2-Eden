@@ -10,9 +10,9 @@ console.log(authStore.getData);
     <div class="project-body">
       <!-- project Title -->
       <p
-        class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10 transition-opacity ease-in duration-300"
+        class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10 fade-in"
       >
-        Projects
+        Our Projects
       </p>
       <p class="text-gray-400 w-full text-sm my-2 z-10">
         Join the a project to shift climate culture 🌍
@@ -35,7 +35,7 @@ console.log(authStore.getData);
         class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center"
       >
         <div
-          class="card w-80 bg-base-100 h-96 my-5 mx-2 shadow-xl justify-self-center border border-2 flex flex-col"
+          class="card w-80 bg-base-100 h-96 my-5 mx-2 shadow-xl justify-self-center border border-2 flex flex-col fade-in"
           v-for="card in showProjects"
           v-bind:key="card.id"
         >

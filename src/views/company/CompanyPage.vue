@@ -1,6 +1,5 @@
 <script setup lang="ts"></script>
 <template>
-  
   <div class="w-full h-screen flex flex-col p-4">
     <button class="btn btn-square btn-ghost mb-4" @click="$router.go(-1)">
       <IconArrowLeft class="text-gray-400" />
@@ -50,6 +49,24 @@
         {{ data.companyDescription }}
       </p>
     </div>
+    <div
+      class="flex flex-col justify-center items-center gap-8 p-8"
+      v-if="tabState === 'media'"
+    >
+      <p class="text-3xl text-primary font-bold w-full">Media Post</p>
+      <MediaCatalogCard
+        :v-if="medias.length > 0"
+        v-for="media in medias"
+        :creatorId="media.creatorId"
+        :createdOn="media.createdOn"
+        :postDescription="media.postDescription"
+        :postImages="media.postImages"
+        :createdBy="media.createdBy"
+        :creatorPhotoUrl="media.creatorPhotoUrl"
+        :creatorType="media.creatorType"
+      >
+      </MediaCatalogCard>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -69,8 +86,9 @@ import { getAccountData } from "../../firebaseHelpers/accountHandler.ts";
 import { getMedias } from "../../firebaseHelpers/mediaHelpers.ts";
 import IconArrowLeft from "../../components/icons/IconArrowLeft.vue";
 import ProjectCard from "../../components/project/ProjectCard.vue";
+import MediaCatalogCard from "../../components/media/MediaCatalogCard.vue";
 export default {
-  components: { IconArrowLeft, ProjectCard },
+  components: { IconArrowLeft, ProjectCard, MediaCatalogCard },
   async mounted() {
     await this.getEnterpriseData();
     await this.getMedias();
@@ -86,7 +104,9 @@ export default {
       this.tabState = state;
     },
     getMedias: async function () {
-      this.medias = await getMedias(this.$route.params.corporationId);
+      const medias = await getMedias(this.$route.params.corporationId);
+      medias.reverse();
+      this.medias = medias;
       console.log(this.medias);
     },
     getProjects: async function () {

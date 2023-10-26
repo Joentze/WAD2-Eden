@@ -4,8 +4,10 @@
   <div class="enterprise">
     <div class="enterprise-body">
       <!-- Enterprise Title -->
-      <p class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10">
-        Social Enterprises
+      <p
+        class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10 fade-in"
+      >
+        Our Social Enterprises
       </p>
       <p class="text-gray-400 w-full text-sm my-2 z-10">
         Join the fight against climate change with our social enterprises 🌍
@@ -28,7 +30,7 @@
         class="cards grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 justify-center"
       >
         <div
-          class="card w-64 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2 pt-4 flex flex-col"
+          class="card w-64 bg-base-100 my-5 mx-2 shadow-xl justify-self-center border border-2 pt-4 flex flex-col fade-in"
           v-for="card in showEnterprises"
           v-bind:key="card.id"
         >
