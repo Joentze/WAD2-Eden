@@ -2,7 +2,7 @@
 
 import { update } from "firebase/database";
 import {
-  setDoc,
+  and,
   collection,
   doc,
   Timestamp,
@@ -29,6 +29,7 @@ export type EventType = {
   projectTag: string;
   startDate: Timestamp | Date;
   companyId: string;
+  projectStart?: Timestamp;
 };
 
 export type ProjectType = {
@@ -115,6 +116,36 @@ export const getEvents = async (companyId: string): Promise<EventType[]> => {
       return (a.startDate as Date).getTime() - (b.startDate as Date).getTime();
     }) as EventType[];
   } catch (e) {
+    throw new Error("There was an error with getting events at this moment");
+  }
+};
+
+export const getCompletedEvents = async (
+  companyId: string
+): Promise<EventType[]> => {
+  try {
+    let events: EventType[] = [];
+    const eventsRef = collection(db, "events");
+    const q = query(
+      eventsRef,
+      and(where("companyId", "==", companyId), where("completed", "==", true))
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data() as EventType;
+      events.push({
+        ...data,
+        startDate: (data.projectStart as Timestamp).toDate(),
+      });
+    });
+    return events.sort((a, b) => {
+      return (
+        (a.projectStart as Timestamp).toDate().getTime() -
+        (b.projectStart as Timestamp).toDate().getTime()
+      );
+    }) as EventType[];
+  } catch (e) {
+    console.error(e);
     throw new Error("There was an error with getting events at this moment");
   }
 };

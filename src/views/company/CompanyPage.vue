@@ -73,8 +73,10 @@
     >
       <p class="text-3xl text-primary font-bold w-full">Achievements 🏆</p>
       <div class="flex flex-col sm:flex-row gap-4">
-        <TreeHuggerSpline :count="3" />
-        <PeoplePleaserSpline :count="3" />
+        <TreeHuggerSpline :count="awards.FOREST" v-if="awards.FOREST > 0" />
+        <PeoplePleaserSpline :count="awards.PEOPLE" v-if="awards.PEOPLE > 0" />
+        <AnimalLoverSpline :count="awards.ANIMALS" v-if="awards.ANIMALS" />
+        <BeachBodySpline :count="awards.BEACH" v-if="awards.BEACH" />
       </div>
     </div>
   </div>
@@ -93,12 +95,15 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase.ts";
 import { getAccountData } from "../../firebaseHelpers/accountHandler.ts";
+import { getCompletedEvents } from "../../firebaseHelpers/projectHelpers.ts";
 import { getMedias } from "../../firebaseHelpers/mediaHelpers.ts";
 import IconArrowLeft from "../../components/icons/IconArrowLeft.vue";
 import ProjectCard from "../../components/project/ProjectCard.vue";
 import MediaCatalogCard from "../../components/media/MediaCatalogCard.vue";
 import TreeHuggerSpline from "../../components/awards/TreeHuggerSpline.vue";
 import PeoplePleaserSpline from "../../components/awards/PeoplePleaserSpline.vue";
+import AnimalLoverSpline from "../../components/awards/AnimalLoverSpline.vue";
+import BeachBodySpline from "../../components/awards/BeachBodySpline.vue";
 export default {
   components: {
     IconArrowLeft,
@@ -106,6 +111,8 @@ export default {
     MediaCatalogCard,
     TreeHuggerSpline,
     PeoplePleaserSpline,
+    AnimalLoverSpline,
+    BeachBodySpline,
   },
   async mounted() {
     await this.getEnterpriseData();
@@ -116,10 +123,18 @@ export default {
     await this.getEnterpriseData();
     await this.getMedias();
     await this.getProjects();
+    await this.getEvents();
   },
   methods: {
     setTabState: function (state: string) {
       this.tabState = state;
+    },
+    getEvents: async function () {
+      const awards = await getCompletedEvents(this.$route.params.corporationId);
+      for (let award of awards) {
+        this.awards[award.projectTag] += 1;
+      }
+      console.log(this.awards);
     },
     getMedias: async function () {
       const medias = await getMedias(this.$route.params.corporationId);
@@ -152,6 +167,12 @@ export default {
 
   data() {
     return {
+      awards: {
+        BEACH: 0,
+        PEOPLE: 0,
+        FOREST: 0,
+        ANIMALS: 0,
+      },
       data: {},
       medias: [],
       projects: [],
