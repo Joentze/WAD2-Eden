@@ -117,6 +117,7 @@ const router = createRouter({
 router.beforeEach((to: any, from: any) => {
   const auth = useFirebaseAuth();
   const notificationStore = useNotification();
+  console.log(auth);
   if (to.meta.protected && auth?.currentUser === null) {
     router.push({ path: "/login" });
     notificationStore.add({

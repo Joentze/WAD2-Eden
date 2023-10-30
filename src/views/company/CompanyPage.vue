@@ -1,10 +1,11 @@
 <script setup lang="ts"></script>
 <template>
+  <!-- <img src="../mediaFade.png" class="w-full h-full fixed top-0 left-0" /> -->
   <div class="w-full h-screen flex flex-col p-4">
-    <button class="btn btn-square btn-ghost mb-4" @click="$router.go(-1)">
+    <button class="btn btn-square btn-ghost mb-4 z-20" @click="$router.go(-1)">
       <IconArrowLeft class="text-gray-400" />
     </button>
-    <div class="flex flex-row gap-8">
+    <div class="flex flex-row gap-8 z-20">
       <div>
         <div class="avatar" v-if="data.photoUrl.length > 0">
           <div class="sm:w-36 w-16 rounded-full border">
@@ -43,14 +44,17 @@
         >Achievements</a
       >
     </div>
-    <div class="flex flex-col sm:p-8 pt-10 gap-8" v-if="tabState === 'about'">
+    <div
+      class="flex flex-col sm:p-8 pt-10 gap-8 z-20"
+      v-if="tabState === 'about'"
+    >
       <p class="text-3xl text-primary font-bold">About Us</p>
       <p class="text-lg text-gray-500 text-justify">
         {{ data.companyDescription }}
       </p>
     </div>
     <div
-      class="flex flex-col justify-center items-center gap-8 p-8"
+      class="flex flex-col justify-center items-center gap-8 p-8 z-20"
       v-if="tabState === 'media'"
     >
       <p class="text-3xl text-primary font-bold w-full">Media Post</p>
@@ -69,7 +73,7 @@
     </div>
     <div
       v-if="tabState === 'achievements'"
-      class="flex flex-col justify-center items-center gap-8 p-8"
+      class="flex flex-col justify-center items-center gap-8 p-8 z-20"
     >
       <p class="text-3xl text-primary font-bold w-full">Achievements 🏆</p>
       <div class="flex flex-col sm:flex-row gap-4">

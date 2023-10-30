@@ -4,12 +4,19 @@ defineProps<{
   icon: HTMLElement;
   label: string;
   link: string;
+
 }>();
 </script>
 <template>
   <li @click="closeNav">
     <RouterLink :to="link">
-      <a class="flex flex-row gap-2"
+      <a
+        class="flex flex-row gap-2 text-accent"
+        v-if="$route.fullPath.includes(label.toLowerCase())"
+        ><component :is="icon"></component>
+        {{ label }}
+      </a>
+      <a class="flex flex-row gap-2" v-else
         ><component :is="icon"></component>
         {{ label }}
       </a>

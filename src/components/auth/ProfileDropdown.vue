@@ -43,9 +43,6 @@ function logout() {
       tabindex="0"
       class="dropdown-content menu shadow bg-base-100 mt-2 rounded-box w-52"
     >
-      <li>
-        <a><IconPerson />Profile</a>
-      </li>
       <!-- <li><a>Item 2</a></li> -->
       <li>
         <a class="text-error" @click="logout()"><IconLogout /> Log Out</a>
