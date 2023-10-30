@@ -18,7 +18,7 @@ const auth = useFirebaseAuth();
       <MediaPosterModal />
     </div>
     <div
-      class="flex flex-row gap-2 m-auto w-full sm:w-4/6 pb-6 border-b-2"
+      class="flex flex-row gap-2 m-auto w-full sm:w-4/6 pb-6 border-b-2 z-20"
       v-else
     >
       <div class="grow flex flex-col">

@@ -271,6 +271,10 @@ export default {
         await checkIfRegistered(data);
         await createProjectApplication(data);
         this.isSubmitted = true;
+        this.$router.push({
+          path: "/await",
+          query: { projectName: projectTitle },
+        });
       } catch (e) {
         notificationStore.add({ title: "Error", description: e.message });
       }
