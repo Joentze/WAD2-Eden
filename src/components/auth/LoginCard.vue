@@ -61,6 +61,17 @@ function login(email: string, password: string) {
           Login
         </button>
       </div>
+      <div class="divider text-gray-300 my-6">OR</div>
+      <button
+        class="btn mx-6"
+        @click.prevent="
+          () => {
+            $router.push({ path: '/signup' });
+          }
+        "
+      >
+        Sign Up Here
+      </button>
     </form>
   </div>
 </template>
