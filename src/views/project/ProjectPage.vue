@@ -162,7 +162,7 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
           <div class="flex flex-row gap-2">
             <div class="avatar" v-if="postData.creatorPhotoUrl">
               <div class="w-8 rounded-full">
-                <img :src="creatorPhotoUrl" />
+                <img :src="postData.creatorPhotoUrl" />
               </div>
             </div>
             <div class="avatar placeholder" v-else>

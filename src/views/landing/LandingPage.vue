@@ -33,7 +33,7 @@ const scrollPosition = ref(0);
   <div class="absolute z-5 text-white h-fit flex flex-col w-full" id="part1">
     <div class="flex flex-row h-screen">
       <div class="w-full sm:w-1/2 flex flex-col h-full">
-        <div class="ml-10 sm:ml-24 my-auto ml-32 my-auto" id="text-section-1">
+        <div class="ml-10 sm:ml-24 my-auto my-auto" id="text-section-1">
           <p class="text-4xl sm:text-6xl font-bold text-gray-400">
             There is no
           </p>
@@ -54,7 +54,7 @@ const scrollPosition = ref(0);
     </div>
 
     <div class="flex flex-row-reverse h-screen" id="part2">
-      <div class="w-full text-left sm:text-right sm:w-1/2 flex flex-col h-full">
+      <div class="w-full text-left sm:w-1/2 flex flex-col h-full">
         <div class="ml-10 sm:ml-24 my-auto my-auto" id="text-section-2">
           <p class="text-4xl sm:text-6xl font-bold text-gray-400">
             Climate Action
