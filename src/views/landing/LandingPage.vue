@@ -32,10 +32,12 @@ const scrollPosition = ref(0);
   </canvas>
   <div class="absolute z-5 text-white h-fit flex flex-col w-full" id="part1">
     <div class="flex flex-row h-screen">
-      <div class="w-1/2 flex flex-col h-full">
-        <div class="ml-24 my-auto ml-32 my-auto" id="text-section-1">
-          <p class="text-6xl font-bold text-gray-400">There is no</p>
-          <p class="text-8xl font-bold text-white drop-shadow-xl">
+      <div class="w-full sm:w-1/2 flex flex-col h-full">
+        <div class="ml-10 sm:ml-24 my-auto ml-32 my-auto" id="text-section-1">
+          <p class="text-4xl sm:text-6xl font-bold text-gray-400">
+            There is no
+          </p>
+          <p class="text-5xl sm:text-8xl font-bold text-white drop-shadow-xl">
             Planet No. 2
           </p>
           <p class="mt-12 text-justify text-gray-300 text-lg w-5/6">
@@ -52,11 +54,15 @@ const scrollPosition = ref(0);
     </div>
 
     <div class="flex flex-row-reverse h-screen" id="part2">
-      <div class="w-1/2 flex flex-col h-full">
-        <div class="ml-24 my-auto ml-32 my-auto" id="text-section-2">
-          <p class="text-6xl font-bold text-gray-400">Climate Action</p>
-          <p class="text-8xl font-bold text-white drop-shadow-xl">NOW.</p>
-          <p class="mt-12 text-justify text-gray-300 text-lg w-5/6">
+      <div class="w-full text-left sm:text-right sm:w-1/2 flex flex-col h-full">
+        <div class="ml-10 sm:ml-24 my-auto my-auto" id="text-section-2">
+          <p class="text-4xl sm:text-6xl font-bold text-gray-400">
+            Climate Action
+          </p>
+          <p class="text-5xl sm:text-8xl font-bold text-white drop-shadow-xl">
+            NOW.
+          </p>
+          <p class="mt-12 text-justify text-gray-300 text-md sm:text-lg w-5/6">
             Taking action now can help preserve the planet for future
             generations and ensure a sustainable and resilient future for all.
             We need to change
@@ -71,10 +77,14 @@ const scrollPosition = ref(0);
     </div>
 
     <div class="flex flex-row h-screen" id="part3">
-      <div class="w-1/2 flex flex-col h-full">
-        <div class="ml-24 my-auto ml-32 my-auto" id="text-section-3">
-          <p class="text-6xl font-bold text-gray-400">Restoring...</p>
-          <p class="text-8xl font-bold text-white drop-shadow-xl">Our Eden</p>
+      <div class="w-full sm:w-1/2 flex flex-col h-full">
+        <div class="ml-10 sm:ml-24 my-auto my-auto" id="text-section-3">
+          <p class="text-4xl sm:text-6xl font-bold text-gray-400">
+            Restoring...
+          </p>
+          <p class="text-5xl sm:text-8xl font-bold text-white drop-shadow-xl">
+            Our Eden
+          </p>
 
           <p class="mt-12 text-justify text-gray-300 text-lg w-5/6">
             Eden aims to connect the largest corporations with social
@@ -86,20 +96,22 @@ const scrollPosition = ref(0);
     </div>
     <div class="flex h-screen" id="part4">
       <div class="m-auto flex flex-col gap-4" id="text-section-4">
-        <p class="text-5xl font-bold text-primary mt-80 m-auto">Join now.</p>
-        <p class="text-xl text-gray-300 m-auto w-96 text-center">
+        <p class="text-3xl sm:text-5xl font-bold text-primary mt-80 m-auto">
+          Join now.
+        </p>
+        <p class="text-lg sm:text-xl text-gray-300 m-auto w-96 text-center">
           Cultivate climate action by engaging with corporations. Sign up and
           change the world now.
         </p>
         <div class="flex gap-4 m-auto mt-16">
           <button
-            class="shadow shadow-lg shadow-gray-600 btn w-48 btn bg-slate-600/50 hover:bg-slate-600/50 hover:text-slate-200 text-slate-400 border-gray-400 border-2"
+            class="shadow shadow-lg shadow-gray-600 btn w-36 sm:w-48 btn bg-slate-600/50 hover:bg-slate-600/50 hover:text-slate-200 text-slate-400 border-gray-400 border-2"
             @click="redirectToProjects"
           >
             See Projects
           </button>
           <button
-            class="shadow shadow-lg shadow-gray-600 btn w-48 btn-primary"
+            class="shadow shadow-lg shadow-gray-600 btn w-36 sm:w-48 btn-primary"
             @click="redirectToSignup"
           >
             Sign Up
