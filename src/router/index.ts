@@ -12,6 +12,13 @@ import ProjectPage from "../views/project/ProjectPage.vue";
 import LoginPage from "../views/auth/LoginPage.vue";
 import SignupPage from "../views/auth/SignupPage.vue";
 import LandingPage from "../views/landing/LandingPage.vue";
+import EnterpriseDashboardPage from "../views/enterprise/EnterpriseDashboardPage.vue";
+import CompanyDashboardPage from "../views/company/CompanyDashboardPage.vue";
+import EnterpriseProjectApplicationPage from "../views/enterprise/EnterpriseProjectApplicationPage.vue";
+import AwaitPage from "../views/misc/AwaitPage.vue";
+import { useFirebaseAuth } from "vuefire";
+import { useNotification, NotificationType } from "@/stores/notificationStore";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -31,12 +38,30 @@ const router = createRouter({
       component: LandingPage,
     },
     {
-      path: "/companies",
+      path: "/enterprise-dashboard",
+      name: "enterprise dashboard",
+      component: EnterpriseDashboardPage,
+      meta: { protected: true },
+    },
+
+    {
+      path: "/application/project/:projectId",
+      name: "project application page",
+      component: EnterpriseProjectApplicationPage,
+    },
+    {
+      path: "/corporation-dashboard",
+      name: "corporation dashboard",
+      component: CompanyDashboardPage,
+      meta: { protected: true },
+    },
+    {
+      path: "/corporations",
       name: "company catalog",
       component: CompanyCatalog,
     },
     {
-      path: "/company/:companyId",
+      path: "/corporation/:corporationId",
       name: "company about page",
       component: CompanyPage,
     },
@@ -59,6 +84,11 @@ const router = createRouter({
       path: "/project/:projectId",
       name: "project about page",
       component: ProjectPage,
+    },
+    {
+      path: "/await",
+      name: "await page",
+      component: AwaitPage,
     },
     {
       path: "/media",
@@ -85,7 +115,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to: any, from: any) => {
-  if (to.meta.protected) return false;
+  const auth = useFirebaseAuth();
+  const notificationStore = useNotification();
+  console.log(auth);
+  if (to.meta.protected && auth?.currentUser === null) {
+    router.push({ path: "/login" });
+    notificationStore.add({
+      title: "Not Authorised",
+      description: "You've have to be logged in to access that page",
+      type: NotificationType.ERROR,
+    });
+  }
   return true;
 });
 

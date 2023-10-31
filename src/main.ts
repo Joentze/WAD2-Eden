@@ -1,4 +1,4 @@
-import "./assets/main.css";
+// import "./assets/main.css";
 import { VueFire, VueFireAuth } from "vuefire";
 import { firebaseApp } from "./firebase";
 import { createApp } from "vue";
@@ -9,7 +9,7 @@ import router from "./router";
 
 const app = createApp(App);
 
-app.use(createPinia());
+app.use(createPinia({ devtools: true }));
 app.use(VueFire, {
   firebaseApp,
   modules: [

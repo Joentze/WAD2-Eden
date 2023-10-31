@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import NavItem from "./NavItem.vue";
 import { useCurrentUser } from "vuefire";
-const user = useCurrentUser();
+import { useAuthStore } from "../../stores/authStore.ts";
+
+const userData = useAuthStore().getData;
 </script>
 <template>
-  <div class="drawer" id="navBar" v-if="isDisplay()">
+  <div class="drawer h-16" id="navBar" v-if="isDisplay()">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
     <div class="grow"></div>
 
     <div class="drawer-content">
-      <!-- Page content here -->
-
       <label
         for="my-drawer"
-        class="btn btn-ghost btn-square btn-sm drawer-button"
+        class="btn btn-ghost btn-square -m-1 drawer-button"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -42,9 +42,22 @@ const user = useCurrentUser();
         aria-label="close sidebar"
         class="drawer-overlay"
       ></label>
-      <ul class="menu p-4 w-80 min-h-full bg-base-200 text-primary">
+      <ul class="menu w-80 min-h-full bg-base-100 text-primary">
         <!-- Sidebar content here -->
         <!-- <p>{{ isDisplay }} {{ $route.path }}</p> -->
+        <NavItem
+          label="Dashboard"
+          link="/enterprise-dashboard"
+          :icon="IconDashboard"
+          v-if="userData.accountType === 'enterprise'"
+        />
+        <NavItem
+          label="Dashboard"
+          link="/corporation-dashboard"
+          :icon="IconDashboard"
+          v-if="userData.accountType === 'corporation'"
+        />
+        <div class="divider" />
         <NavItem
           v-for="content in navContent"
           :icon="content.icon"
@@ -56,7 +69,7 @@ const user = useCurrentUser();
     <div class="grow w-full text-center">
       <p class="text-primary font-black">EDEN</p>
     </div>
-    <ProfileDropdown v-if="user" />
+    <ProfileDropdown v-if="userData.uid" />
     <button
       v-else
       class="btn btn-primary btn-sm btn-outline"
@@ -83,17 +96,44 @@ const user = useCurrentUser();
   width: 100%;
   padding: 0.75rem;
   height: fit-content;
+  z-index: 50;
 }
 </style>
 <script lang="ts">
 import IconBuilding from "../icons/IconBuilding.vue";
 import IconTV from "../icons/IconTV.vue";
 import IconPlant from "../icons/IconPlant.vue";
+import IconDashboard from "../icons/IconDashboard.vue";
 import ProfileDropdown from "../auth/ProfileDropdown.vue";
+import IconCalendar from "../icons/IconCalendar.vue";
+import IconProject from "../icons/IconProject.vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
+import { watch } from "vue";
+import { useAuthStore } from "../../stores/authStore.ts";
+
 export default {
-  components: { IconBuilding, IconTV, IconPlant, ProfileDropdown },
+  components: {
+    IconBuilding,
+    IconTV,
+    IconDashboard,
+    IconPlant,
+    ProfileDropdown,
+    IconCalendar,
+    IconProject,
+  },
+  setup() {},
+  mounted() {
+    const authStore = useAuthStore();
+    authStore.$subscribe((mutation, state) => {
+      if (state.userData.uid) {
+        location.reload();
+      }
+
+      // if (mutation.payload === undefined) {
+
+      // }
+    });
+  },
   methods: {
     redirectToLogin: function () {
       this.$router.push("/login");
@@ -107,8 +147,9 @@ export default {
       // isDisplay: !["/login", "/signup", "/"].includes(this.$route.fullPath),
 
       navContent: [
+        { icon: IconProject, label: "Projects", link: "/projects" },
         { icon: IconPlant, label: "Social Enterprises", link: "/enterprises" },
-        { icon: IconBuilding, label: "Companies", link: "/companies" },
+        { icon: IconBuilding, label: "Corporations", link: "/corporations" },
         { icon: IconTV, label: "Media", link: "/media" },
       ],
     };

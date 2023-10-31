@@ -1,11 +1,32 @@
+<script setup lang="ts">
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useFirebaseAuth } from "vuefire";
+import { useAuthStore } from "../../stores/authStore";
+import { useRouter } from "vue-router";
+
+const auth = useFirebaseAuth();
+const authStore = useAuthStore();
+const router = useRouter();
+
+function login(email: string, password: string) {
+  signInWithEmailAndPassword(auth!, email, password)
+    .then((userCredential) => {
+      authStore.update(userCredential.user.uid);
+      router.push({ path: "/projects" });
+    })
+    .catch((error) => console.error(error.message));
+}
+</script>
 <template>
   <div
-    class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 h-fit m-auto border border-1"
+    class="card flex-shrink-0 w-96 shadow-2xl h-fit m-auto border border-2 bg-white"
   >
-    <form class="card-body">
+    <p class="text-primary text-3xl font-bold ml-16 mt-10">Login</p>
+
+    <form class="card-body -mt-4">
       <div class="form-control">
         <label class="label">
-          <span class="label-text text-primary">Email</span>
+          <span class="label-text text-gray-400">Email</span>
         </label>
         <input
           type="email"
@@ -17,7 +38,7 @@
       </div>
       <div class="form-control">
         <label class="label">
-          <span class="label-text text-primary">Password</span>
+          <span class="label-text text-gray-400">Password</span>
         </label>
         <input
           type="password"
@@ -27,32 +48,24 @@
           v-model="password"
         />
         <label class="label">
-          <a href="#" class="label-text-alt link link-hover text-primary"
+          <a href="#" class="label-text-alt link link-hover text-gray-400"
             >Forgot password?</a
           >
         </label>
       </div>
-      <div class="form-control mt-6">
-        <button class="btn btn-primary" @click.prevent="login()">Login</button>
+      <div class="form-control my-6">
+        <button
+          class="btn btn-primary"
+          @click.prevent="login(this.email, this.password)"
+        >
+          Login
+        </button>
       </div>
     </form>
   </div>
 </template>
 <script lang="ts">
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useFirebaseAuth } from "vuefire";
-const auth = useFirebaseAuth();
 export default {
-  methods: {
-    login: function () {
-      //   console.log(`email: ${this.email}`, this.password);
-      signInWithEmailAndPassword(auth!, this.email, this.password)
-        .then((userCredential) => {
-          this.$router.push("/projects");
-        })
-        .catch((error) => console.error(error.message));
-    },
-  },
   data() {
     return {
       email: "",
