@@ -49,10 +49,13 @@ function formatDDMMYYYY(date: Timestamp) {
           {{ tagOne }}
         </div>
       </div>
-      <p class="text-gray-500 line-clamp-3" v-if="seeMore === false">
+      <p
+        class="text-gray-500 line-clamp-3 text-justify"
+        v-if="seeMore === false"
+      >
         {{ postDescription }}
       </p>
-      <p class="text-gray-500" v-if="seeMore === true">
+      <p class="text-gray-500 text-justify" v-if="seeMore === true">
         {{ postDescription }}
       </p>
       <button

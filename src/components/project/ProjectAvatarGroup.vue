@@ -41,6 +41,8 @@ defineProps<{
     </div>
   </div>
   <div v-else>
-    <span class="badge badge-primary text-white">Be the first to join 🎉</span>
+    <span class="badge badge-primary text-white py-4 font-bold"
+      >Join 1st 🎉</span
+    >
   </div>
 </template>

@@ -27,7 +27,7 @@ const scrollPosition = ref(0);
   </div>
   <canvas
     id="canvas3d"
-    class="fixed top-0 left-0 h-full z-2 bg-gradient-to-r from-gray-700 via-gray-900 to-black"
+    class="fixed top-0 left-0 h-full z-0 bg-gradient-to-r from-gray-700 via-gray-900 to-black"
   >
   </canvas>
   <div class="absolute z-5 text-white h-fit flex flex-col w-full" id="part1">
@@ -44,11 +44,41 @@ const scrollPosition = ref(0);
             The Earth is dying, there is no plan B. Sea levels are rising,
             animals are suffering. We need to do something.
           </p>
-          <a
-            class="btn btn-primary mt-6 w-32"
-            href="https://www.un.org/en/climatechange"
-            >SEE WHY?</a
-          >
+
+          <button class="btn btn-primary mt-6" onclick="my_modal_3.showModal()">
+            SEE WHY?
+          </button>
+          <dialog id="my_modal_3" class="modal">
+            <div class="modal-box">
+              <form method="dialog">
+                <button
+                  class="btn btn-sm btn-circle btn-ghost text-black absolute right-2 top-2"
+                >
+                  ✕
+                </button>
+              </form>
+              <p class="text-primary text-2xl font-bold">Climate Change</p>
+              <p class="py-4 text-justify">
+                The alarming reality is that the Earth is facing a multitude of
+                challenges that are threatening its health and vitality. Human
+                activities, such as deforestation, pollution, overconsumption,
+                and greenhouse gas emissions, have pushed the planet to the
+                brink.
+
+                <br /><br />
+                The consequences of these actions are evident in the degradation
+                of ecosystems, loss of biodiversity, and the increasingly severe
+                impacts of climate change. From melting polar ice caps to
+                vanishing species, these signs indicate that the Earth is under
+                immense stress. <br /><br />
+                If we continue down this path without significant changes to our
+                behavior, we risk irreversibly damaging the delicate balance of
+                our planet's natural systems. It is imperative that we
+                acknowledge the severity of these threats and take immediate
+                action to protect and restore the Earth before it is too late.
+              </p>
+            </div>
+          </dialog>
         </div>
       </div>
     </div>
@@ -101,7 +131,7 @@ const scrollPosition = ref(0);
         </p>
         <p class="text-lg sm:text-xl text-gray-300 m-auto w-96 text-center">
           Cultivate climate action by engaging with corporations. Sign up and
-          change the world now.
+          change the world <strong>now</strong>.
         </p>
         <div class="flex gap-4 m-auto mt-16">
           <button
