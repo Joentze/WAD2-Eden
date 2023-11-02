@@ -45,7 +45,7 @@ const scrollPosition = ref(0);
             animals are suffering. We need to do something.
           </p>
 
-          <button class="btn btn-primary mt-6" onclick="my_modal_3.showModal()">
+          <button class="btn btn -primary mt-6" onclick="my_modal_3.showModal()">
             SEE WHY?
           </button>
           <dialog id="my_modal_3" class="modal">
