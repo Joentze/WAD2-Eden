@@ -4,7 +4,6 @@ defineProps<{
   icon: HTMLElement;
   label: string;
   link: string;
-
 }>();
 </script>
 <template>
@@ -12,7 +11,7 @@ defineProps<{
     <RouterLink :to="link">
       <a
         class="flex flex-row gap-2 text-accent"
-        v-if="$route.fullPath.includes(label.toLowerCase())"
+        v-if="$route.fullPath.includes(link.toLowerCase())"
         ><component :is="icon"></component>
         {{ label }}
       </a>

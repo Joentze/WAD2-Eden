@@ -29,11 +29,6 @@
           required
           v-model="password"
         />
-        <label class="label">
-          <a href="#" class="label-text-alt link link-hover text-gray-400"
-            >Forgot password?</a
-          >
-        </label>
       </div>
       <div class="form-control my-6">
         <button
@@ -62,6 +57,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useFirebaseAuth } from "vuefire";
 import { useAuthStore } from "../../stores/authStore";
 import { useRouter } from "vue-router";
+import { useNotification } from "../../stores/notificationStore";
 
 export default {
   methods: {
@@ -69,12 +65,18 @@ export default {
       const auth = useFirebaseAuth();
       const authStore = useAuthStore();
       const router = useRouter();
+      const notification = useNotification();
       signInWithEmailAndPassword(auth!, this.email, this.password)
         .then((userCredential) => {
           authStore.update(userCredential.user.uid);
           this.$router.push({ path: "/projects" });
         })
-        .catch((error) => console.error(error.message));
+        .catch((error) => {
+          notification.add({
+            title: "Login Error",
+            description: error.message,
+          });
+        });
     },
   },
   data() {
