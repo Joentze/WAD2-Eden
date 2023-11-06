@@ -120,7 +120,10 @@ const convertTimestampToDate = (timestamp: Timestamp) => {
             }}</span>
           </p>
           <div class="divider -my-0" />
-          <p class="text-gray-300 text-sm">How many joining?</p>
+          <div class="flex flex-row w-full">
+            <p class="text-gray-300 text-sm grow">How many joining?</p>
+            <p class="text-primary font-bold text-xl">{{ pax }} pax</p>
+          </div>
           <div>
             <input
               v-model="pax"
