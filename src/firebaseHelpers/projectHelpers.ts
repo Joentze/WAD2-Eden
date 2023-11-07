@@ -145,7 +145,7 @@ export const getCompletedEvents = async (
       );
     }) as EventType[];
   } catch (e) {
-    console.error(e);
+    // console.error(e);
     throw new Error("There was an error with getting events at this moment");
   }
 };
@@ -153,19 +153,23 @@ export const getCompletedEvents = async (
 export const checkIfRegistered = async (
   data: ApplicationType
 ): Promise<void> => {
-  const { companyId, projectId } = data;
-  const eventsRef = collection(db, "events");
-  const q = query(
-    eventsRef,
-    where("companyId", "==", companyId),
-    where("projectId", "==", projectId)
-  );
-  let applications: ApplicationType[] = [];
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    applications.push(doc.data() as ApplicationType);
-  });
-  if (applications.length > 0) throw new Error("You've already registered");
+  try {
+    const { companyId, projectId } = data;
+    const eventsRef = collection(db, "events");
+    const q = query(
+      eventsRef,
+      where("companyId", "==", companyId),
+      where("projectId", "==", projectId)
+    );
+    let applications: ApplicationType[] = [];
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      applications.push(doc.data() as ApplicationType);
+    });
+    if (applications.length > 0) throw new Error("You've already registered");
+  } catch (e) {
+    throw new Error("You need to be signed in to apply");
+  }
 };
 
 export const deleteEvent = async (eventId: string): Promise<void> => {

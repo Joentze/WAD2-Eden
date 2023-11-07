@@ -39,12 +39,12 @@ console.log(authStore.getData);
           v-for="card in showProjects"
           v-bind:key="card.id"
         >
-          <figure>
-            <img :src="card.projectImages[0]" />
+          <figure class="h-48 overflow-hidden">
+            <img :src="card.projectImages[0]" class="bg-cover bg-center" />
           </figure>
           <div class="card-body flex flex-col">
-            <div class="flex flex-row">
-              <h2 class="card-title text-primary text-xl grow">
+            <div class="flex flex-row gap-4">
+              <h2 class="card-title text-primary text-xl grow truncate">
                 {{ card.projectTitle }}
               </h2>
               <span class="badge badge-primary text-white m-auto">{{

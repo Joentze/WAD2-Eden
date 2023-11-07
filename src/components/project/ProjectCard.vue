@@ -8,7 +8,7 @@
     </figure>
     <div class="card-body flex flex-col">
       <div class="flex flex-row">
-        <h2 class="card-title text-primary text-xl grow">
+        <h2 class="card-title text-primary text-xl w-32">
           {{ projectTitle }}
         </h2>
         <span class="badge badge-primary text-white m-auto">{{

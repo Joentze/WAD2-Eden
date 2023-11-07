@@ -57,7 +57,7 @@ const userData = useAuthStore().getData;
           :icon="IconDashboard"
           v-if="userData.accountType === 'corporation'"
         />
-        <div class="divider" />
+        <div class="divider" v-if="userData.accountType !== undefined" />
         <NavItem
           v-for="content in navContent"
           :icon="content.icon"

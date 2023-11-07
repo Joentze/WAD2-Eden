@@ -16,7 +16,7 @@ function clearAll() {
     leave-from="opacity-100"
     leave-to="opacity-0"
   >
-    <div class="toast" v-if="notificationStore.display">
+    <div class="toast z-50" v-if="notificationStore.display">
       <NotificationCard
         v-for="(notification, index) in notificationStore.content"
         :title="notification.title"
@@ -26,7 +26,7 @@ function clearAll() {
       />
 
       <button
-        class="btn btn-sm"
+        class="btn btn-sm z-50"
         @click="clearAll()"
         v-if="notificationStore.content.length > 0"
       >
