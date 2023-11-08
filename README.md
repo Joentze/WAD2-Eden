@@ -16,10 +16,10 @@ npm install
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Build for Production
 
 ```sh
-npm run build
+npm run build-only
 ```
 
 ## Backend (Run Locally)
