@@ -57,6 +57,7 @@ type ProjectType = {
 //   projectName: string;
 // };
 
+// firebase function to create event
 exports.onApplicationApproved = functions.firestore
   .document("/applications/{appId}")
   .onUpdate(async (snap, context) => {
