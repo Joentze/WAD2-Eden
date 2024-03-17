@@ -5,7 +5,7 @@ import { useFirebaseAuth, useFirestore } from "vuefire";
 import { connectFunctionsEmulator, getFunctions } from "firebase/functions";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 
-const isTestLocally = true;
+const isTestLocally = false;
 
 export const firebaseApp = initializeApp({
   apiKey: "AIzaSyA0QRy8UHpLXE2zWyq3lj_NiP79IzC4zno",
@@ -24,6 +24,6 @@ const functions = getFunctions(firebaseApp);
 if (isTestLocally && window.location.hostname.includes("localhost")) {
   connectFirestoreEmulator(db, "127.0.0.1", 8080);
   connectAuthEmulator(auth!, "http://127.0.0.1:9099");
-  connectFunctionsEmulator(functions, "127.0.0.1", 5001);
+  connectFunctionsEmulator(functions, "127.0.0.1", 5555);
   connectStorageEmulator(storage, "127.0.0.1", 9199);
 }

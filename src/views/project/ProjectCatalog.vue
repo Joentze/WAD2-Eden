@@ -1,11 +1,48 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { useAuthStore } from "../../stores/authStore";
+import { onSnapshot, doc } from "firebase/firestore";
+import { db } from "../../firebase.ts";
+import { ref } from "vue";
 const authStore = useAuthStore();
+
 console.log(authStore.getData);
-</script>
+</script> -->
 
 <template>
   <img src="../mediaFade.png" class="w-full h-full fixed top-0 left-0" />
+  <dialog id="my_modal_1" className="modal">
+    <div className="modal-box">
+      <h3 className="font-bold text-lg text-primary">💬 A.I. says...</h3>
+      <progress
+        className="progress w-full progress-primary"
+        v-if="llmLoadingStatus === 'PROCESSING'"
+      ></progress>
+      <div
+        role="alert"
+        className="alert alert-error"
+        v-if="llmLoadingStatus === 'ERROR'"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="stroke-current shrink-0 h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+        <span>Error! Task failed successfully.</span>
+      </div>
+      <p className="py-4" v-if="llmOutput !== ''">{{ llmOutput }}</p>
+    </div>
+    <form method="dialog" className="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
   <div class="project">
     <div class="project-body">
       <!-- project Title -->
@@ -26,7 +63,14 @@ console.log(authStore.getData);
             placeholder="🔎 Search…"
             class="input input-primary input-primary w-full join-item input-bordered"
             @input="onSearch"
-          />
+            v-model="searchQuery"
+          /><button
+            class="btn btn-primary join-item"
+            :disabled="isButtonDisabled"
+            @click="async () => await createPrompt()"
+          >
+            Ask AI ✨
+          </button>
         </div>
       </div>
 
@@ -82,14 +126,25 @@ import {
   collection,
   where,
   endAt,
+  doc,
   getDocs,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase.ts";
+import {
+  createNewPrompt,
+  PromptStatus,
+  PromptType,
+} from "@/firebaseHelpers/promptHandler";
 import IconArrowRight from "../../components/icons/IconArrowRight.vue";
 export default {
   components: { IconArrowRight },
   data() {
     return {
+      llmLoadingStatus: PromptStatus.PROCESSING,
+      llmOutput: "",
+      unsub: undefined,
+      promptId: "",
       cursor: 8,
       projects: [],
       showProjects: [],
@@ -143,6 +198,11 @@ export default {
   async mounted() {
     await this.queryPaginate();
   },
+  computed: {
+    isButtonDisabled() {
+      return this.searchQuery.trim() === "";
+    },
+  },
   methods: {
     onSearch: function (event) {
       const currVal = event.target.value;
@@ -159,6 +219,22 @@ export default {
           item.creatorName.toLowerCase().includes(currVal.toLowerCase()) ||
           item.projectTag.toLowerCase().includes(currVal.toLowerCase())
       );
+    },
+    createPrompt: async function () {
+      console.log("creting prompt");
+      this.promptId = await createNewPrompt({
+        input: this.searchQuery,
+        output: "",
+        status: PromptStatus.PROCESSING,
+      });
+      console.log(this.promptId);
+      this.searchQuery = "";
+      document.getElementById("my_modal_1").showModal();
+      onSnapshot(doc(db, "prompts", this.promptId), (doc) => {
+        const { output, status } = doc.data() as PromptType;
+        this.llmLoadingStatus = status;
+        this.llmOutput = output;
+      });
     },
     queryPaginate: async function () {
       const projectRef = collection(db, "projects");

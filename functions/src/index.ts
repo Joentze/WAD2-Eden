@@ -18,6 +18,8 @@
 import * as functions from "firebase-functions";
 import admin = require("firebase-admin");
 import { Timestamp } from "firebase-admin/firestore";
+import { defineString } from "firebase-functions/params";
+import { createClient, SupabaseClient } from "@supabase/supabase-js";
 
 admin.initializeApp();
 
@@ -26,11 +28,24 @@ enum ApplicationStatus {
   REJECTED = "REJECTED",
   PENDING = "PENDING",
 }
+
+enum PromptStatus {
+  PROCESSING = "PROCESSING",
+  COMPLETE = "COMPLETE",
+  ERROR = "ERROR",
+}
+
 type JoinedType = {
   companyId: string;
   companyName: string;
   companyPhotoUrl: string;
 };
+
+interface PromptType {
+  input: string;
+  output?: string;
+  status: PromptStatus;
+}
 
 type ProjectType = {
   projectTitle: string;
@@ -46,6 +61,14 @@ type ProjectType = {
   completed: boolean;
 };
 
+interface SupabaseDocType {
+  original_text: string;
+  embedding: number[];
+}
+interface OpenAIPrompt {
+  role: string;
+  content: string;
+}
 // type ApplicationType = {
 //   projectId: string;
 //   companyId: string;
@@ -56,6 +79,9 @@ type ProjectType = {
 //   enterpriseId: string;
 //   projectName: string;
 // };
+const OPENAI_API_KEY = defineString("OPENAI_API_KEY");
+const SUPABASE_URL = defineString("SUPABASE_URL");
+const SUPABASE_PASS = defineString("SUPABASE_PASS");
 
 exports.onApplicationApproved = functions.firestore
   .document("/applications/{appId}")
@@ -126,3 +152,156 @@ exports.onProjectCompleted = functions.firestore
         });
     }
   });
+exports.onProjectCreated = functions.firestore
+  .document("/projects/{projectId}")
+  .onCreate(async (snap, context) => {
+    const projectData = snap.data() as ProjectType;
+    console.log(projectData);
+    const projectId = snap.id;
+    const supabaseClient: SupabaseClient = createClient(
+      SUPABASE_URL.value(),
+      SUPABASE_PASS.value()
+    );
+    const { projectTitle, projectDescription, projectTag, projectAddress } =
+      projectData;
+    const projectCorpus = `
+    Project ID: ${projectId},
+    Project Title: ${projectTitle},
+      Project Description: ${projectDescription},
+       Project Tag: ${projectTag},
+        Project Address ${projectAddress}`;
+    console.log(projectCorpus);
+    return await fetch("https://api.openai.com/v1/embeddings", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OPENAI_API_KEY.value()}`,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        input: projectCorpus,
+        model: "text-embedding-ada-002",
+      }),
+    })
+      .then(async (response) => {
+        const { data } = await response.json();
+        console.log(data);
+        const embedding: number[] = data[0].embedding;
+        const supabaseResponse = await writeEmbeddings(supabaseClient, {
+          original_text: projectCorpus,
+          embedding: embedding,
+        });
+        console.log(supabaseResponse);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+exports.onPromptCreated = functions.firestore
+  .document("/prompts/{promptId}")
+  .onCreate(async (snap, context) => {
+    const newPrompt = snap.data() as PromptType;
+    const promptId = snap.id as string;
+    const supabaseClient: SupabaseClient = createClient(
+      SUPABASE_URL.value(),
+      SUPABASE_PASS.value()
+    );
+    const { input } = newPrompt;
+    return await new Promise(async () => {
+      const similarDocuments = await getBestDocumentMatch(
+        supabaseClient,
+        input
+      );
+      const documents: object[] = [];
+      for (let thisDocument of similarDocuments) {
+        const { original_text } = thisDocument as any;
+        documents.push(original_text);
+      }
+      const llmResponse = await getLLMCompletion(
+        { role: "user", content: input },
+        documents.join("\n")
+      );
+      await admin
+        .firestore()
+        .collection("prompts")
+        .doc(promptId)
+        .update({
+          ...newPrompt,
+          status: PromptStatus.COMPLETE,
+          output: llmResponse["content"],
+        });
+    });
+  });
+const writeEmbeddings = async (
+  supabase: SupabaseClient,
+  embeddings: SupabaseDocType
+): Promise<boolean> => {
+  const { error } = await supabase.from("documents").insert(embeddings);
+  return error ? false : true;
+};
+
+const getBestDocumentMatch = async (
+  supabase: SupabaseClient,
+  content: string
+): Promise<object[]> => {
+  const response = await fetch("https://api.openai.com/v1/embeddings", {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OPENAI_API_KEY.value()}`,
+    },
+    method: "POST",
+    body: JSON.stringify({
+      input: content,
+      model: "text-embedding-ada-002",
+    }),
+  });
+  const responseData = ((await response.json()) as any)["data"];
+  const embeddings: number[] = responseData[0].embedding;
+  const { data, error } = await supabase.rpc("get_similar_document", {
+    query_embedding: embeddings,
+    threshold: 0.7,
+    no_of_matches: 3,
+  });
+  return error ? error : data;
+};
+const getLLMCompletion = async (
+  prompt: OpenAIPrompt,
+  context: string
+): Promise<OpenAIPrompt> => {
+  try {
+    const { content } = prompt;
+    const chatResponse = await fetch(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${OPENAI_API_KEY.value()}`,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [
+            { role: "system", content: "You are a helpful assistant." },
+            {
+              role: "user",
+              content: `You are a helpful assistant and you respond to the query based on the context below. If you do not know the answer, say you don't know
+            
+            context:
+            ${context}
+
+            query:
+            ${content}
+
+            response:`,
+            },
+          ],
+        }),
+      }
+    );
+    const gptResponse = await chatResponse.json();
+    const completion = gptResponse["choices"][0]["message"];
+    return completion as OpenAIPrompt;
+  } catch (e) {
+    throw new Error(e as string);
+  }
+};
