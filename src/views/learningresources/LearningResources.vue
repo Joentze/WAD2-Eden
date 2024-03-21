@@ -290,10 +290,11 @@ export default {
 
 button {
 	padding: 10px 15px;
-}
-button:hover {
 	background-color: #008c7a;
 	color: white;
+}
+button:hover {
+	background-color: green;
 }
 .article-content {
 	margin-left: 40px; /* Increased from 20px for more space between image and text */
@@ -302,7 +303,7 @@ button:hover {
 }
 
 .article-image img {
-	width: 300px;
+	width: 420px;
 	height: 150px;
 	object-fit: cover;
 	padding-right: 20px;
