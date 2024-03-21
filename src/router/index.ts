@@ -4,6 +4,11 @@ import CompanyCatalog from "../views/company/CompanyCatalog.vue";
 import CompanyPage from "../views/company/CompanyPage.vue";
 import EnterpriseCatalog from "../views/enterprise/EnterpriseCatalog.vue";
 import EnterprisePage from "../views/enterprise/EnterprisePage.vue";
+// Testing
+import TestPage from "../views/test/Test.vue";
+import DashboardPage from "../views/dashboard/Dashboard.vue";
+import LearningResourcePage from "../views/learningresources/LearningResources.vue";
+
 import MediaCatalog from "../views/media/MediaCatalog.vue";
 import CompanyMediaCatalog from "../views/media/CompanyMediaCatalog.vue";
 import EnterpriseMediaCatalog from "../views/media/EnterpriseMediaCatalog.vue";
@@ -36,6 +41,21 @@ const router = createRouter({
       path: "/",
       name: "landing",
       component: LandingPage,
+    },
+    {
+      path: "/dashboard",
+      name: "dashboard page",
+      component: DashboardPage,
+    },
+    {
+      path: "/learningresources",
+      name: "learning resource page",
+      component: LearningResourcePage,
+    },
+    {
+      path: "/test",
+      name: "test page",
+      component: TestPage,
     },
     {
       path: "/enterprise-dashboard",
@@ -100,6 +120,11 @@ const router = createRouter({
       name: "company media catalog page",
       component: CompanyMediaCatalog,
     },
+    // {
+    //   path: "/dashboard",
+    //   name: "dashboard page",
+    //   component: Dashboard,
+    // },
     {
       path: "/enterprise/media/:enterpriseId",
       name: "enterprise media catalog page",
