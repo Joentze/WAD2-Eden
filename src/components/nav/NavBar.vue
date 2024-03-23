@@ -126,7 +126,7 @@ export default {
 				{ icon: IconTV, label: "Media", link: "/media" },
 				{ icon: IconDashboard, label: "Dashboard", link: "/dashboard" },
 				{ icon: IconBook, label: "Learning Resources", link: "/learningresources" },
-				{ icon: IconQuestionMark, label: "Test", link: "/test" },
+				// { icon: IconQuestionMark, label: "Test", link: "/test" },
 			],
 		};
 	},

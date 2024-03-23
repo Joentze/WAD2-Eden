@@ -52,6 +52,8 @@
 					<h4>{{ consultant.title }}</h4>
 					<i>{{ consultant.description }}</i>
 				</div>
+				<button>Book A Slot</button>
+				<br /><br />
 			</div>
 		</div>
 	</div>
