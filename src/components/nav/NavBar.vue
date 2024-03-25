@@ -121,7 +121,7 @@ export default {
 
 			navContent: [
 				{ icon: IconProject, label: "Projects", link: "/projects" },
-				{ icon: IconPlant, label: "Social Enterprises", link: "/enterprises" },
+				{ icon: IconPlant, label: "Our Partners", link: "/enterprises" },
 				{ icon: IconBuilding, label: "Corporations", link: "/corporations" },
 				{ icon: IconTV, label: "Media", link: "/media" },
 				{ icon: IconDashboard, label: "Dashboard", link: "/dashboard" },

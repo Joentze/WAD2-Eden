@@ -7,10 +7,10 @@
       <p
         class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10 fade-in"
       >
-        Our Social Enterprises
+        Our Sustainability Partners
       </p>
       <p class="text-gray-400 w-full text-sm my-2 z-10">
-        Join the fight against climate change with our social enterprises 🌍
+        Start on initiatives with our partners 🌍
       </p>
 
       <!-- Search Bar -->

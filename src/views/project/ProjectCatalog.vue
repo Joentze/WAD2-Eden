@@ -49,10 +49,10 @@ console.log(authStore.getData);
       <p
         class="text-primary w-full my-2 text-4xl sm:text-6xl font-bold z-10 fade-in"
       >
-        Our Projects
+        Our Initiatives
       </p>
       <p class="text-gray-400 w-full text-sm my-2 z-10">
-        Join the a project to shift climate culture 🌍
+        Start on initiatives to shift climate culture 🌍
       </p>
 
       <!-- Search Bar -->
